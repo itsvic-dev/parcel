@@ -101,6 +101,9 @@ dependencies {
     implementation(libs.work.runtime)
     implementation(libs.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.androidx.adaptive)
+    implementation(libs.androidx.adaptive.layout)
+    implementation(libs.androidx.adaptive.navigation)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.browser)
 

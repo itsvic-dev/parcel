@@ -131,8 +131,8 @@ object HomePage
 @Serializable
 object SettingsPage
 
-@Serializable
-data class ParcelPage(val parcelDbId: Int)
+//@Serializable
+//data class ParcelPage(val parcelDbId: Int)
 
 @Serializable
 object AddParcelPage
@@ -149,11 +149,11 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
     val demoMode by context.dataStore.data.map { it[DEMO_MODE] == true }.collectAsState(false)
 
     LaunchedEffect(parcelToOpen) {
-        if (parcelToOpen != -1) {
-            navController.navigate(route = ParcelPage(parcelToOpen)) {
-                popUpTo(HomePage)
-            }
-        }
+//        if (parcelToOpen != -1) {
+//            navController.navigate(route = ParcelPage(parcelToOpen)) {
+//                popUpTo(HomePage)
+//            }
+//        }
     }
 
     val animDuration = 300
@@ -183,17 +183,18 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
         },
     ) {
         composable<HomePage> {
-            val parcels = if (demoMode)
-                derivedStateOf { demoModeParcels }
-            else
-                db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
-
-            HomeView(
-                parcels = parcels.value,
-                onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
-                onNavigateToParcel = { navController.navigate(route = ParcelPage(it.id)) },
-                onNavigateToSettings = { navController.navigate(route = SettingsPage) },
-            )
+//            val parcels = if (demoMode)
+//                derivedStateOf { demoModeParcels }
+//            else
+//                db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
+//
+//            HomeView(
+//                parcels = parcels.value,
+//                onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
+//                onNavigateToParcel = { navController.navigate(route = ParcelPage(it.id)) },
+//                onNavigateToSettings = { navController.navigate(route = SettingsPage) },
+//            )
+            ParcelListDetailRoute()
         }
 
         composable<SettingsPage> {
@@ -202,107 +203,107 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
             )
         }
 
-        composable<ParcelPage> { backStackEntry ->
-            val route: ParcelPage = backStackEntry.toRoute()
-            val parcelWithStatus: ParcelWithStatus? by if (demoMode)
-                derivedStateOf { demoModeParcels[route.parcelDbId] }
-            else
-                db.parcelDao().getWithStatusById(route.parcelDbId).collectAsState(null)
-            var apiParcel: APIParcel? by remember { mutableStateOf(null) }
-
-            val dbParcel = parcelWithStatus?.parcel
-
-            LaunchedEffect(parcelWithStatus) {
-                if (dbParcel != null) {
-                    launch(Dispatchers.IO) {
-                        try {
-                            apiParcel = getParcel(
-                                dbParcel.parcelId,
-                                dbParcel.postalCode,
-                                dbParcel.service
-                            )
-
-                            if (!demoMode) {
-                                // update parcel status
-                                val zone = ZoneId.systemDefault()
-                                val lastChange =
-                                    apiParcel!!.history.first().time.atZone(zone).toInstant()
-                                val status = ParcelStatus(
-                                    dbParcel.id,
-                                    apiParcel!!.currentStatus,
-                                    lastChange,
-                                )
-                                if (parcelWithStatus?.status == null) {
-                                    db.parcelStatusDao().insert(status)
-                                } else {
-                                    db.parcelStatusDao().update(status)
-                                }
-                            }
-                        } catch (e: IOException) {
-                            Log.w("MainActivity", "Failed fetch: $e")
-                            apiParcel = APIParcel(
-                                dbParcel.parcelId,
-                                listOf(
-                                    ParcelHistoryItem(
-                                        context.getString(R.string.network_failure_detail),
-                                        LocalDateTime.now(),
-                                        ""
-                                    )
-                                ),
-                                Status.NetworkFailure
-                            )
-                        } catch (_: ParcelNonExistentException) {
-                            apiParcel = APIParcel(
-                                dbParcel.parcelId,
-                                listOf(
-                                    ParcelHistoryItem(
-                                        context.getString(R.string.parcel_doesnt_exist_detail),
-                                        LocalDateTime.now(),
-                                        ""
-                                    )
-                                ),
-                                Status.NoData
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (apiParcel == null || dbParcel == null)
-                Box(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.background)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            else
-                ParcelView(
-                    apiParcel!!,
-                    dbParcel.humanName,
-                    dbParcel.service,
-                    onBackPressed = { navController.popBackStack() },
-                    onEdit = { navController.navigate(EditParcelPage(dbParcel.id)) },
-                    onDelete = {
-                        if (demoMode) {
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.demo_mode_action_block),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            return@ParcelView
-                        }
-
-                        scope.launch(Dispatchers.IO) {
-                            db.parcelDao().delete(dbParcel)
-                            scope.launch {
-                                navController.popBackStack(HomePage, false)
-                            }
-                        }
-                    },
-                )
-        }
+//        composable<ParcelPage> { backStackEntry ->
+//            val route: ParcelPage = backStackEntry.toRoute()
+//            val parcelWithStatus: ParcelWithStatus? by if (demoMode)
+//                derivedStateOf { demoModeParcels[route.parcelDbId] }
+//            else
+//                db.parcelDao().getWithStatusById(route.parcelDbId).collectAsState(null)
+//            var apiParcel: APIParcel? by remember { mutableStateOf(null) }
+//
+//            val dbParcel = parcelWithStatus?.parcel
+//
+//            LaunchedEffect(parcelWithStatus) {
+//                if (dbParcel != null) {
+//                    launch(Dispatchers.IO) {
+//                        try {
+//                            apiParcel = getParcel(
+//                                dbParcel.parcelId,
+//                                dbParcel.postalCode,
+//                                dbParcel.service
+//                            )
+//
+//                            if (!demoMode) {
+//                                // update parcel status
+//                                val zone = ZoneId.systemDefault()
+//                                val lastChange =
+//                                    apiParcel!!.history.first().time.atZone(zone).toInstant()
+//                                val status = ParcelStatus(
+//                                    dbParcel.id,
+//                                    apiParcel!!.currentStatus,
+//                                    lastChange,
+//                                )
+//                                if (parcelWithStatus?.status == null) {
+//                                    db.parcelStatusDao().insert(status)
+//                                } else {
+//                                    db.parcelStatusDao().update(status)
+//                                }
+//                            }
+//                        } catch (e: IOException) {
+//                            Log.w("MainActivity", "Failed fetch: $e")
+//                            apiParcel = APIParcel(
+//                                dbParcel.parcelId,
+//                                listOf(
+//                                    ParcelHistoryItem(
+//                                        context.getString(R.string.network_failure_detail),
+//                                        LocalDateTime.now(),
+//                                        ""
+//                                    )
+//                                ),
+//                                Status.NetworkFailure
+//                            )
+//                        } catch (e: ParcelNonExistentException) {
+//                            apiParcel = APIParcel(
+//                                dbParcel.parcelId,
+//                                listOf(
+//                                    ParcelHistoryItem(
+//                                        context.getString(R.string.parcel_doesnt_exist_detail),
+//                                        LocalDateTime.now(),
+//                                        ""
+//                                    )
+//                                ),
+//                                Status.NoData
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            if (apiParcel == null || dbParcel == null)
+//                Box(
+//                    modifier = Modifier
+//                        .background(color = MaterialTheme.colorScheme.background)
+//                        .fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    CircularProgressIndicator()
+//                }
+//            else
+//                ParcelView(
+//                    apiParcel!!,
+//                    dbParcel.humanName,
+//                    dbParcel.service,
+//                    onBackPressed = { navController.popBackStack() },
+//                    onEdit = { navController.navigate(EditParcelPage(dbParcel.id)) },
+//                    onDelete = {
+//                        if (demoMode) {
+//                            Toast.makeText(
+//                                context,
+//                                context.getString(R.string.demo_mode_action_block),
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            return@ParcelView
+//                        }
+//
+//                        scope.launch(Dispatchers.IO) {
+//                            db.parcelDao().delete(dbParcel)
+//                            scope.launch {
+//                                navController.popBackStack(HomePage, false)
+//                            }
+//                        }
+//                    },
+//                )
+//        }
 
         composable<AddParcelPage> {
             AddEditParcelView(
@@ -320,11 +321,11 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
 
                     scope.launch(Dispatchers.IO) {
                         val id = db.parcelDao().insert(it)
-                        scope.launch {
-                            navController.navigate(route = ParcelPage(id.toInt())) {
-                                popUpTo(HomePage)
-                            }
-                        }
+//                        scope.launch {
+//                            navController.navigate(route = ParcelPage(id.toInt())) {
+//                                popUpTo(HomePage)
+//                            }
+//                        }
                     }
                 },
             )
