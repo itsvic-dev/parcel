@@ -2,11 +2,11 @@ package dev.itsvic.parceltracker
 
 import android.os.Parcelable
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
@@ -15,14 +15,22 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.itsvic.parceltracker.api.Parcel
+import dev.itsvic.parceltracker.api.getParcel
+import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.views.HomeView
+import dev.itsvic.parceltracker.ui.views.ParcelView
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class ParcelInfo(val id: Int): Parcelable
+class ParcelInfo(val id: Int) : Parcelable
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -31,11 +39,6 @@ fun ParcelListDetailRoute(
 ) {
     val db = ParcelApplication.db
     val navigator = rememberListDetailPaneScaffoldNavigator<ParcelInfo>()
-    val parcels = if (demoMode)
-        remember { derivedStateOf { demoModeParcels } }
-    else
-        db.parcelDao().getAllWithStatus().collectAsState(emptyList())
-
     BackHandler(enabled = navigator.canNavigateBack()) {
         navigator.navigateBack()
     }
@@ -45,8 +48,13 @@ fun ParcelListDetailRoute(
         value = navigator.scaffoldValue,
         listPane = {
             AnimatedPane {
+                val parcels: List<ParcelWithStatus> by if (demoMode)
+                    remember { derivedStateOf { demoModeParcels } }
+                else
+                    db.parcelDao().getAllWithStatus().collectAsState(emptyList())
+
                 HomeView(
-                    parcels = parcels.value,
+                    parcels = parcels,
                     onNavigateToAddParcel = {},
                     onNavigateToSettings = {},
                     onNavigateToParcel = {
@@ -55,16 +63,43 @@ fun ParcelListDetailRoute(
                 )
             }
         },
+
         detailPane = {
             AnimatedPane {
-                navigator.currentDestination?.content?.let {
-                    Scaffold { innerPadding ->
-                        Column(modifier = Modifier.padding(innerPadding)) {
-                            Text("detail pane: ${it.id}")
+                navigator.currentDestination?.content?.let { parcelInfo ->
+                    val parcelWithStatus: ParcelWithStatus? by
+                    if (demoMode)
+                        derivedStateOf { demoModeParcels[parcelInfo.id] }
+                    else
+                        db.parcelDao().getWithStatusById(parcelInfo.id).collectAsState(null)
+                    val dbParcel = parcelWithStatus?.parcel
+                    val apiParcel = dbParcel?.let { getParcelFlow(it).collectAsState(null) }
+
+                    if (apiParcel?.value == null)
+                        Box(
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.background)
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        )
+                        {
+                            CircularProgressIndicator()
                         }
-                    }
+                    else
+                        ParcelView(
+                            apiParcel.value!!,
+                            dbParcel.humanName,
+                            dbParcel.service,
+                            onBackPressed = {},
+                            onEdit = {},
+                            onDelete = {},
+                        )
                 }
             }
         }
     )
+}
+
+fun getParcelFlow(parcel: dev.itsvic.parceltracker.db.Parcel): Flow<Parcel> = flow {
+    emit(getParcel(parcel.parcelId, parcel.postalCode, parcel.service))
 }
