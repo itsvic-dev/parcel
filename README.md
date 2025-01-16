@@ -21,3 +21,11 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+
+Russia and CIS:
+- 5post
+- CDEK
+- Russian Post (Почта России)
+
+Asia: 
+- AliExpress Shipping (Cainiao)
