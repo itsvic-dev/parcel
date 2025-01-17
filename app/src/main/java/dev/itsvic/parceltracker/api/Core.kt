@@ -27,7 +27,8 @@ enum class Service {
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
-
+    BELPOST,
+  
     // Asia
     CAINIAO,
 }
@@ -49,6 +50,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
+        Service.BELPOST -> BelpostDeliveryService
 
         Service.CAINIAO -> CainiaoDeliveryService
 

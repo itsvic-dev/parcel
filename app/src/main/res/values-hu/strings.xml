@@ -50,4 +50,5 @@
     <string name="service_sameday_hu">Sameday Magyarország</string>
     <string name="service_sameday_ro">Sameday Románia</string>
     <string name="service_sameday_bg">Sameday Bulgária</string>
+    <string name="service_belpost">Belposta</string>
 </resources>

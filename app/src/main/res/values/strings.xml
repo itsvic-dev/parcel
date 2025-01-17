@@ -17,6 +17,7 @@
     <string name="service_gls" translatable="false">GLS</string>
     <string name="service_dhl" translatable="false">DHL</string>
     <string name="service_polish_post">Polish Post</string>
+    <string name="service_belpost">Belpost</string>
 
     <string name="add_a_parcel">Add a parcel</string>
     <string name="go_back">Go back</string>

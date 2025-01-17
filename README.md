@@ -21,6 +21,7 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+- Belpost (BY)
 
 Russia and CIS:
 - 5post
@@ -29,3 +30,4 @@ Russia and CIS:
 
 Asia: 
 - AliExpress Shipping (Cainiao)
+
