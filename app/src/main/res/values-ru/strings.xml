@@ -1,0 +1,58 @@
+<resources>
+
+    <string name="status_preadvice">Ещё не отправлено</string>
+    <string name="status_in_transit">В пути</string>
+    <string name="status_in_warehouse">Прибыло в сортировочный центр</string>
+    <string name="status_customs">Прибыло на таможню</string>
+    <string name="status_out_for_delivery">Отправлено</string>
+    <string name="status_delivery_failure">Не удалось доставить</string>
+    <string name="status_delivered">Доставлено</string>
+    <string name="status_awaiting_pickup">Ожидает получения</string>
+    <string name="status_picked_up">Получено</string>
+    <string name="status_unknown">Неизвестный код статуса</string>
+
+    <string name="service_undefined">Неопределено</string>
+    <string name="service_example">Пример Почты</string>
+    <string name="service_polish_post">Польская Почта</string>
+
+    <string name="add_a_parcel">Добавить посылку</string>
+    <string name="go_back">Назад</string>
+    <string name="parcel_name">Название</string>
+    <string name="tracking_id">Трек-номер</string>
+    <string name="delivery_service">Сервис доставки</string>
+    <string name="specify_a_postal_code">Указать индекс</string>
+    <string name="postal_code">Индекс</string>
+    <string name="add_parcel">Добавить посылку</string>
+    <string name="specify_postal_code_flavor_text">Некоторые посылки требуют почтовый индекс для получения полной информации.</string>
+
+    <string name="no_parcels_flavor">У вас нет посылок.</string>
+
+    <string name="current_status">Текущий статус</string>
+    <string name="parcel_history">История посылки</string>
+    <string name="human_name_error_text">Имя не должно быть пустым.</string>
+    <string name="tracking_id_error_text">Трек-номер не должен быть пустым.</string>
+    <string name="service_error_text">Вы должны выбрать сервис.</string>
+    <string name="postal_code_error_text">Индекс Имя не должен быть пустым.</string>
+    <string name="status_network_failure">Ошибка сети</string>
+    <string name="network_failure_detail">Ваше устройство может быть не подключено к Интернету, проблемы на стороне сервиса доставки, или вы ввели неверную информацию.</string>
+    <string name="settings">Настройки</string>
+    <string name="demo_mode_detail">Отображает образцы посылок для демонстрационных целей. Не влияет на пользовательские данные.</string>
+    <string name="parcel_doesnt_exist_detail">Эта посылка ещё не существует на серверах сервиса доставки. Убедитесь, что её данные верны.</string>
+    <string name="more_options">Больше опций</string>
+    <string name="delete">Удалить</string>
+    <string name="demo_mode">Демо-режим</string>
+    <string name="demo_mode_action_block">Действие не разрешено в демо-режиме.</string>
+    <string name="settings_experimental">Экспериментальные опции</string>
+    <string name="status_no_data">Нет данных</string>
+    <string name="channel_name">События посылки</string>
+    <string name="channel_description">Уведомления о текущем статусе посылки</string>
+    <string name="unmetered_only_setting">Обновлять только на безлимитных сетях</string>
+    <string name="unmetered_only_setting_detail">Если включено, то Parcel будет обновлять данные о посылках только на безлимитных сетях, как, например, ваша домашняя сеть Wi-Fi.</string>
+    <string name="edit_parcel">Изменить посылку</string>
+    <string name="save">Сохранить</string>
+    <string name="edit">Изменить</string>
+    <string name="service_dpd_uk">DPD Великобритания</string>
+    <string name="service_sameday_hu">Sameday Венгрия</string>
+    <string name="service_sameday_ro">Sameday Румыния</string>
+    <string name="service_sameday_bg">Sameday Болгария</string>
+</resources>
