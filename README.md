@@ -22,3 +22,12 @@ Europe:
 - Sameday Hungary
 - Sameday Romania
 - Belpost (BY)
+
+Russia and CIS:
+- 5post
+- CDEK
+- Russian Post (Почта России)
+
+Asia: 
+- AliExpress Shipping (Cainiao)
+
