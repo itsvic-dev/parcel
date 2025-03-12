@@ -3,7 +3,6 @@ package dev.itsvic.parceltracker
 import android.content.Context
 import android.os.Parcelable
 import android.util.Log
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,8 +17,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -60,15 +59,9 @@ fun ParcelListDetailRoute(
     val db = ParcelApplication.db
     val navigator = rememberListDetailPaneScaffoldNavigator<ParcelInfo>()
     val scope = rememberCoroutineScope()
-    BackHandler(navigator.canNavigateBack()) {
-        scope.launch {
-            navigator.navigateBack()
-        }
-    }
 
-    ListDetailPaneScaffold(
-        directive = navigator.scaffoldDirective,
-        value = navigator.scaffoldValue,
+    NavigableListDetailPaneScaffold(
+        navigator = navigator,
         listPane = {
             AnimatedPane(
                 enterTransition = fadeIn(tween(300)) + scaleIn(tween(500), 0.9f),
@@ -104,7 +97,6 @@ fun ParcelListDetailRoute(
                     tween(300),
                     initialOffsetX = { it / 4 }
                 ) + fadeIn(tween(300)),
-                exitTransition = fadeOut(tween(300)) + scaleOut(tween(500), 0.9f),
             ) {
                 navigator.currentDestination?.contentKey?.let { parcelInfo ->
                     val parcelWithStatus: ParcelWithStatus? by
