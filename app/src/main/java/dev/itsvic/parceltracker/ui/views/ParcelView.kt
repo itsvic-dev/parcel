@@ -50,6 +50,7 @@ fun ParcelView(
     parcel: Parcel,
     humanName: String,
     service: Service,
+    canBack: Boolean,
     onBackPressed: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -64,9 +65,10 @@ fun ParcelView(
                     Text(humanName)
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
-                    }
+                    if (canBack)
+                        IconButton(onClick = onBackPressed) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
+                        }
                 },
                 actions = {
                     IconButton(onClick = { expanded = !expanded }) {
@@ -177,6 +179,7 @@ private fun ParcelViewPreview() {
             parcel,
             "My precious package",
             Service.EXAMPLE,
+            canBack = true,
             onBackPressed = {},
             onEdit = {},
             onDelete = {},

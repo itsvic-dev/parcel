@@ -31,10 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -43,27 +40,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dev.itsvic.parceltracker.api.ParcelHistoryItem
-import dev.itsvic.parceltracker.api.ParcelNonExistentException
-import dev.itsvic.parceltracker.api.Status
-import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.Parcel
-import dev.itsvic.parceltracker.db.ParcelStatus
-import dev.itsvic.parceltracker.db.ParcelWithStatus
-import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.views.AddEditParcelView
-import dev.itsvic.parceltracker.ui.views.HomeView
-import dev.itsvic.parceltracker.ui.views.ParcelView
 import dev.itsvic.parceltracker.ui.views.SettingsView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import okio.IOException
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -194,7 +179,11 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
 //                onNavigateToParcel = { navController.navigate(route = ParcelPage(it.id)) },
 //                onNavigateToSettings = { navController.navigate(route = SettingsPage) },
 //            )
-            ParcelListDetailRoute()
+            ParcelListDetailRoute(
+                demoMode = demoMode,
+                onNavigateToSettings = { navController.navigate(route = SettingsPage) },
+                onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
+            )
         }
 
         composable<SettingsPage> {
@@ -320,7 +309,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                     }
 
                     scope.launch(Dispatchers.IO) {
-                        val id = db.parcelDao().insert(it)
+//                        val id = db.parcelDao().insert(it)
 //                        scope.launch {
 //                            navController.navigate(route = ParcelPage(id.toInt())) {
 //                                popUpTo(HomePage)
