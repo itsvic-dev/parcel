@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-  pr:
+  pull-request:
 
 jobs:
   build:
