@@ -1,0 +1,30 @@
+📦 A Parcel egy app ami segít a csomagjaid nyomon követésében.
+
+Parcel néhány funkciója:
+- 📱 Letisztult és egyszerű felület: fókuszálj a csomagjaidra, ne az app használatának elsajátítására.
+- 💬 Értesítések: Értesülj a csomagjaid állapotának változásáról.
+- 🚫 Nincsenek reklámok vagy egyéb más zavaró dolgok.
+- 👥 Ingyenes és nyílt forráskódú: https://github.com/itsvic-dev/parcel
+
+--- Támogatott futárszolgálatok ---
+Nemzetközi:
+- DHL
+- GLS
+- UPS
+
+Egyesült Királyság:
+- DPD UK
+- Evri
+
+Európa:
+- Belposta (BY)
+- Magyar Posta (HU)
+- Packeta
+- Lengyel posta (PL)
+- Olasz posta (IT)
+- Sameday Bulgária
+- Sameday Magyarország
+- Sameday Románia
+
+Ázsia:
+- SPX Thaiföld
