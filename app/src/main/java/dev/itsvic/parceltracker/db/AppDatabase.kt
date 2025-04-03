@@ -18,4 +18,5 @@ import androidx.room.TypeConverters
 abstract class AppDatabase : RoomDatabase() {
     abstract fun parcelDao(): ParcelDao
     abstract fun parcelStatusDao(): ParcelStatusDao
+    abstract fun parcelHistoryDao(): ParcelHistoryDao
 }
