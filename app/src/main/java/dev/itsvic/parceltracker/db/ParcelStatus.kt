@@ -2,6 +2,7 @@
 package dev.itsvic.parceltracker.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
@@ -27,4 +28,7 @@ interface ParcelStatusDao {
 
     @Update
     suspend fun update(status: ParcelStatus)
+
+    @Delete(entity = ParcelStatus::class)
+    suspend fun deleteByParcelId(parcelId: ParcelId)
 }

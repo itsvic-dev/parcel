@@ -50,6 +50,7 @@ import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.db.ParcelStatus
 import dev.itsvic.parceltracker.db.ParcelWithStatus
+import dev.itsvic.parceltracker.db.deleteParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
@@ -295,7 +296,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                         }
 
                         scope.launch(Dispatchers.IO) {
-                            db.parcelDao().delete(dbParcel)
+                            context.deleteParcel(dbParcel)
                             scope.launch {
                                 navController.popBackStack(HomePage, false)
                             }

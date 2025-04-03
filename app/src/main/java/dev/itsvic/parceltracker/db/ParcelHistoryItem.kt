@@ -1,6 +1,7 @@
 package dev.itsvic.parceltracker.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
@@ -17,11 +18,18 @@ data class ParcelHistoryItem(
     val location: String,
 )
 
+data class ParcelId (
+    val parcelId: Int,
+)
+
 @Dao
 interface ParcelHistoryDao {
     @Query("SELECT * FROM parcelhistoryitem WHERE parcelId=:id")
     fun getAllById(id: Int): Flow<List<ParcelHistoryItem>>
 
     @Insert
-    suspend fun insert(item: ParcelHistoryItem)
+    suspend fun insert(items: List<ParcelHistoryItem>)
+
+    @Delete(entity = ParcelHistoryItem::class)
+    suspend fun deleteByParcelId(parcelId: ParcelId)
 }
