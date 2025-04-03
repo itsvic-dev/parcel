@@ -296,7 +296,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                         }
 
                         scope.launch(Dispatchers.IO) {
-                            context.deleteParcel(dbParcel)
+                            deleteParcel(dbParcel)
                             scope.launch {
                                 navController.popBackStack(HomePage, false)
                             }
