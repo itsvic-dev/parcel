@@ -32,7 +32,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
         Log.d("NotificationWorker", "I ran!")
 
         withContext(Dispatchers.IO) {
-            val parcels = parcelDao.getAllWithStatusAsync()
+            val parcels = parcelDao.getAllNonArchivedWithStatusAsync()
             Log.d("NotificationWorker", "Got parcels: $parcels")
 
             for (parcelWithStatus in parcels) {

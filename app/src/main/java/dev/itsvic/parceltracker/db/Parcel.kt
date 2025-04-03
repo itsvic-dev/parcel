@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.db
 
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Embedded
@@ -21,6 +22,8 @@ data class Parcel(
     val parcelId: String,
     val postalCode: String?,
     val service: Service,
+    @ColumnInfo(defaultValue = "0")
+    val isArchived: Boolean = false,
 )
 
 data class ParcelWithStatus(
@@ -41,8 +44,8 @@ interface ParcelDao {
     fun getAllWithStatus(): Flow<List<ParcelWithStatus>>
 
     @Transaction
-    @Query("SELECT * FROM parcel")
-    suspend fun getAllWithStatusAsync(): List<ParcelWithStatus>
+    @Query("SELECT * FROM parcel WHERE isArchived = 0")
+    suspend fun getAllNonArchivedWithStatusAsync(): List<ParcelWithStatus>
 
     @Query("SELECT * FROM parcel WHERE id=:id LIMIT 1")
     fun getById(id: Int): Flow<Parcel>
