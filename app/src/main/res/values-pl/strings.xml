@@ -66,4 +66,8 @@
     <string name="property_eta">Czas dotarcia</string>
     <string name="property_delivery_time">Dostarczono o</string>
     <string name="service_hungarian_post">Poczta Węgierska</string>
+    <string name="archive">Archiwuj</string>
+    <string name="archive_prompt_question">Czy chcesz zarchiwizować tę paczkę?</string>
+    <string name="archive_prompt_text">Jeśli zarchiwizujesz tę paczkę, jej historia zostanie zachowana na urządzeniu. Nie będzie ona okresowo sprawdzana pod kątem aktualizacji.</string>
+    <string name="ignore">Ignoruj</string>
 </resources>
