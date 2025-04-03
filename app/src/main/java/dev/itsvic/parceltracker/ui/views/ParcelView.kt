@@ -1,21 +1,27 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.ui.views
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,9 +59,13 @@ fun ParcelView(
     parcel: Parcel,
     humanName: String,
     service: Service,
+    isArchived: Boolean,
+    archivePromptDismissed: Boolean,
     onBackPressed: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
+    onArchive: () -> Unit,
+    onArchivePromptDismissal: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     var expanded by remember { mutableStateOf(false) }
@@ -87,6 +97,15 @@ fun ParcelView(
                             onClick = { expanded = false; onEdit() },
                             contentPadding = MenuItemContentPadding,
                         )
+                        if (!isArchived)
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(Icons.Filled.Delete, "Archive")
+                                },
+                                text = { Text("Archive") },
+                                onClick = onArchive,
+                                contentPadding = MenuItemContentPadding,
+                            )
                         DropdownMenuItem(
                             leadingIcon = {
                                 Icon(Icons.Filled.Delete, stringResource(R.string.delete))
@@ -159,6 +178,41 @@ fun ParcelView(
                 )
             }
 
+            if (!isArchived && !archivePromptDismissed && (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp))
+                item {
+                    Card(
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+                        Column(
+                            Modifier.padding(24.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Text(
+                                "Do you want to archive this parcel?",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                "If you archive this parcel, its history will be preserved on device. It will not be periodically checked for updates."
+                            )
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                FilledTonalButton(
+                                    onArchivePromptDismissal,
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Text("Ignore")
+                                }
+                                Button(onArchive, modifier = Modifier.weight(1f)) {
+                                    Text("Archive")
+                                }
+                            }
+                        }
+                    }
+                }
+
             items(parcel.history.size) { index ->
                 if (index > 0)
                     HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
@@ -202,9 +256,14 @@ private fun ParcelViewPreview() {
             parcel,
             "My precious package",
             Service.EXAMPLE,
+            isArchived = false,
+            archivePromptDismissed = false,
+
             onBackPressed = {},
             onEdit = {},
             onDelete = {},
+            onArchive = {},
+            onArchivePromptDismissal = {},
         )
     }
 }

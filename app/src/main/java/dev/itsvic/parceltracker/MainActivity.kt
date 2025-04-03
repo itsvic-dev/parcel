@@ -209,12 +209,16 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 derivedStateOf { demoModeParcels[route.parcelDbId] }
             else
                 db.parcelDao().getWithStatusById(route.parcelDbId).collectAsState(null)
+            val dbHistory: List<dev.itsvic.parceltracker.db.ParcelHistoryItem> by db.parcelHistoryDao()
+                .getAllById(route.parcelDbId).collectAsState(
+                listOf()
+            )
             var apiParcel: APIParcel? by remember { mutableStateOf(null) }
 
             val dbParcel = parcelWithStatus?.parcel
 
             LaunchedEffect(parcelWithStatus) {
-                if (dbParcel != null) {
+                if (dbParcel != null && !dbParcel.isArchived) {
                     launch(Dispatchers.IO) {
                         try {
                             apiParcel = getParcel(
@@ -269,7 +273,15 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 }
             }
 
-            if (apiParcel == null || dbParcel == null)
+            val fakeApiParcel = parcelWithStatus?.let {
+                APIParcel(
+                    id = it.parcel.parcelId,
+                    currentStatus = it.status!!.status,
+                    history = dbHistory.map { item -> ParcelHistoryItem(item.description, item.time, item.location) }
+                )
+            }
+
+            if (apiParcel == null && dbParcel?.isArchived == false || dbParcel == null)
                 Box(
                     modifier = Modifier
                         .background(color = MaterialTheme.colorScheme.background)
@@ -280,9 +292,12 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 }
             else
                 ParcelView(
-                    apiParcel!!,
+                    if (dbParcel.isArchived) fakeApiParcel!! else apiParcel!!,
                     dbParcel.humanName,
                     dbParcel.service,
+                    dbParcel.isArchived,
+                    dbParcel.archivePromptDismissed,
+
                     onBackPressed = { navController.popBackStack() },
                     onEdit = { navController.navigate(EditParcelPage(dbParcel.id)) },
                     onDelete = {
@@ -300,6 +315,25 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                             scope.launch {
                                 navController.popBackStack(HomePage, false)
                             }
+                        }
+                    },
+                    onArchive = {
+                        if (dbParcel.isArchived) return@ParcelView
+                        scope.launch(Dispatchers.IO) {
+                            db.parcelDao().update(dbParcel.copy(isArchived = true))
+                            db.parcelHistoryDao().insert(apiParcel!!.history.map {
+                                dev.itsvic.parceltracker.db.ParcelHistoryItem(
+                                    description = it.description,
+                                    location = it.location,
+                                    time = it.time,
+                                    parcelId = dbParcel.id,
+                                )
+                            })
+                        }
+                    },
+                    onArchivePromptDismissal = {
+                        scope.launch(Dispatchers.IO) {
+                            db.parcelDao().update(dbParcel.copy(archivePromptDismissed = true))
                         }
                     },
                 )

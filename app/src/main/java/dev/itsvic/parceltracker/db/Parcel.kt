@@ -24,6 +24,8 @@ data class Parcel(
     val service: Service,
     @ColumnInfo(defaultValue = "0")
     val isArchived: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val archivePromptDismissed: Boolean = false,
 )
 
 data class ParcelWithStatus(
