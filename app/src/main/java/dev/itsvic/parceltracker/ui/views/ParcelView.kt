@@ -77,7 +77,7 @@ fun ParcelView(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
                     }
                 },
                 actions = {
@@ -99,9 +99,9 @@ fun ParcelView(
                         if (!isArchived)
                             DropdownMenuItem(
                                 leadingIcon = {
-                                    Icon(Icons.Filled.Delete, "Archive")
+                                    Icon(Icons.Filled.Delete, stringResource(R.string.archive))
                                 },
-                                text = { Text("Archive") },
+                                text = { Text(stringResource(R.string.archive)) },
                                 onClick = onArchive,
                                 contentPadding = MenuItemContentPadding,
                             )
@@ -188,11 +188,11 @@ fun ParcelView(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Text(
-                                "Do you want to archive this parcel?",
+                                stringResource(R.string.archive_prompt_question),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Text(
-                                "If you archive this parcel, its history will be preserved on device. It will not be periodically checked for updates."
+                                stringResource(R.string.archive_prompt_text)
                             )
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -202,10 +202,10 @@ fun ParcelView(
                                     onArchivePromptDismissal,
                                     modifier = Modifier.weight(1f)
                                 ) {
-                                    Text("Ignore")
+                                    Text(stringResource(R.string.ignore))
                                 }
                                 Button(onArchive, modifier = Modifier.weight(1f)) {
-                                    Text("Archive")
+                                    Text(stringResource(R.string.archive))
                                 }
                             }
                         }
