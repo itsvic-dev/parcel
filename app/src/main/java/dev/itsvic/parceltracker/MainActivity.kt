@@ -276,7 +276,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
             val fakeApiParcel = parcelWithStatus?.let {
                 APIParcel(
                     id = it.parcel.parcelId,
-                    currentStatus = it.status!!.status,
+                    currentStatus = if (it.status != null) it.status.status else Status.Unknown,
                     history = dbHistory.map { item -> ParcelHistoryItem(item.description, item.time, item.location) }
                 )
             }
