@@ -12,7 +12,7 @@ private var demoId = 0
 private fun defineDemoParcel(name: String, id: String, status: Status): ParcelWithStatus {
     val internalId = demoId++
     return ParcelWithStatus(
-        Parcel(internalId, name, id, null, Service.EXAMPLE),
+        Parcel(internalId, name, id, null, Service.EXAMPLE, archivePromptDismissed = true),
         ParcelStatus(internalId, status, Instant.now())
     )
 }

@@ -319,6 +319,14 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                     },
                     onArchive = {
                         if (dbParcel.isArchived) return@ParcelView
+                        if (demoMode) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.demo_mode_action_block),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ParcelView
+                        }
                         scope.launch(Dispatchers.IO) {
                             db.parcelDao().update(dbParcel.copy(isArchived = true))
                             db.parcelHistoryDao().insert(apiParcel!!.history.map {
@@ -332,6 +340,14 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                         }
                     },
                     onArchivePromptDismissal = {
+                        if (demoMode) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.demo_mode_action_block),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ParcelView
+                        }
                         scope.launch(Dispatchers.IO) {
                             db.parcelDao().update(dbParcel.copy(archivePromptDismissed = true))
                         }
