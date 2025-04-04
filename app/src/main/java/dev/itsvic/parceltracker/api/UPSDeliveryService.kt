@@ -56,7 +56,11 @@ object UPSDeliveryService : DeliveryService {
 
         val details = resp.trackDetails.first()
 
-        val history = details.shipmentProgressActivities.map {
+        if (details.errorCode != null) {
+            throw ParcelNonExistentException()
+        }
+
+        val history = details.shipmentProgressActivities!!.map {
             val gmtDate = LocalDateTime.parse(
                 "${it.gmtDate.subSequence(0, 4)}-${
                     it.gmtDate.subSequence(
@@ -84,11 +88,11 @@ object UPSDeliveryService : DeliveryService {
             "OutForDelivery" -> Status.OutForDelivery
             "Delivered" -> Status.Delivered
             "Exception" -> Status.DeliveryFailure
-            else -> logUnknownStatus("UPS", details.progressBarType)
+            else -> logUnknownStatus("UPS", details.progressBarType!!)
         }
 
         val metadata = mutableMapOf(
-            R.string.property_weight to "${details.additionalInformation.weight} ${details.additionalInformation.weightUnit}",
+            R.string.property_weight to "${details.additionalInformation!!.weight} ${details.additionalInformation.weightUnit}",
         )
 
         // ETA
@@ -169,9 +173,10 @@ object UPSDeliveryService : DeliveryService {
 
     @JsonClass(generateAdapter = true)
     internal data class TrackDetails(
-        val progressBarType: String,
-        val additionalInformation: PkgMoreInfo,
-        val shipmentProgressActivities: List<ActivityEntry>,
+        val errorCode: String?,
+        val progressBarType: String?,
+        val additionalInformation: PkgMoreInfo?,
+        val shipmentProgressActivities: List<ActivityEntry>?,
         val scheduledDeliveryDateDetail: DeliveryDateDetail?,
         val packageStatusTime: String?,
     )
