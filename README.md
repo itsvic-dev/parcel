@@ -27,6 +27,9 @@ International:
 - GLS
 - UPS
 
+North America:
+- UniUni
+
 United Kingdom:
 - DPD UK
 - Evri
