@@ -8,11 +8,17 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.coroutines.executeAsync
 import android.util.Log
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import org.json.JSONObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import retrofit2.Retrofit
+import retrofit2.http.Body
 import retrofit2.http.Path
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
 
 object USPSDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_usps
@@ -35,27 +41,39 @@ object USPSDeliveryService : DeliveryService {
     private val service = retrofit.create(API::class.java)
 
     private interface API {
-        @GET("tracking")
+        @POST("oauth2/v3/token")
+        suspend fun getOauthToken(
+            @Body data: GetOauthToken
+        ): OauthTokenResponse
+
+        @GET("tracking/v3/tracking")
         suspend fun getStatus(
             @Path("trackingId") trackingId: String,
-
+            @Header("Authorization") authorization: String
         )
     }
 
+    @JsonClass(generateAdapter = true)
+    internal data class GetOauthToken(
+        // from https://developers.usps.com/Oauth
+        val clientId: String,
+        val clientSecret: String,
+        val grantType: String = "authorization_code",
+        val scopes: List<String> = listOf("tracking"),
+        val tokenUrl: String = "https://apis.usps.com/oauth2/v3/token",
+    )
+
+    @JsonClass(generateAdapter = true)
+    internal data class OauthTokenResponse(
+
+    )
+
+/*
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun getOauthToken(clientId: String, clientSecret: String): String {
-        // this is all coming from https://developers.usps.com/Oauth
-        val GRANT_TYPE = "authorization_code"
-        val SCOPES = listOf<String>("tracking")
-        val TOKEN_URL = "https://apis.usps.com/oauth2/v3/token"
 
         // this should work trust me
-        val body = """{
-            |"grant_type": "$GRANT_TYPE",
-            |"client_id": "$clientId",
-            |"scope": "${SCOPES.joinToString(" ")}"
-            |"client_secret": "$clientSecret"}""".trimMargin()
-                .toRequestBody("application/json".toMediaType())
+        val tokenResp = service.getOauthToken()
 
         val request = Request.Builder().post(body).url(TOKEN_URL).build()
 
@@ -70,5 +88,5 @@ object USPSDeliveryService : DeliveryService {
             } else Log.d("USPS", "Couldn't get Oauth2 token ): response code was ${response.code}")
             return jsonWebToken
         }
-    }
+    }*/
 }
