@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import org.json.JSONObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import retrofit2.Retrofit
+import retrofit2.http.Path
 
 object USPSDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_usps
@@ -31,16 +32,28 @@ object USPSDeliveryService : DeliveryService {
     private val retrofit = Retrofit.Builder().baseUrl("https://api.usps.com/").client(api_client)
         .addConverterFactory(api_factory).build()
 
+    private val service = retrofit.create(API::class.java)
+
+    private interface API {
+        @GET("tracking")
+        suspend fun getStatus(
+            @Path("trackingId") trackingId: String,
+
+        )
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun getOauthToken(clientId: String, clientSecret: String): String {
         // this is all coming from https://developers.usps.com/Oauth
         val GRANT_TYPE = "authorization_code"
+        val SCOPES = listOf<String>("tracking")
         val TOKEN_URL = "https://apis.usps.com/oauth2/v3/token"
 
         // this should work trust me
         val body = """{
             |"grant_type": "$GRANT_TYPE",
             |"client_id": "$clientId",
+            |"scope": "${SCOPES.joinToString(" ")}"
             |"client_secret": "$clientSecret"}""".trimMargin()
                 .toRequestBody("application/json".toMediaType())
 
