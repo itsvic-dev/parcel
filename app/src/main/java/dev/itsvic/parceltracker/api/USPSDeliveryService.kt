@@ -26,7 +26,7 @@ object USPSDeliveryService : DeliveryService {
     override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
-
+        val oauthToken =
         return Parcel(
             trackingId,
             "history",
@@ -50,7 +50,7 @@ object USPSDeliveryService : DeliveryService {
         suspend fun getStatus(
             @Path("trackingId") trackingId: String,
             @Header("Authorization") authorization: String
-        )
+        ): StatusResponse
     }
 
     @JsonClass(generateAdapter = true)
@@ -65,7 +65,20 @@ object USPSDeliveryService : DeliveryService {
 
     @JsonClass(generateAdapter = true)
     internal data class OauthTokenResponse(
+        val oauthToken: String
+    )
 
+    @JsonClass(generateAdapter = true)
+    internal data class StatusResponse(
+        val expectedDeliveryDate: String,
+        val expectedDeliveryTime: String,
+        val guaranteedDeliveryDate: String,
+        val eventSummaries: List<EventSummary>
+    )
+
+    @JsonClass(generateAdapter = true)
+    internal data class EventSummary(
+        val eventDescription: String
     )
 
 /*
