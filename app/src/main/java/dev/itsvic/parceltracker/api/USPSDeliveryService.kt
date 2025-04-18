@@ -19,6 +19,7 @@ import retrofit2.http.Path
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import java.time.LocalDateTime
 
 object USPSDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_usps
@@ -26,12 +27,11 @@ object USPSDeliveryService : DeliveryService {
     override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
-        val oauthToken =
+        // dummy stuff just so this compiles
         return Parcel(
             trackingId,
-            "history",
-            "status",
-            "metadata"
+            listOf(ParcelHistoryItem("", LocalDateTime.now(), "")),
+            Status.DeliveryFailure
         )
     }
 
