@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <uses-sdk tools:overrideLibrary="com.kieronquinn.app.smartspacer.sdk, com.kieronquinn.app.smartspacer.sdk.plugin" />
+
     <application
         android:name=".ParcelApplication"
         android:allowBackup="true"
@@ -27,5 +29,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".smartspacer.targets.ParcelStatusTarget"
+            android:authorities="${applicationId}.target.example"
+            android:permission="com.kieronquinn.app.smartspacer.permission.ACCESS_SMARTSPACER_TARGETS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.kieronquinn.app.smartspacer.TARGET" />
+            </intent-filter>
+        </provider>
     </application>
 </manifest>
