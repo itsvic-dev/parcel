@@ -11,8 +11,10 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.kieronquinn.app.smartspacer.sdk.provider.SmartspacerTargetProvider
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.ParcelStatus
+import dev.itsvic.parceltracker.smartspacer.targets.ParcelStatusTarget
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -79,6 +81,9 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
                 }
             }
         }
+
+        // TODO: this most likely has to be moved
+        SmartspacerTargetProvider.notifyChange(applicationContext, ParcelStatusTarget::class.java)
 
         return Result.success()
     }
