@@ -44,6 +44,7 @@ enum class Service {
     SAMEDAY_RO,
     UKRPOSHTA,
     POSTNORD,
+    COLISSIMO,
 
     // Asia
     EKART,
@@ -78,6 +79,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
         Service.UKRPOSHTA -> UkrposhtaDeliveryService
         Service.POSTNORD -> PostNordDeliveryService
+        Service.COLISSIMO -> ColissimoDeliveryService
 
         Service.EKART -> EKartDeliveryService
         Service.SPX_TH -> SPXThailandDeliveryService
@@ -165,6 +167,7 @@ interface DeliveryService {
 }
 
 class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
+class UnsupportedResponseException : Exception("Response is not formatted as excpected")
 class APIKeyMissingException : Exception("Delivery service requires an API key but none is present")
 
 internal fun logUnknownStatus(service: String, data: String): Status {
