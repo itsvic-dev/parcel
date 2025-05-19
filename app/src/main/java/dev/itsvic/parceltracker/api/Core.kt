@@ -33,6 +33,7 @@ enum class Service {
   // Europe
   AN_POST,
   BELPOST,
+  DPD_GER,
   GLS_HUNGARY,
   HERMES,
   MAGYAR_POSTA,
@@ -71,6 +72,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
     Service.AN_POST -> AnPostDeliveryService
     Service.BELPOST -> BelpostDeliveryService
+    Service.DPD_GER -> DpdGerDeliveryService
     Service.GLS_HUNGARY -> GLSHungaryDeliveryService
     Service.HERMES -> HermesDeliveryService
     Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
