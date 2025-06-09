@@ -81,7 +81,6 @@
     <string name="service_ekart" translatable="false">eKart</string>
     <string name="service_nova_poshta">Nova Post</string>
     <string name="error_no_api_key_provided">This delivery service requires an API key, but none was provided. Check the app\'s settings for more information.</string>
-    <string name="error_bad_response">There seems to be a problem when trying to retrieve information for this parcel.</string>
     <string name="dhl_api_key_flavor_text"><![CDATA[DHL requires us to ask users to provide an API key. You can get one for free from <a href=\"https://developer.dhl.com\">DHL\'s API Developer Portal</a> and signing up for the \"Shipment Tracking - Unified\" API.]]></string>
     <string name="settings_api_keys">API keys</string>
     <string name="service_ukrposhta">Ukrposhta</string>

@@ -46,7 +46,6 @@ import androidx.navigation.toRoute
 import dev.itsvic.parceltracker.api.APIKeyMissingException
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.ParcelNonExistentException
-import dev.itsvic.parceltracker.api.UnsupportedResponseException
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.Parcel
@@ -281,18 +280,6 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                                     )
                                 ),
                                 Status.NetworkFailure
-                            )
-                        } catch (_: UnsupportedResponseException) {
-                            apiParcel = APIParcel(
-                                dbParcel.parcelId,
-                                listOf(
-                                    ParcelHistoryItem(
-                                        context.getString(R.string.error_bad_response),
-                                        LocalDateTime.now(),
-                                        ""
-                                    )
-                                ),
-                                Status.NoData
                             )
                         }
                     }

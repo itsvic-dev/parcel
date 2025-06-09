@@ -167,7 +167,6 @@ interface DeliveryService {
 }
 
 class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
-class UnsupportedResponseException : Exception("Response is not formatted as excpected")
 class APIKeyMissingException : Exception("Delivery service requires an API key but none is present")
 
 internal fun logUnknownStatus(service: String, data: String): Status {

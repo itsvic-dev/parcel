@@ -47,11 +47,6 @@ object ColissimoDeliveryService : DeliveryService {
                 throw ParcelNonExistentException()
             }
         }
-        catch (e: JsonDataException) {
-            // Something's wrong with the parsing
-            Log.d("Colissimo", e.toString())
-            throw UnsupportedResponseException()
-        }
 
         if(resp.isEmpty()) throw ParcelNonExistentException()
         val shipment = resp[0].shipment
@@ -70,12 +65,9 @@ object ColissimoDeliveryService : DeliveryService {
                 "ET2" -> Status.InTransit // Processing in the expediting country
                 "ET3" -> Status.InTransit // Processing in the destination country
                 "ET4" -> Status.InTransit // Processing in a transit country
-                "EP1" -> Status.Unknown // Waiting presentation
                 "DO1" -> Status.Customs // Entered customs
                 "DO2" -> Status.Customs // Out of customs
                 "DO3" -> Status.Customs // Held in customs
-                "PB1" -> Status.Unknown // Issue in progress
-                "PB2" -> Status.Unknown // Issue resolved
                 "MD2" -> Status.OutForDelivery // Distributing
                 "ND1" -> Status.DeliveryFailure // Impossible to distribute
                 "AG1" -> Status.AwaitingPickup // Awaiting pickup at counter
@@ -85,6 +77,9 @@ object ColissimoDeliveryService : DeliveryService {
                 "DI2" -> Status.DeliveryFailure // Distributed to the expeditor (If sent back I suppose)
                 "DI3" -> Status.OutForDelivery // Delayed (This probably means still distributing)
                 "ID0" -> Status.Customs // Customs information
+                // EP1 (Waiting presentation), PB1 (Issue in progress), PB2 (Issue resolved)
+                // Ignored as unknown statuses, these errors are mid process statuses so
+                // it shouldn't be a big deal
                 else -> logUnknownStatus("Colissimo", lastEvent.code)
             }
         }
