@@ -67,203 +67,177 @@ fun ParcelView(
     onArchive: () -> Unit,
     onArchivePromptDismissal: () -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    var expanded by remember { mutableStateOf(false) }
+  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+  var expanded by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            MediumTopAppBar(
-                title = {
-                    Text(humanName)
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { expanded = !expanded }) {
-                        Icon(Icons.Filled.MoreVert, stringResource(R.string.more_options))
-                    }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                    ) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Filled.Edit, stringResource(R.string.edit))
-                            },
-                            text = { Text(stringResource(R.string.edit)) },
-                            onClick = { expanded = false; onEdit() },
-                            contentPadding = MenuItemContentPadding,
-                        )
-                        if (!isArchived)
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(painterResource(R.drawable.archive), stringResource(R.string.archive))
-                                },
-                                text = { Text(stringResource(R.string.archive)) },
-                                onClick = onArchive,
-                                contentPadding = MenuItemContentPadding,
-                            )
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Filled.Delete, stringResource(R.string.delete))
-                            },
-                            text = { Text(stringResource(R.string.delete)) },
-                            onClick = onDelete,
-                            contentPadding = MenuItemContentPadding,
-                        )
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { innerPadding ->
+  Scaffold(
+      topBar = {
+        MediumTopAppBar(
+            title = { Text(humanName) },
+            navigationIcon = {
+              IconButton(onClick = onBackPressed) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
+              }
+            },
+            actions = {
+              IconButton(onClick = { expanded = !expanded }) {
+                Icon(Icons.Filled.MoreVert, stringResource(R.string.more_options))
+              }
+              DropdownMenu(
+                  expanded = expanded,
+                  onDismissRequest = { expanded = false },
+              ) {
+                DropdownMenuItem(
+                    leadingIcon = { Icon(Icons.Filled.Edit, stringResource(R.string.edit)) },
+                    text = { Text(stringResource(R.string.edit)) },
+                    onClick = {
+                      expanded = false
+                      onEdit()
+                    },
+                    contentPadding = MenuItemContentPadding,
+                )
+                if (!isArchived)
+                    DropdownMenuItem(
+                        leadingIcon = {
+                          Icon(
+                              painterResource(R.drawable.archive), stringResource(R.string.archive))
+                        },
+                        text = { Text(stringResource(R.string.archive)) },
+                        onClick = onArchive,
+                        contentPadding = MenuItemContentPadding,
+                    )
+                DropdownMenuItem(
+                    leadingIcon = { Icon(Icons.Filled.Delete, stringResource(R.string.delete)) },
+                    text = { Text(stringResource(R.string.delete)) },
+                    onClick = onDelete,
+                    contentPadding = MenuItemContentPadding,
+                )
+              }
+            },
+            scrollBehavior = scrollBehavior,
+        )
+      },
+      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp, 0.dp),
+            modifier = Modifier.padding(innerPadding).padding(16.dp, 0.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    getDeliveryServiceName(service)?.let {
-                        Text(
-                            stringResource(it),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    SelectionContainer {
-                        Text(
-                            parcel.id,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-
-            items(parcel.properties.entries.toList()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+          item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                  getDeliveryServiceName(service)?.let {
                     Text(
-                        stringResource(it.key),
+                        stringResource(it),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                  }
+
+                  SelectionContainer {
                     Text(
-                        it.value,
+                        parcel.id,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.End
-                    )
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                  }
                 }
-            }
+          }
 
-            item {
-                Text(
-                    LocalContext.current.getString(parcel.currentStatus.nameResource),
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(vertical = 16.dp),
-                )
-            }
+          items(parcel.properties.entries.toList()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween) {
+                  Text(
+                      stringResource(it.key),
+                      style = MaterialTheme.typography.bodyMedium,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant)
+                  Text(
+                      it.value,
+                      style = MaterialTheme.typography.bodyMedium,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                      textAlign = TextAlign.End)
+                }
+          }
 
-            if (!isArchived && !archivePromptDismissed && (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp))
-                item {
-                    Card(
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    ) {
-                        Column(
-                            Modifier.padding(24.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
+          item {
+            Text(
+                LocalContext.current.getString(parcel.currentStatus.nameResource),
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(vertical = 16.dp),
+            )
+          }
+
+          if (!isArchived &&
+              !archivePromptDismissed &&
+              (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp))
+              item {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp)) {
+                      Column(
+                          Modifier.padding(24.dp),
+                          verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(
                                 stringResource(R.string.archive_prompt_question),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                stringResource(R.string.archive_prompt_text)
-                            )
+                                style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.archive_prompt_text))
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                FilledTonalButton(
-                                    onArchivePromptDismissal,
-                                    modifier = Modifier.weight(1f)
-                                ) {
-                                    Text(stringResource(R.string.ignore))
-                                }
-                                Button(onArchive, modifier = Modifier.weight(1f)) {
+                                modifier = Modifier.fillMaxWidth()) {
+                                  FilledTonalButton(
+                                      onArchivePromptDismissal, modifier = Modifier.weight(1f)) {
+                                        Text(stringResource(R.string.ignore))
+                                      }
+                                  Button(onArchive, modifier = Modifier.weight(1f)) {
                                     Text(stringResource(R.string.archive))
+                                  }
                                 }
-                            }
-                        }
+                          }
                     }
-                }
+              }
 
-            items(parcel.history.size) { index ->
-                if (index > 0)
-                    HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
-                ParcelHistoryItemRow(parcel.history[index])
-            }
+          items(parcel.history.size) { index ->
+            if (index > 0) HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
+            ParcelHistoryItemRow(parcel.history[index])
+          }
         }
-    }
+      }
 }
 
 @Composable
 @PreviewLightDark
 private fun ParcelViewPreview() {
-    val parcel = Parcel(
-        "EXMPL0001",
-        listOf(
-            ParcelHistoryItem(
-                "The package got lost. Whoops!",
-                LocalDateTime.of(2025, 1, 1, 12, 0, 0),
-                "Warsaw, Poland"
-            ),
-            ParcelHistoryItem(
-                "Arrived at local warehouse",
-                LocalDateTime.of(2025, 1, 1, 10, 0, 0),
-                "Warsaw, Poland"
-            ),
-            ParcelHistoryItem(
-                "En route to local warehouse",
-                LocalDateTime.of(2024, 12, 1, 12, 0, 0),
-                "Netherlands"
-            ),
-            ParcelHistoryItem(
-                "Label created",
-                LocalDateTime.of(2024, 12, 1, 12, 0, 0),
-                "Netherlands"
-            ),
-        ),
-        Status.DeliveryFailure
+  val parcel =
+      Parcel(
+          "EXMPL0001",
+          listOf(
+              ParcelHistoryItem(
+                  "The package got lost. Whoops!",
+                  LocalDateTime.of(2025, 1, 1, 12, 0, 0),
+                  "Warsaw, Poland"),
+              ParcelHistoryItem(
+                  "Arrived at local warehouse",
+                  LocalDateTime.of(2025, 1, 1, 10, 0, 0),
+                  "Warsaw, Poland"),
+              ParcelHistoryItem(
+                  "En route to local warehouse",
+                  LocalDateTime.of(2024, 12, 1, 12, 0, 0),
+                  "Netherlands"),
+              ParcelHistoryItem(
+                  "Label created", LocalDateTime.of(2024, 12, 1, 12, 0, 0), "Netherlands"),
+          ),
+          Status.DeliveryFailure)
+  ParcelTrackerTheme {
+    ParcelView(
+        parcel,
+        "My precious package",
+        Service.EXAMPLE,
+        isArchived = false,
+        archivePromptDismissed = false,
+        onBackPressed = {},
+        onEdit = {},
+        onDelete = {},
+        onArchive = {},
+        onArchivePromptDismissal = {},
     )
-    ParcelTrackerTheme {
-        ParcelView(
-            parcel,
-            "My precious package",
-            Service.EXAMPLE,
-            isArchived = false,
-            archivePromptDismissed = false,
-
-            onBackPressed = {},
-            onEdit = {},
-            onDelete = {},
-            onArchive = {},
-            onArchivePromptDismissal = {},
-        )
-    }
+  }
 }

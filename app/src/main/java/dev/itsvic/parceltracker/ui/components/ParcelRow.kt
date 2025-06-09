@@ -32,25 +32,20 @@ import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
 @Composable
 fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .fillMaxWidth()
-            .padding(16.dp, 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+  Row(
+      modifier = Modifier.clickable(onClick = onClick).fillMaxWidth().padding(16.dp, 12.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
+      verticalAlignment = Alignment.CenterVertically) {
         if (status != null)
             Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painterResource(
-                        when (status) {
+                modifier =
+                    Modifier.size(40.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center) {
+                  Icon(
+                      painterResource(
+                          when (status) {
                             Status.Preadvice -> R.drawable.outline_other_admission_24
                             Status.InTransit -> R.drawable.outline_local_shipping_24
                             Status.InWarehouse -> R.drawable.outline_warehouse_24
@@ -58,37 +53,35 @@ fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
                             Status.OutForDelivery -> R.drawable.outline_local_shipping_24
                             Status.DeliveryFailure -> R.drawable.outline_error_24
                             Status.AwaitingPickup -> R.drawable.outline_pin_drop_24
-                            Status.Delivered, Status.PickedUp -> R.drawable.outline_check_24
+                            Status.Delivered,
+                            Status.PickedUp -> R.drawable.outline_check_24
                             else -> R.drawable.outline_question_mark_24
-                        }
-                    ),
-                    stringResource(status.nameResource),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+                          }),
+                      stringResource(status.nameResource),
+                      tint = MaterialTheme.colorScheme.primary)
+                }
 
         Column {
-            Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
+          Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
 
-            Text(
-                "${stringResource(getDeliveryServiceName(parcel.service)!!)}: ${parcel.parcelId}",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+          Text(
+              "${stringResource(getDeliveryServiceName(parcel.service)!!)}: ${parcel.parcelId}",
+              fontSize = 12.sp,
+              color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-    }
+      }
 }
 
 @Composable
 @PreviewLightDark
 fun ParcelRowPreview() {
-    ParcelTrackerTheme {
-        Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-            ParcelRow(
-                Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
-                status = Status.InTransit,
-                onClick = {},
-            )
-        }
+  ParcelTrackerTheme {
+    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+      ParcelRow(
+          Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
+          status = Status.InTransit,
+          onClick = {},
+      )
     }
+  }
 }

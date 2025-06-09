@@ -16,36 +16,35 @@ import java.io.FileOutputStream
 import java.io.InputStreamReader
 
 class LogcatDumperActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        setContent {
-            ParcelTrackerTheme {
-                Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                    Text("Dumping logs, please wait...")
-                }
-            }
+    setContent {
+      ParcelTrackerTheme {
+        Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+          Text("Dumping logs, please wait...")
         }
-
-        launcher.launch("parcel-logcat")
+      }
     }
 
-    private val launcher = registerForActivityResult(
-        ActivityResultContracts.CreateDocument("text/plain")
-    ) { uri ->
+    launcher.launch("parcel-logcat")
+  }
+
+  private val launcher =
+      registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
         Log.d("LogcatDumper", "Got file path $uri, starting...")
         val contentResolver = applicationContext.contentResolver
         uri?.let { uri ->
-            contentResolver.openFileDescriptor(uri, "w")?.use { pfd ->
-                FileOutputStream(pfd.fileDescriptor).bufferedWriter().use { writer ->
-                    val process = Runtime.getRuntime().exec("logcat -d")
-                    BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
-                        reader.copyTo(writer)
-                    }
-                }
-            } ?: Log.e("LogcatDumper", "outputStream is null")
+          contentResolver.openFileDescriptor(uri, "w")?.use { pfd ->
+            FileOutputStream(pfd.fileDescriptor).bufferedWriter().use { writer ->
+              val process = Runtime.getRuntime().exec("logcat -d")
+              BufferedReader(InputStreamReader(process.inputStream)).use { reader ->
+                reader.copyTo(writer)
+              }
+            }
+          } ?: Log.e("LogcatDumper", "outputStream is null")
         }
         Log.d("LogcatDumper", "Done.")
         finish()
-    }
+      }
 }

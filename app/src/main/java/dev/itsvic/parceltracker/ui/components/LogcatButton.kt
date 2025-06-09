@@ -12,14 +12,12 @@ import dev.itsvic.parceltracker.R
 
 @Composable
 fun LogcatButton(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    FilledTonalButton(
-        onClick = {
-            context.startActivity(Intent(context, LogcatDumperActivity::class.java))
-        },
-        modifier = modifier,
-    ) {
-        Text(stringResource(R.string.dump_logs_button))
-    }
+  FilledTonalButton(
+      onClick = { context.startActivity(Intent(context, LogcatDumperActivity::class.java)) },
+      modifier = modifier,
+  ) {
+    Text(stringResource(R.string.dump_logs_button))
+  }
 }

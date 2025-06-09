@@ -10,15 +10,15 @@ import java.time.Instant
 private var demoId = 0
 
 private fun defineDemoParcel(name: String, id: String, status: Status): ParcelWithStatus {
-    val internalId = demoId++
-    return ParcelWithStatus(
-        Parcel(internalId, name, id, null, Service.EXAMPLE, archivePromptDismissed = true),
-        ParcelStatus(internalId, status, Instant.now())
-    )
+  val internalId = demoId++
+  return ParcelWithStatus(
+      Parcel(internalId, name, id, null, Service.EXAMPLE, archivePromptDismissed = true),
+      ParcelStatus(internalId, status, Instant.now()))
 }
 
-val demoModeParcels = listOf(
-    defineDemoParcel("Phone case", "2503894188", Status.Delivered),
-    defineDemoParcel("Keyring tracker", "7301626157", Status.AwaitingPickup),
-    defineDemoParcel("Game merch", "6171197286", Status.Preadvice),
-)
+val demoModeParcels =
+    listOf(
+        defineDemoParcel("Phone case", "2503894188", Status.Delivered),
+        defineDemoParcel("Keyring tracker", "7301626157", Status.AwaitingPickup),
+        defineDemoParcel("Game merch", "6171197286", Status.Preadvice),
+    )

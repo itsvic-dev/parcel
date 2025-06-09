@@ -16,12 +16,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,101 +54,106 @@ fun AddEditParcelView(
     onBackPressed: () -> Unit,
     onCompleted: (Parcel) -> Unit,
 ) {
-    val isEdit = parcel != null
+  val isEdit = parcel != null
 
-    var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
-    var nameError by remember { mutableStateOf(false) }
-    var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
-    var idError by remember { mutableStateOf(false) }
-    var specifyPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
-    var postalCode by remember { mutableStateOf(parcel?.postalCode ?: "") }
-    var postalCodeError by remember { mutableStateOf(false) }
-    var service by remember { mutableStateOf(parcel?.service ?: Service.UNDEFINED) }
-    var serviceError by remember { mutableStateOf(false) }
+  var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
+  var nameError by remember { mutableStateOf(false) }
+  var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
+  var idError by remember { mutableStateOf(false) }
+  var specifyPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
+  var postalCode by remember { mutableStateOf(parcel?.postalCode ?: "") }
+  var postalCodeError by remember { mutableStateOf(false) }
+  var service by remember { mutableStateOf(parcel?.service ?: Service.UNDEFINED) }
+  var serviceError by remember { mutableStateOf(false) }
 
-    val backend = if (service != Service.UNDEFINED) getDeliveryService(service) else null
+  val backend = if (service != Service.UNDEFINED) getDeliveryService(service) else null
 
-    fun validateInputs(): Boolean {
-        // reset error states first
-        nameError = false
-        idError = false
-        serviceError = false
-        postalCodeError = false
+  fun validateInputs(): Boolean {
+    // reset error states first
+    nameError = false
+    idError = false
+    serviceError = false
+    postalCodeError = false
 
-        var success = true
-        if (humanName.isBlank()) {
-            success = false; nameError = true
-        }
-        if (trackingId.isBlank()) {
-            success = false; idError = true
-        }
-        if (service == Service.UNDEFINED) {
-            success = false; serviceError = true
-        }
-        if (((backend?.acceptsPostCode == true && specifyPostalCode) || (backend?.requiresPostCode == true)) && postalCode.isBlank()) {
-            success = false; postalCodeError = true
-        }
-
-        if (!success) return false
-        return true
+    var success = true
+    if (humanName.isBlank()) {
+      success = false
+      nameError = true
+    }
+    if (trackingId.isBlank()) {
+      success = false
+      idError = true
+    }
+    if (service == Service.UNDEFINED) {
+      success = false
+      serviceError = true
+    }
+    if (((backend?.acceptsPostCode == true && specifyPostalCode) ||
+        (backend?.requiresPostCode == true)) && postalCode.isBlank()) {
+      success = false
+      postalCodeError = true
     }
 
-    var expanded by remember { mutableStateOf(false) }
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    if (!success) return false
+    return true
+  }
 
-    val sortedServiceOptions = serviceOptions.sortedBy { getDeliveryService(it)?.acceptsFormat(trackingId)?.not() }
+  var expanded by remember { mutableStateOf(false) }
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(if (isEdit) R.string.edit_parcel else R.string.add_a_parcel)
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
-        }, modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { innerPadding ->
+  val sortedServiceOptions =
+      serviceOptions.sortedBy { getDeliveryService(it)?.acceptsFormat(trackingId)?.not() }
+
+  Scaffold(
+      topBar = {
+        TopAppBar(
+            title = {
+              Text(stringResource(if (isEdit) R.string.edit_parcel else R.string.add_a_parcel))
+            },
+            navigationIcon = {
+              IconButton(onClick = onBackPressed) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
+              }
+            },
+            scrollBehavior = scrollBehavior,
+        )
+      },
+      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .sizeIn(maxWidth = 488.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+            modifier =
+                Modifier.padding(innerPadding).fillMaxWidth().verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+              Column(
+                  modifier =
+                      Modifier.padding(horizontal = 16.dp).sizeIn(maxWidth = 488.dp).fillMaxWidth(),
+                  verticalArrangement = Arrangement.spacedBy(8.dp),
+              ) {
                 OutlinedTextField(
                     value = humanName,
-                    onValueChange = { humanName = it; nameError = false },
+                    onValueChange = {
+                      humanName = it
+                      nameError = false
+                    },
                     singleLine = true,
                     label = { Text(stringResource(R.string.parcel_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     isError = nameError,
                     supportingText = {
-                        if (nameError) Text(stringResource(R.string.human_name_error_text))
+                      if (nameError) Text(stringResource(R.string.human_name_error_text))
                     })
 
                 OutlinedTextField(
                     value = trackingId,
-                    onValueChange = { trackingId = it; idError = false },
+                    onValueChange = {
+                      trackingId = it
+                      idError = false
+                    },
                     singleLine = true,
                     label = { Text(stringResource(R.string.tracking_id)) },
                     modifier = Modifier.fillMaxWidth(),
                     isError = idError,
                     supportingText = {
-                        if (idError) Text(stringResource(R.string.tracking_id_error_text))
+                      if (idError) Text(stringResource(R.string.tracking_id_error_text))
                     })
 
                 // Service dropdown
@@ -156,122 +161,127 @@ fun AddEditParcelView(
                     expanded = expanded,
                     onExpandedChange = { expanded = it },
                 ) {
-                    OutlinedTextField(
-                        value = if (service == Service.UNDEFINED) "" else stringResource(
-                            getDeliveryServiceName(service)!!
-                        ),
-                        onValueChange = {},
-                        modifier = Modifier
-                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth(),
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.delivery_service)) },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                        isError = serviceError,
-                        supportingText = {
-                            if (serviceError) Text(stringResource(R.string.service_error_text))
-                        })
+                  OutlinedTextField(
+                      value =
+                          if (service == Service.UNDEFINED) ""
+                          else stringResource(getDeliveryServiceName(service)!!),
+                      onValueChange = {},
+                      modifier =
+                          Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                              .fillMaxWidth(),
+                      readOnly = true,
+                      label = { Text(stringResource(R.string.delivery_service)) },
+                      trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                      colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                      isError = serviceError,
+                      supportingText = {
+                        if (serviceError) Text(stringResource(R.string.service_error_text))
+                      })
 
-                    ExposedDropdownMenu(
-                        expanded = expanded, onDismissRequest = { expanded = false }) {
+                  ExposedDropdownMenu(
+                      expanded = expanded, onDismissRequest = { expanded = false }) {
                         sortedServiceOptions.forEach { option ->
-                            DropdownMenuItem(
-                                text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
-                                onClick = {
-                                    service = option
-                                    expanded = false
-                                    serviceError = false
-                                },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                            )
+                          DropdownMenuItem(
+                              text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
+                              onClick = {
+                                service = option
+                                expanded = false
+                                serviceError = false
+                              },
+                              contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                          )
                         }
-                    }
+                      }
                 }
 
                 AnimatedVisibility(backend?.acceptsPostCode == true && !backend.requiresPostCode) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                  Row(
+                      verticalAlignment = Alignment.CenterVertically,
+                      horizontalArrangement = Arrangement.SpaceBetween,
+                      modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-                            Text(stringResource(R.string.specify_a_postal_code))
-                            Text(
-                                stringResource(R.string.specify_postal_code_flavor_text),
-                                fontSize = 14.sp,
-                                lineHeight = 21.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                          Text(stringResource(R.string.specify_a_postal_code))
+                          Text(
+                              stringResource(R.string.specify_postal_code_flavor_text),
+                              fontSize = 14.sp,
+                              lineHeight = 21.sp,
+                              color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Checkbox(
                             checked = specifyPostalCode,
                             onCheckedChange = { specifyPostalCode = it },
                         )
+                      }
+                }
+
+                AnimatedVisibility(
+                    backend?.requiresPostCode == true ||
+                        (backend?.requiresPostCode == false &&
+                            backend.acceptsPostCode &&
+                            specifyPostalCode)) {
+                      OutlinedTextField(
+                          value = postalCode,
+                          onValueChange = {
+                            postalCode = it
+                            postalCodeError = false
+                          },
+                          singleLine = true,
+                          label = { Text(stringResource(R.string.postal_code)) },
+                          modifier = Modifier.fillMaxWidth(),
+                          isError = postalCodeError,
+                          supportingText = {
+                            if (postalCodeError)
+                                Text(stringResource(R.string.postal_code_error_text))
+                          })
                     }
-                }
 
-                AnimatedVisibility(backend?.requiresPostCode == true || (backend?.requiresPostCode == false && backend.acceptsPostCode && specifyPostalCode)) {
-                    OutlinedTextField(
-                        value = postalCode,
-                        onValueChange = { postalCode = it; postalCodeError = false },
-                        singleLine = true,
-                        label = { Text(stringResource(R.string.postal_code)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        isError = postalCodeError,
-                        supportingText = {
-                            if (postalCodeError) Text(stringResource(R.string.postal_code_error_text))
-                        })
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()
-                ) {
-                    Button(onClick = {
+                Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                  Button(
+                      onClick = {
                         val isOk = validateInputs()
                         if (isOk) {
-                            // data valid, pass it along
-                            onCompleted(
-                                Parcel(
-                                    id = parcel?.id ?: 0,
-                                    humanName = humanName,
-                                    parcelId = trackingId,
-                                    service = service,
-                                    postalCode = if (backend?.requiresPostCode == true || (backend?.acceptsPostCode == true && specifyPostalCode)) postalCode else null
-                                )
-                            )
+                          // data valid, pass it along
+                          onCompleted(
+                              Parcel(
+                                  id = parcel?.id ?: 0,
+                                  humanName = humanName,
+                                  parcelId = trackingId,
+                                  service = service,
+                                  postalCode =
+                                      if (backend?.requiresPostCode == true ||
+                                          (backend?.acceptsPostCode == true && specifyPostalCode))
+                                          postalCode
+                                      else null))
                         }
-                    }) {
-                        Text(
-                            stringResource(if (isEdit) R.string.save else R.string.add_parcel)
-                        )
-                    }
+                      }) {
+                        Text(stringResource(if (isEdit) R.string.save else R.string.add_parcel))
+                      }
                 }
+              }
             }
-        }
-    }
+      }
 }
 
 @Composable
 @PreviewLightDark
 fun AddParcelPreview() {
-    ParcelTrackerTheme {
-        AddEditParcelView(
-            null,
-            onBackPressed = {},
-            onCompleted = {},
-        )
-    }
+  ParcelTrackerTheme {
+    AddEditParcelView(
+        null,
+        onBackPressed = {},
+        onCompleted = {},
+    )
+  }
 }
 
 @Composable
 @PreviewLightDark
 fun EditParcelPreview() {
-    ParcelTrackerTheme {
-        AddEditParcelView(
-            Parcel(0, "Test", "Test", null, Service.EXAMPLE),
-            onBackPressed = {},
-            onCompleted = {},
-        )
-    }
+  ParcelTrackerTheme {
+    AddEditParcelView(
+        Parcel(0, "Test", "Test", null, Service.EXAMPLE),
+        onBackPressed = {},
+        onCompleted = {},
+    )
+  }
 }

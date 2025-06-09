@@ -20,9 +20,17 @@ Parcel is an app that lets you track your parcels from various providers with ea
 </a>
 </p>
 
+## Contributing
+
+We use `ktfmt` for formatting files. For ease of use, we included the sample editorconfig that comes with `ktfmt`, as well as a helper script to invoke it.
+To format all the code, simply run `./scripts/ktfmt.sh .`. It will download `ktfmt` if necessary.
+
+Similarly, we have `./scripts/sort-strings.sh` to sort translation files by key. This script uses Nix to pull in `xsltproc` from `libxslt`.
+
 ## Supported services
 
 International:
+- Cainiao
 - DHL
 - GLS
 - UPS
@@ -38,11 +46,13 @@ Europe:
 - An Post (IE)
 - Belpost (BY)
 - GLS Hungary
+- Hermes (DE)
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta
 - Poczta Polska (PL)
 - Poste Italiane (IT)
+- PostNord
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania

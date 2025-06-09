@@ -6,8 +6,8 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
+import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class ParcelHistoryItem(
@@ -18,18 +18,16 @@ data class ParcelHistoryItem(
     val location: String,
 )
 
-data class ParcelId (
+data class ParcelId(
     val parcelId: Int,
 )
 
 @Dao
 interface ParcelHistoryDao {
-    @Query("SELECT * FROM parcelhistoryitem WHERE parcelId=:id")
-    fun getAllById(id: Int): Flow<List<ParcelHistoryItem>>
+  @Query("SELECT * FROM parcelhistoryitem WHERE parcelId=:id")
+  fun getAllById(id: Int): Flow<List<ParcelHistoryItem>>
 
-    @Insert
-    suspend fun insert(items: List<ParcelHistoryItem>)
+  @Insert suspend fun insert(items: List<ParcelHistoryItem>)
 
-    @Delete(entity = ParcelHistoryItem::class)
-    suspend fun deleteByParcelId(parcelId: ParcelId)
+  @Delete(entity = ParcelHistoryItem::class) suspend fun deleteByParcelId(parcelId: ParcelId)
 }

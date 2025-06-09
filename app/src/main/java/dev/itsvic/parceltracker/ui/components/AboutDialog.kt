@@ -25,80 +25,78 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.net.toUri
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
-import androidx.core.net.toUri
 
 @Composable
 fun AboutDialog(onDismissRequest: () -> Unit) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    Dialog(onDismissRequest = onDismissRequest) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = "Parcel",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                )
-                Text(
-                    text = BuildConfig.VERSION_NAME,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                )
+  Dialog(onDismissRequest = onDismissRequest) {
+    Card(modifier = Modifier.fillMaxWidth().padding(16.dp), shape = RoundedCornerShape(16.dp)) {
+      Column(modifier = Modifier.padding(24.dp)) {
+        Text(
+            text = "Parcel",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            text = BuildConfig.VERSION_NAME,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+        )
 
-                Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(24.dp))
 
-                Button(onClick = {
-                    context.openLinkInBrowser("https://github.com/itsvic-dev/parcel".toUri())
-                }, modifier = Modifier.fillMaxWidth()) {
-                    Icon(painterResource(R.drawable.github), stringResource(R.string.repository))
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.repository))
-                }
-
-                Button(onClick = {
-                    context.openLinkInBrowser("https://github.com/itsvic-dev/parcel/blob/master/LICENSE.md".toUri())
-                }, modifier = Modifier.fillMaxWidth()) {
-                    Icon(painterResource(R.drawable.license_24px), stringResource(R.string.license))
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.license))
-                }
-
-                Button(onClick = {
-                    context.openLinkInBrowser("https://github.com/sponsors/itsvic-dev".toUri())
-                }, modifier = Modifier.fillMaxWidth()) {
-                    Icon(painterResource(R.drawable.volunteer_activism_24px), stringResource(R.string.donate))
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.donate))
-                }
+        Button(
+            onClick = { context.openLinkInBrowser("https://github.com/itsvic-dev/parcel".toUri()) },
+            modifier = Modifier.fillMaxWidth()) {
+              Icon(painterResource(R.drawable.github), stringResource(R.string.repository))
+              Spacer(Modifier.width(8.dp))
+              Text(stringResource(R.string.repository))
             }
-        }
+
+        Button(
+            onClick = {
+              context.openLinkInBrowser(
+                  "https://github.com/itsvic-dev/parcel/blob/master/LICENSE.md".toUri())
+            },
+            modifier = Modifier.fillMaxWidth()) {
+              Icon(painterResource(R.drawable.license_24px), stringResource(R.string.license))
+              Spacer(Modifier.width(8.dp))
+              Text(stringResource(R.string.license))
+            }
+
+        Button(
+            onClick = {
+              context.openLinkInBrowser("https://github.com/sponsors/itsvic-dev".toUri())
+            },
+            modifier = Modifier.fillMaxWidth()) {
+              Icon(
+                  painterResource(R.drawable.volunteer_activism_24px),
+                  stringResource(R.string.donate))
+              Spacer(Modifier.width(8.dp))
+              Text(stringResource(R.string.donate))
+            }
+      }
     }
+  }
 }
 
 @Composable
 @PreviewLightDark
 private fun AboutDialogPreview() {
-    ParcelTrackerTheme {
-        AboutDialog(onDismissRequest = {})
-    }
+  ParcelTrackerTheme { AboutDialog(onDismissRequest = {}) }
 }
 
 fun Context.openLinkInBrowser(url: Uri) {
-//    val browserIntent = Intent(Intent.ACTION_VIEW, url)
-//    startActivity(browserIntent)
-    val customTabsIntent = CustomTabsIntent.Builder().apply {
-        setShowTitle(true)
-    }.build()
-    customTabsIntent.launchUrl(this, url)
+  //    val browserIntent = Intent(Intent.ACTION_VIEW, url)
+  //    startActivity(browserIntent)
+  val customTabsIntent = CustomTabsIntent.Builder().apply { setShowTitle(true) }.build()
+  customTabsIntent.launchUrl(this, url)
 }

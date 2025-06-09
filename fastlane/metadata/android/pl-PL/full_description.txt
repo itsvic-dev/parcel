@@ -12,6 +12,9 @@ Międzynarodowe:
 - GLS
 - UPS
 
+Ameryka Północna:
+- UniUni
+
 Wielka Brytania:
 - DPD Wielka Brytania
 - Evri
@@ -20,11 +23,13 @@ Europa:
 - An Post (IE)
 - Belpost (BY)
 - GLS Węgry
-- Magyar Posta (HU)
+- Hermes (DE)
+- Poczta Węgierska (HU)
 - Nova Post (UA)
 - Packeta
 - Poczta Polska (PL)
-- Poste Italiane (IT)
+- Poczta Włoska (IT)
+- PostNord
 - Sameday Bułgaria
 - Sameday Węgry
 - Sameday Rumunia
