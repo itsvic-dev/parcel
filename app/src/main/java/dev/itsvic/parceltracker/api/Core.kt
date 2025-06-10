@@ -47,6 +47,7 @@ enum class Service {
   SAMEDAY_RO,
   UKRPOSHTA,
   POSTNORD,
+  COLISSIMO,
 
   // Asia
   EKART,
@@ -87,6 +88,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
     Service.UKRPOSHTA -> UkrposhtaDeliveryService
     Service.POSTNORD -> PostNordDeliveryService
+    Service.COLISSIMO -> ColissimoDeliveryService
 
     Service.EKART -> EKartDeliveryService
     Service.SPX_TH -> SPXThailandDeliveryService
