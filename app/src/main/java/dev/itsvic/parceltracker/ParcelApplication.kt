@@ -8,16 +8,15 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class ParcelApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "parcel-tracker")
-            .build()
+  override fun onCreate() {
+    super.onCreate()
+    db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "parcel-tracker").build()
 
-        applicationContext.createNotificationChannel()
-        MainScope().launch { applicationContext.enqueueWorkerIfNotQueued() }
-    }
+    applicationContext.createNotificationChannel()
+    MainScope().launch { applicationContext.enqueueWorkerIfNotQueued() }
+  }
 
-    companion object {
-        lateinit var db: AppDatabase
-    }
+  companion object {
+    lateinit var db: AppDatabase
+  }
 }

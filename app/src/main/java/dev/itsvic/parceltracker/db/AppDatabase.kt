@@ -9,16 +9,17 @@ import androidx.room.TypeConverters
 @Database(
     version = 4,
     entities = [Parcel::class, ParcelStatus::class, ParcelHistoryItem::class],
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-        AutoMigration(from = 2, to = 3),
-        AutoMigration(from = 2, to = 4),
-        AutoMigration(from = 3, to = 4)
-    ]
-)
+    autoMigrations =
+        [
+            AutoMigration(from = 1, to = 2),
+            AutoMigration(from = 2, to = 3),
+            AutoMigration(from = 2, to = 4),
+            AutoMigration(from = 3, to = 4)])
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun parcelDao(): ParcelDao
-    abstract fun parcelStatusDao(): ParcelStatusDao
-    abstract fun parcelHistoryDao(): ParcelHistoryDao
+  abstract fun parcelDao(): ParcelDao
+
+  abstract fun parcelStatusDao(): ParcelStatusDao
+
+  abstract fun parcelHistoryDao(): ParcelHistoryDao
 }

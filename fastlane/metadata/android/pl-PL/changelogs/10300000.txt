@@ -1,0 +1,8 @@
+Zmiany:
+- Dodano przycisk "zrzut logów", aby ułatwić zgłaszanie błędów
+- GLS: poprawnie obsługuje status "Dostarczono do ParcelShop"
+
+Nowe usługi:
+- UniUni (USA)
+- Hermes (DE)
+- PostNord

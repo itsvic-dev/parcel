@@ -30,6 +30,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".LogcatDumperActivity"
+            android:theme="@style/Theme.ParcelTracker">
+        </activity>
+
         <provider
             android:name=".smartspacer.targets.ParcelStatusTarget"
             android:authorities="${applicationId}.target.example"

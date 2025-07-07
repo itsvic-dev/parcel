@@ -24,47 +24,36 @@ import java.time.format.FormatStyle
 
 @Composable
 fun ParcelHistoryItemRow(item: ParcelHistoryItem) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        SelectionContainer {
-            Text(
-                item.description,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(
-                item.time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)),
-                fontSize = 13.sp,
-                lineHeight = 19.5f.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                item.location,
-                fontSize = 13.sp,
-                lineHeight = 19.5f.sp,
-                textAlign = TextAlign.End,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
+  Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    SelectionContainer { Text(item.description, color = MaterialTheme.colorScheme.onBackground) }
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+      Text(
+          item.time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)),
+          fontSize = 13.sp,
+          lineHeight = 19.5f.sp,
+          color = MaterialTheme.colorScheme.onSurfaceVariant)
+      Text(
+          item.location,
+          fontSize = 13.sp,
+          lineHeight = 19.5f.sp,
+          textAlign = TextAlign.End,
+          color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
+  }
 }
 
 @Composable
 @PreviewLightDark
 private fun ParcelHistoryItemRowPreview() {
-    val exampleItem = ParcelHistoryItem(
-        "Customs service",
-        LocalDateTime.of(2024, 12, 22, 9, 38, 48),
-        "ZCPP\nul. Rodziny Hiszpańskich 8\n00-940 Warszawa"
-    )
+  val exampleItem =
+      ParcelHistoryItem(
+          "Customs service",
+          LocalDateTime.of(2024, 12, 22, 9, 38, 48),
+          "ZCPP\nul. Rodziny Hiszpańskich 8\n00-940 Warszawa")
 
-    ParcelTrackerTheme {
-        Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-            ParcelHistoryItemRow(
-                exampleItem
-            )
-        }
+  ParcelTrackerTheme {
+    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+      ParcelHistoryItemRow(exampleItem)
     }
+  }
 }

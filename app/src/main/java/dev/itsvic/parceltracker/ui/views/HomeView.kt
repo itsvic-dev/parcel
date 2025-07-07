@@ -49,100 +49,85 @@ fun HomeView(
     onNavigateToParcel: (Parcel) -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
-    val scrollBehavior =
-        TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    var expanded by remember { mutableStateOf(false) }
-    var aboutDialogOpen by remember { mutableStateOf(false) }
+  val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+  var expanded by remember { mutableStateOf(false) }
+  var aboutDialogOpen by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            LargeTopAppBar(
-                title = {
-                    Text(stringResource(R.string.app_name))
-                },
-                scrollBehavior = scrollBehavior,
-                actions = {
-                    IconButton(onClick = { expanded = !expanded }) {
-                        Icon(Icons.Filled.MoreVert, stringResource(R.string.more_options))
-                    }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                    ) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Filled.Settings, stringResource(R.string.settings))
-                            },
-                            text = { Text(stringResource(R.string.settings)) },
-                            onClick = { expanded = false; onNavigateToSettings() },
-                            contentPadding = MenuItemContentPadding,
-                        )
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(Icons.Filled.Info, stringResource(R.string.about_app))
-                            },
-                            text = { Text(stringResource(R.string.about_app)) },
-                            onClick = { expanded = false; aboutDialogOpen = true },
-                            contentPadding = MenuItemContentPadding,
-                        )
-                    }
-                },
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onNavigateToAddParcel) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_a_parcel))
-            }
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-        ) {
-            if (parcels.isEmpty()) item {
+  Scaffold(
+      topBar = {
+        LargeTopAppBar(
+            title = { Text(stringResource(R.string.app_name)) },
+            scrollBehavior = scrollBehavior,
+            actions = {
+              IconButton(onClick = { expanded = !expanded }) {
+                Icon(Icons.Filled.MoreVert, stringResource(R.string.more_options))
+              }
+              DropdownMenu(
+                  expanded = expanded,
+                  onDismissRequest = { expanded = false },
+              ) {
+                DropdownMenuItem(
+                    leadingIcon = {
+                      Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                    },
+                    text = { Text(stringResource(R.string.settings)) },
+                    onClick = {
+                      expanded = false
+                      onNavigateToSettings()
+                    },
+                    contentPadding = MenuItemContentPadding,
+                )
+                DropdownMenuItem(
+                    leadingIcon = { Icon(Icons.Filled.Info, stringResource(R.string.about_app)) },
+                    text = { Text(stringResource(R.string.about_app)) },
+                    onClick = {
+                      expanded = false
+                      aboutDialogOpen = true
+                    },
+                    contentPadding = MenuItemContentPadding,
+                )
+              }
+            },
+        )
+      },
+      floatingActionButton = {
+        FloatingActionButton(onClick = onNavigateToAddParcel) {
+          Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_a_parcel))
+        }
+      },
+      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
+        LazyColumn(modifier = Modifier.padding(innerPadding)) {
+          if (parcels.isEmpty())
+              item {
                 Text(
                     stringResource(R.string.no_parcels_flavor),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-            }
+                    modifier = Modifier.padding(horizontal = 16.dp))
+              }
 
-            items(parcels.reversed()) { parcel ->
-                ParcelRow(
-                    parcel.parcel,
-                    parcel.status?.status
-                ) { onNavigateToParcel(parcel.parcel) }
-            }
+          items(parcels.reversed()) { parcel ->
+            ParcelRow(parcel.parcel, parcel.status?.status) { onNavigateToParcel(parcel.parcel) }
+          }
         }
 
         if (aboutDialogOpen) {
-            AboutDialog { aboutDialogOpen = false }
+          AboutDialog { aboutDialogOpen = false }
         }
-    }
+      }
 }
 
 @Composable
 @PreviewLightDark
 fun HomeViewPreview() {
-    ParcelTrackerTheme {
-        HomeView(
-            parcels = listOf(
+  ParcelTrackerTheme {
+    HomeView(
+        parcels =
+            listOf(
                 ParcelWithStatus(
-                    Parcel(
-                        0,
-                        "My precious package",
-                        "EXMPL0001",
-                        null,
-                        Service.EXAMPLE
-                    ),
-                    ParcelStatus(
-                        0, Status.InTransit, Instant.now()
-                    )
-                )
-            ),
-            onNavigateToAddParcel = {},
-            onNavigateToParcel = {},
-            onNavigateToSettings = {},
-        )
-    }
+                    Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
+                    ParcelStatus(0, Status.InTransit, Instant.now()))),
+        onNavigateToAddParcel = {},
+        onNavigateToParcel = {},
+        onNavigateToSettings = {},
+    )
+  }
 }

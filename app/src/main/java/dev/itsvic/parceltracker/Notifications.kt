@@ -19,42 +19,42 @@ import dev.itsvic.parceltracker.db.Parcel
 const val CHANNEL_ID = "ParcelTrackerEvents"
 
 fun Context.sendNotification(parcel: Parcel, status: Status, event: ParcelHistoryItem) {
-    val context = this
-    val statusString = getString(status.nameResource)
+  val context = this
+  val statusString = getString(status.nameResource)
 
-    val intent = Intent(this, MainActivity::class.java).apply {
+  val intent =
+      Intent(this, MainActivity::class.java).apply {
         putExtra("openParcel", parcel.id)
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-    }
-    val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+      }
+  val pendingIntent =
+      PendingIntent.getActivity(
+          this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
-    val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-        .setSmallIcon(R.drawable.package_2)
-        .setContentTitle("${parcel.humanName}: $statusString")
-        .setContentText(event.description)
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setContentIntent(pendingIntent)
-        .setAutoCancel(true)
+  val builder =
+      NotificationCompat.Builder(this, CHANNEL_ID)
+          .setSmallIcon(R.drawable.package_2)
+          .setContentTitle("${parcel.humanName}: $statusString")
+          .setContentText(event.description)
+          .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+          .setContentIntent(pendingIntent)
+          .setAutoCancel(true)
 
-    with(NotificationManagerCompat.from(this)) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        notify(parcel.id, builder.build())
+  with(NotificationManagerCompat.from(this)) {
+    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+        PackageManager.PERMISSION_GRANTED) {
+      return
     }
+    notify(parcel.id, builder.build())
+  }
 }
 
 fun Context.createNotificationChannel() {
-    val name = getString(R.string.channel_name)
-    val description = getString(R.string.channel_description)
-    val importance = NotificationManager.IMPORTANCE_HIGH
-    val channel = NotificationChannel(CHANNEL_ID, name, importance)
-    channel.description = description
-    val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-    notificationManager.createNotificationChannel(channel)
+  val name = getString(R.string.channel_name)
+  val description = getString(R.string.channel_description)
+  val importance = NotificationManager.IMPORTANCE_HIGH
+  val channel = NotificationChannel(CHANNEL_ID, name, importance)
+  channel.description = description
+  val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+  notificationManager.createNotificationChannel(channel)
 }

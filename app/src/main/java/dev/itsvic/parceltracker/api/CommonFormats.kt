@@ -6,5 +6,5 @@ val digits12Format = """^\d{12}$""".toRegex()
 val digits18Format = """^\d{18}$""".toRegex()
 
 fun Regex.accepts(string: String): Boolean {
-    return this.matchEntire(string) != null
+  return this.matchEntire(string) != null
 }

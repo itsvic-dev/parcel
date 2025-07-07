@@ -12,6 +12,9 @@ Nemzetközi:
 - GLS
 - UPS
 
+Észak Amerika:
+- UniUni
+
 Egyesült Királyság:
 - DPD UK
 - Evri
@@ -19,12 +22,14 @@ Egyesült Királyság:
 Európa:
 - An Post (IE)
 - Belposta (BY)
+- Hermes (DE)
 - GLS Magyarország
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta
 - Lengyel posta (PL)
 - Olasz posta (IT)
+- PostNord
 - Sameday Bulgária
 - Sameday Magyarország
 - Sameday Románia

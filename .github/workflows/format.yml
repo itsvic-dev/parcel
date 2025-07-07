@@ -1,0 +1,28 @@
+name: Check formatting
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Setup Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Check Kotlin formatting
+        run: ./scripts/ktfmt.sh --set-exit-if-changed --dry-run .
+
+      - name: Check if translation files are sorted
+        run: ./scripts/sort-strings-check.sh

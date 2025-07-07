@@ -1,0 +1,8 @@
+Changes:
+- Added a 'dump logs' button for easier bug reporting
+- GLS: Handles 'Delivered to ParcelShop' status correctly
+
+New services:
+- UniUni (US)
+- Hermes (DE)
+- PostNord

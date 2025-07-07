@@ -20,15 +20,12 @@ data class ParcelStatus(
 
 @Dao
 interface ParcelStatusDao {
-    @Query("SELECT * FROM ParcelStatus WHERE parcelId=:parcelId")
-    suspend fun get(parcelId: Int): ParcelStatus
+  @Query("SELECT * FROM ParcelStatus WHERE parcelId=:parcelId")
+  suspend fun get(parcelId: Int): ParcelStatus
 
-    @Insert
-    suspend fun insert(status: ParcelStatus)
+  @Insert suspend fun insert(status: ParcelStatus)
 
-    @Update
-    suspend fun update(status: ParcelStatus)
+  @Update suspend fun update(status: ParcelStatus)
 
-    @Delete(entity = ParcelStatus::class)
-    suspend fun deleteByParcelId(parcelId: ParcelId)
+  @Delete(entity = ParcelStatus::class) suspend fun deleteByParcelId(parcelId: ParcelId)
 }

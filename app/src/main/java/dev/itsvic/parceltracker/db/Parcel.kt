@@ -22,46 +22,34 @@ data class Parcel(
     val parcelId: String,
     val postalCode: String?,
     val service: Service,
-    @ColumnInfo(defaultValue = "0")
-    val isArchived: Boolean = false,
-    @ColumnInfo(defaultValue = "0")
-    val archivePromptDismissed: Boolean = false,
+    @ColumnInfo(defaultValue = "0") val isArchived: Boolean = false,
+    @ColumnInfo(defaultValue = "0") val archivePromptDismissed: Boolean = false,
 )
 
 data class ParcelWithStatus(
     @Embedded val parcel: Parcel,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "parcelId"
-    ) val status: ParcelStatus?,
+    @Relation(parentColumn = "id", entityColumn = "parcelId") val status: ParcelStatus?,
 )
 
 @Dao
 interface ParcelDao {
-    @Query("SELECT * FROM parcel")
-    fun getAll(): Flow<List<Parcel>>
+  @Query("SELECT * FROM parcel") fun getAll(): Flow<List<Parcel>>
 
-    @Transaction
-    @Query("SELECT * FROM parcel")
-    fun getAllWithStatus(): Flow<List<ParcelWithStatus>>
+  @Transaction @Query("SELECT * FROM parcel") fun getAllWithStatus(): Flow<List<ParcelWithStatus>>
 
-    @Transaction
-    @Query("SELECT * FROM parcel WHERE isArchived = 0")
-    suspend fun getAllNonArchivedWithStatusAsync(): List<ParcelWithStatus>
+  @Transaction
+  @Query("SELECT * FROM parcel WHERE isArchived = 0")
+  suspend fun getAllNonArchivedWithStatusAsync(): List<ParcelWithStatus>
 
-    @Query("SELECT * FROM parcel WHERE id=:id LIMIT 1")
-    fun getById(id: Int): Flow<Parcel>
+  @Query("SELECT * FROM parcel WHERE id=:id LIMIT 1") fun getById(id: Int): Flow<Parcel>
 
-    @Transaction
-    @Query("SELECT * FROM Parcel WHERE id=:id")
-    fun getWithStatusById(id: Int): Flow<ParcelWithStatus>
+  @Transaction
+  @Query("SELECT * FROM Parcel WHERE id=:id")
+  fun getWithStatusById(id: Int): Flow<ParcelWithStatus>
 
-    @Insert
-    suspend fun insert(parcel: Parcel): Long
+  @Insert suspend fun insert(parcel: Parcel): Long
 
-    @Update
-    suspend fun update(parcel: Parcel)
+  @Update suspend fun update(parcel: Parcel)
 
-    @Delete
-    suspend fun delete(parcel: Parcel)
+  @Delete suspend fun delete(parcel: Parcel)
 }
