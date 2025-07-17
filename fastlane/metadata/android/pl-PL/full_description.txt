@@ -8,6 +8,8 @@ Niektóre funkcje Parcel:
 
 --- Obsługiwane usługi ---
 Międzynarodowe:
+- 4PX
+- Cainiao
 - DHL
 - GLS
 - UPS
@@ -20,12 +22,15 @@ Wielka Brytania:
 - Evri
 
 Europa:
+- Allegro One Box (PL)
 - An Post (IE)
 - Belpost (BY)
 - GLS Węgry
 - Hermes (DE)
+- InPost (PL)
 - Poczta Węgierska (HU)
 - Nova Post (UA)
+- Orlen Paczka (PL)
 - Packeta
 - Poczta Polska (PL)
 - Poczta Włoska (IT)
