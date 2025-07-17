@@ -22,9 +22,12 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
@@ -41,6 +44,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.itsvic.parceltracker.api.APIKeyMissingException
@@ -55,6 +59,7 @@ import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.db.deleteParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
+import dev.itsvic.parceltracker.ui.components.BottomNavBar
 import dev.itsvic.parceltracker.ui.views.AddEditParcelView
 import dev.itsvic.parceltracker.ui.views.HomeView
 import dev.itsvic.parceltracker.ui.views.ParcelView
@@ -149,25 +154,48 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
   }
 
   val animDuration = 300
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val currentRoute = navBackStackEntry?.destination?.route ?: "HomePage"
 
-  NavHost(
-      navController = navController,
-      startDestination = HomePage,
-      enterTransition = {
-        slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = tween(animDuration),
-            initialOffset = { it / 4 }) + fadeIn(tween(animDuration))
-      },
-      exitTransition = { fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f) },
-      popEnterTransition = { fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f) },
-      popExitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = tween(animDuration),
-            targetOffset = { -it / 4 }) + fadeOut(tween(animDuration))
-      },
-  ) {
+  Scaffold(
+      bottomBar = {
+        if (currentRoute.contains("HomePage") || currentRoute.contains("SettingsPage") || currentRoute.contains("AddParcelPage")) {
+          BottomNavBar(
+              currentRoute = currentRoute,
+              onNavigateToHome = {
+                navController.navigate(route = HomePage) {
+                  popUpTo(HomePage) { inclusive = true }
+                }
+              },
+              onNavigateToAddParcel = {
+                navController.navigate(route = AddParcelPage)
+              },
+              onNavigateToSettings = {
+                navController.navigate(route = SettingsPage)
+              }
+          )
+        }
+      }
+  ) { innerPadding ->
+    NavHost(
+        navController = navController,
+        startDestination = HomePage,
+        enterTransition = {
+          slideIntoContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.Start,
+              animationSpec = tween(animDuration),
+              initialOffset = { it / 4 }) + fadeIn(tween(animDuration))
+        },
+        exitTransition = { fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f) },
+        popEnterTransition = { fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f) },
+        popExitTransition = {
+          slideOutOfContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.Start,
+              animationSpec = tween(animDuration),
+              targetOffset = { -it / 4 }) + fadeOut(tween(animDuration))
+        },
+        modifier = Modifier.padding(innerPadding)
+    ) {
     composable<HomePage> {
       val parcels =
           if (demoMode) derivedStateOf { demoModeParcels }
@@ -393,5 +421,6 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
           },
       )
     }
+  }
   }
 }

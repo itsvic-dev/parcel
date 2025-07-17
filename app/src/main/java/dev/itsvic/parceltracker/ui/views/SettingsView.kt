@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -25,7 +26,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -53,6 +57,7 @@ import dev.itsvic.parceltracker.dataStore
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.enqueueNotificationWorker
 import dev.itsvic.parceltracker.sendNotification
+import dev.itsvic.parceltracker.ui.components.AboutDialog
 import dev.itsvic.parceltracker.ui.components.LogcatButton
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.LocalDateTime
@@ -70,6 +75,7 @@ fun SettingsView(
       context.dataStore.data.map { it[UNMETERED_ONLY] == true }.collectAsState(false)
   val coroutineScope = rememberCoroutineScope()
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+  var aboutDialogOpen by remember { mutableStateOf(false) }
 
   val dhlApiKey by context.dataStore.data.map { it[DHL_API_KEY] ?: "" }.collectAsState("")
 
@@ -184,12 +190,27 @@ fun SettingsView(
 
       LogcatButton(modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth())
 
+      FilledTonalButton(
+          onClick = { aboutDialogOpen = true },
+          modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth()
+      ) {
+          Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_app))
+          Text(
+              text = " ${stringResource(R.string.about_app)}",
+              modifier = Modifier.padding(start = 8.dp)
+          )
+      }
+
       Text(
           "Parcel ${BuildConfig.VERSION_NAME}",
           modifier = Modifier.padding(16.dp, 8.dp),
           style = MaterialTheme.typography.bodySmall,
           color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
+    }
+
+    if (aboutDialogOpen) {
+      AboutDialog { aboutDialogOpen = false }
     }
   }
 }

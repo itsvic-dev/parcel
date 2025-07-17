@@ -1,10 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="about_app">App névjegye</string>
+  <string name="add">Hozzáadás</string>
   <string name="add_a_parcel">Csomag hozzáadása</string>
   <string name="add_parcel">Csomag hozzáadása</string>
   <string name="archive">Archivál</string>
   <string name="archive_prompt_question">Biztosan archiválod ezt a csomagot?</string>
   <string name="archive_prompt_text">Ha archiválod, akkor a csomag előzmény az eszközön kerül eltárolásra és frissítés sem történik.</string>
+  <string name="cancel">Mégse</string>
+  <string name="delete_confirmation">Biztosan törölni szeretnéd ezt a csomagot?</string>
   <string name="channel_description">Értesítés(ek) a csomag jelenlegi állapotáról</string>
   <string name="channel_name">Csomag események</string>
   <string name="current_status">Jelenlegi állapot</string>
@@ -17,6 +20,7 @@
   <string name="edit">Szerkesztés</string>
   <string name="edit_parcel">Csomag szerkesztése</string>
   <string name="go_back">Vissza</string>
+  <string name="home">Főoldal</string>
   <string name="ignore">Figyelmen kívül hagy</string>
   <string name="license">Licenc</string>
   <string name="more_options">További lehetőségek</string>
