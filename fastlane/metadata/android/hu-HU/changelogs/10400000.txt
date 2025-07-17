@@ -1,0 +1,13 @@
+Újdonság:
+- Japán és német nyelv támogatás
+- Pontosabb csomaginformáció
+
+Változások:
+- Különböző hibák javításra kerültek az Olasz Posta, PostNord, DPD UK, DPD Németország és Sameday szolálgatóknál
+
+Új szolgáltatók:
+- Cainiao (Nemzetközi)
+- 4PX (Nemzetközi)
+- InPost (Lengyelország)
+- Allegro One Box (Lengyelország)
+- Orlen Paczka (Lengyelország)
