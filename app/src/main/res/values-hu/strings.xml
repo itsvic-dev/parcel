@@ -7,6 +7,9 @@
   <string name="archive_prompt_question">Biztosan archiválod ezt a csomagot?</string>
   <string name="archive_prompt_text">Ha archiválod, akkor a csomag előzmény az eszközön kerül eltárolásra és frissítés sem történik.</string>
   <string name="cancel">Mégse</string>
+  <string name="clipboard_paste">Beillesztés vágólapról</string>
+  <string name="clipboard_paste_enabled">Beillesztés gomb engedélyezése</string>
+  <string name="clipboard_paste_description">Beillesztés a vágólapról gomb megjelenítése</string>
   <string name="delete_confirmation">Biztosan törölni szeretnéd ezt a csomagot?</string>
   <string name="channel_description">Értesítés(ek) a csomag jelenlegi állapotáról</string>
   <string name="channel_name">Csomag események</string>

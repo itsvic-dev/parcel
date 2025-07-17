@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import dev.itsvic.parceltracker.BuildConfig
+import dev.itsvic.parceltracker.CLIPBOARD_PASTE_ENABLED
 import dev.itsvic.parceltracker.DEMO_MODE
 import dev.itsvic.parceltracker.DHL_API_KEY
 import dev.itsvic.parceltracker.R
@@ -73,6 +74,8 @@ fun SettingsView(
   val demoMode by context.dataStore.data.map { it[DEMO_MODE] == true }.collectAsState(false)
   val unmeteredOnly by
       context.dataStore.data.map { it[UNMETERED_ONLY] == true }.collectAsState(false)
+  val clipboardPasteEnabled by
+      context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
   val coroutineScope = rememberCoroutineScope()
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
   var aboutDialogOpen by remember { mutableStateOf(false) }
@@ -121,6 +124,23 @@ fun SettingsView(
               style = MaterialTheme.typography.bodyMedium)
         }
         Switch(checked = unmeteredOnly, onCheckedChange = { setUnmeteredOnly(it) })
+      }
+
+      Row(
+          modifier =
+              Modifier.clickable { setValue(CLIPBOARD_PASTE_ENABLED, clipboardPasteEnabled.not()) }
+                  .padding(16.dp, 12.dp)
+                  .fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically,
+      ) {
+        Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+          Text(stringResource(R.string.clipboard_paste_enabled))
+          Text(
+              stringResource(R.string.clipboard_paste_description),
+              style = MaterialTheme.typography.bodyMedium)
+        }
+        Switch(checked = clipboardPasteEnabled, onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) })
       }
 
       Text(

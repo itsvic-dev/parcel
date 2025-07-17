@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -12,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,12 +38,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.edit
+import dev.itsvic.parceltracker.CLIPBOARD_PASTE_ENABLED
 import dev.itsvic.parceltracker.R
+import dev.itsvic.parceltracker.dataStore
+import kotlinx.coroutines.flow.map
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.getDeliveryService
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
@@ -57,6 +65,9 @@ fun AddEditParcelView(
 ) {
   val isEdit = parcel != null
   val context = LocalContext.current
+  val clipboardManager = LocalClipboardManager.current
+  val clipboardPasteEnabled by
+      context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
 
   var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
   var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
@@ -145,6 +156,24 @@ fun AddEditParcelView(
                     label = { Text(stringResource(R.string.tracking_id)) },
                     modifier = Modifier.fillMaxWidth(),
                     isError = idError,
+                    trailingIcon = {
+                      if (clipboardPasteEnabled) {
+                        IconButton(
+                            onClick = {
+                              clipboardManager.getText()?.text?.let { clipboardText ->
+                                trackingId = clipboardText
+                                idError = false
+                              }
+                            }
+                        ) {
+                          Icon(
+                                Icons.Filled.Add,
+                                contentDescription = stringResource(R.string.clipboard_paste),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                      }
+                    },
                     supportingText = {
                       if (idError) Text(stringResource(R.string.tracking_id_error_text))
                     })
