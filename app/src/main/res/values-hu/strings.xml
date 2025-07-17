@@ -17,7 +17,6 @@
   <string name="edit">Szerkesztés</string>
   <string name="edit_parcel">Csomag szerkesztése</string>
   <string name="go_back">Vissza</string>
-  <string name="human_name_error_text">A név nem lehet üres.</string>
   <string name="ignore">Figyelmen kívül hagy</string>
   <string name="license">Licenc</string>
   <string name="more_options">További lehetőségek</string>
@@ -67,4 +66,5 @@
   <string name="tracking_id_error_text">A csomagszám nem lehet üres.</string>
   <string name="unmetered_only_setting">Csak korlátlan hálózaton való frissítés</string>
   <string name="unmetered_only_setting_detail">A Parcel csak akkor fog frissítéseket keresni automatikusan, ha nem forgalmidíjas hálózatra van csatlakozva a készülék, pl. otthoni Wi-Fi.</string>
+  <string name="undefinied_packagename">Csomag</string>
 </resources>

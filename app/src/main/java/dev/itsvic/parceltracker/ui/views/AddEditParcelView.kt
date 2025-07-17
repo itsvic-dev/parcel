@@ -35,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -55,9 +56,9 @@ fun AddEditParcelView(
     onCompleted: (Parcel) -> Unit,
 ) {
   val isEdit = parcel != null
+  val context = LocalContext.current
 
   var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
-  var nameError by remember { mutableStateOf(false) }
   var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
   var idError by remember { mutableStateOf(false) }
   var specifyPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
@@ -70,16 +71,11 @@ fun AddEditParcelView(
 
   fun validateInputs(): Boolean {
     // reset error states first
-    nameError = false
     idError = false
     serviceError = false
     postalCodeError = false
 
     var success = true
-    if (humanName.isBlank()) {
-      success = false
-      nameError = true
-    }
     if (trackingId.isBlank()) {
       success = false
       idError = true
@@ -132,15 +128,12 @@ fun AddEditParcelView(
                     value = humanName,
                     onValueChange = {
                       humanName = it
-                      nameError = false
                     },
                     singleLine = true,
                     label = { Text(stringResource(R.string.parcel_name)) },
                     modifier = Modifier.fillMaxWidth(),
-                    isError = nameError,
-                    supportingText = {
-                      if (nameError) Text(stringResource(R.string.human_name_error_text))
-                    })
+
+)
 
                 OutlinedTextField(
                     value = trackingId,
@@ -244,7 +237,7 @@ fun AddEditParcelView(
                           onCompleted(
                               Parcel(
                                   id = parcel?.id ?: 0,
-                                  humanName = humanName,
+                                  humanName = if (humanName.isBlank()) context.getString(R.string.undefinied_packagename) else humanName,
                                   parcelId = trackingId,
                                   service = service,
                                   postalCode =

@@ -19,7 +19,6 @@
   <string name="edit_parcel">Koli düzenle</string>
   <string name="error_no_api_key_provided">Bu teslimat servisi bir API anahtarı gerektiriyor, ancak hiçbiri sağlanmadı. Daha fazla bilgi için uygulamanın ayarlarını kontrol edin.</string>
   <string name="go_back">Geri dön</string>
-  <string name="human_name_error_text">İsim boş bırakılamaz.</string>
   <string name="ignore">Yoksay</string>
   <string name="license">Lisans</string>
   <string name="more_options">Daha fazla seçenek</string>
@@ -71,4 +70,5 @@
   <string name="tracking_id_error_text">Takip numarası boş bırakılamaz.</string>
   <string name="unmetered_only_setting">Yalnızca sınırsız ağlarda güncelle</string>
   <string name="unmetered_only_setting_detail">Etkinleştirildiğinde, Parcel koli güncellemelerini yalnızca ev Wi-Fi gibi sınırsız bağlantılarda kontrol eder.</string>
+  <string name="undefinied_packagename">Koli</string>
 </resources>

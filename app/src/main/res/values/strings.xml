@@ -21,7 +21,6 @@
   <string name="edit_parcel">Edit parcel</string>
   <string name="error_no_api_key_provided">This delivery service requires an API key, but none was provided. Check the app\'s settings for more information.</string>
   <string name="go_back">Go back</string>
-  <string name="human_name_error_text">Name must not be blank.</string>
   <string name="ignore">Ignore</string>
   <string name="license">License</string>
   <string name="more_options">More options</string>
@@ -103,4 +102,5 @@
   <string name="tracking_id_error_text">Tracking ID must not be blank.</string>
   <string name="unmetered_only_setting">Update only on unmetered networks</string>
   <string name="unmetered_only_setting_detail">If enabled, Parcel will look for parcel updates only on unmetered connections, such as your home Wi-Fi.</string>
+  <string name="undefinied_packagename">Package</string>
 </resources>
