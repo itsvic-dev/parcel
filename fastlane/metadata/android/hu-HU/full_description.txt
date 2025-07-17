@@ -8,6 +8,8 @@ Parcel néhány funkciója:
 
 --- Támogatott futárszolgálatok ---
 Nemzetközi:
+- 4PX
+- Cainiao
 - DHL
 - GLS
 - UPS
@@ -20,12 +22,15 @@ Egyesült Királyság:
 - Evri
 
 Európa:
+- Allegro One Box (PL)
 - An Post (IE)
 - Belposta (BY)
 - Hermes (DE)
+- InPost (PL)
 - GLS Magyarország
 - Magyar Posta (HU)
 - Nova Post (UA)
+- Orlen Paczka (PL)
 - Packeta
 - Lengyel posta (PL)
 - Olasz posta (IT)
