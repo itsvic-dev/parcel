@@ -12,7 +12,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,6 +52,7 @@ import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.CLIPBOARD_PASTE_ENABLED
 import dev.itsvic.parceltracker.DEMO_MODE
 import dev.itsvic.parceltracker.DHL_API_KEY
+import dev.itsvic.parceltracker.PREFERRED_REGION
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.UNMETERED_ONLY
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
@@ -76,7 +80,10 @@ fun SettingsView(
       context.dataStore.data.map { it[UNMETERED_ONLY] == true }.collectAsState(false)
   val clipboardPasteEnabled by
       context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
+  val preferredRegion by
+      context.dataStore.data.map { it[PREFERRED_REGION] ?: "" }.collectAsState("")
   val coroutineScope = rememberCoroutineScope()
+  var regionDropdownExpanded by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
   var aboutDialogOpen by remember { mutableStateOf(false) }
 
@@ -141,6 +148,186 @@ fun SettingsView(
               style = MaterialTheme.typography.bodyMedium)
         }
         Switch(checked = clipboardPasteEnabled, onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) })
+      }
+
+      // Preferred Region Setting
+      Column(modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth()) {
+        Text(stringResource(R.string.preferred_region))
+        Text(
+            stringResource(R.string.preferred_region_description),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        ExposedDropdownMenuBox(
+            expanded = regionDropdownExpanded,
+            onExpandedChange = { regionDropdownExpanded = !regionDropdownExpanded }
+        ) {
+          OutlinedTextField(
+              value = when (preferredRegion) {
+                "international" -> stringResource(R.string.region_international)
+                "north_america" -> stringResource(R.string.region_north_america)
+                "europe" -> stringResource(R.string.region_europe)
+                "asia" -> stringResource(R.string.region_asia)
+                "belarus" -> stringResource(R.string.country_belarus)
+                "bulgaria" -> stringResource(R.string.country_bulgaria)
+                "czech" -> stringResource(R.string.country_czech)
+                "uk" -> stringResource(R.string.country_uk)
+                "ireland" -> stringResource(R.string.country_ireland)
+                "poland" -> stringResource(R.string.country_poland)
+                "hungary" -> stringResource(R.string.country_hungary)
+                "germany" -> stringResource(R.string.country_germany)
+                "italy" -> stringResource(R.string.country_italy)
+                "romania" -> stringResource(R.string.country_romania)
+                "scandinavia" -> stringResource(R.string.country_scandinavia)
+                "ukraine" -> stringResource(R.string.country_ukraine)
+                "india" -> stringResource(R.string.country_india)
+                "thailand" -> stringResource(R.string.country_thailand)
+                else -> stringResource(R.string.region_international)
+              },
+              onValueChange = { },
+              readOnly = true,
+              trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = regionDropdownExpanded) },
+              modifier = Modifier.menuAnchor().fillMaxWidth()
+          )
+          
+          ExposedDropdownMenu(
+              expanded = regionDropdownExpanded,
+              onDismissRequest = { regionDropdownExpanded = false }
+          ) {
+            // Continental regions
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.region_international)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "international")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.region_north_america)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "north_america")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.region_europe)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "europe")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.region_asia)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "asia")
+                  regionDropdownExpanded = false
+                }
+            )
+            
+            // European countries
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_belarus)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "belarus")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_bulgaria)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "bulgaria")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_czech)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "czech")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_uk)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "uk")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_ireland)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "ireland")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_poland)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "poland")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_hungary)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "hungary")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_germany)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "germany")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_italy)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "italy")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_romania)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "romania")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_scandinavia)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "scandinavia")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_ukraine)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "ukraine")
+                  regionDropdownExpanded = false
+                }
+            )
+            
+            // Asian countries
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_india)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "india")
+                  regionDropdownExpanded = false
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.country_thailand)) },
+                onClick = {
+                  setValue(PREFERRED_REGION, "thailand")
+                  regionDropdownExpanded = false
+                }
+            )
+          }
+        }
       }
 
       Text(

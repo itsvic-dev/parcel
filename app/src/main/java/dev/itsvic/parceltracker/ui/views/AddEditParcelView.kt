@@ -44,8 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.edit
 import dev.itsvic.parceltracker.CLIPBOARD_PASTE_ENABLED
+import dev.itsvic.parceltracker.PREFERRED_REGION
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.dataStore
 import kotlinx.coroutines.flow.map
@@ -68,6 +68,8 @@ fun AddEditParcelView(
   val clipboardManager = LocalClipboardManager.current
   val clipboardPasteEnabled by
       context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
+  val preferredRegion by
+      context.dataStore.data.map { it[PREFERRED_REGION] ?: "" }.collectAsState("")
 
   var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
   var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
@@ -108,8 +110,67 @@ fun AddEditParcelView(
   var expanded by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-  val sortedServiceOptions =
-      serviceOptions.sortedBy { getDeliveryService(it)?.acceptsFormat(trackingId)?.not() }
+  val sortedServiceOptions = serviceOptions.sortedWith(compareBy<Service> {
+    val isPreferredRegion = when (preferredRegion) {
+      "international" -> it in listOf(Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX)
+      "north_america" -> it == Service.UNIUNI
+      "europe" -> it in listOf(Service.BELPOST, Service.SAMEDAY_BG, Service.PACKETA, Service.DPD_UK, Service.EVRI,
+        Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
+        Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
+        Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA)
+      "asia" -> it in listOf(Service.EKART, Service.SPX_TH)
+      "belarus" -> it == Service.BELPOST
+      "bulgaria" -> it == Service.SAMEDAY_BG
+      "czech" -> it == Service.PACKETA
+      "uk" -> it in listOf(Service.DPD_UK, Service.EVRI)
+      "ireland" -> it == Service.AN_POST
+      "poland" -> it in listOf(Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST)
+      "hungary" -> it in listOf(Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.PACKETA)
+      "germany" -> it in listOf(Service.DPD_GER, Service.HERMES)
+      "italy" -> it == Service.POSTE_ITALIANE
+      "romania" -> it == Service.SAMEDAY_RO
+      "scandinavia" -> it == Service.POSTNORD
+      "ukraine" -> it in listOf(Service.NOVA_POSHTA, Service.UKRPOSHTA)
+      "india" -> it == Service.EKART
+      "thailand" -> it == Service.SPX_TH
+      else -> false
+    }
+    if (isPreferredRegion) 0 else 1
+  }.thenBy {
+    when (it) {
+      Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX -> 0
+      Service.UNIUNI -> 1
+      Service.BELPOST, Service.SAMEDAY_BG, Service.PACKETA, Service.DPD_UK, Service.EVRI,
+      Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
+      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
+      Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA -> 2
+      Service.EKART, Service.SPX_TH -> 3
+      else -> 4
+    }
+  }.thenBy {
+    when (it) {
+      Service.BELPOST -> "A_Belarus"
+      Service.SAMEDAY_BG -> "B_Bulgaria"
+      Service.PACKETA -> "C_Czech"
+      Service.DPD_UK, Service.EVRI -> "D_UK"
+      Service.AN_POST -> "E_Ireland"
+      Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "F_Poland"
+      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU -> "G_Hungary"
+      Service.DPD_GER, Service.HERMES -> "H_Germany"
+      Service.POSTE_ITALIANE -> "I_Italy"
+      Service.SAMEDAY_RO -> "J_Romania"
+      Service.POSTNORD -> "K_Scandinavia"
+      Service.NOVA_POSHTA, Service.UKRPOSHTA -> "L_Ukraine"
+      else -> it.name
+    }
+  }.thenBy {
+     if (trackingId.isNotBlank()) {
+       val backend = getDeliveryService(it)
+       if (backend?.acceptsFormat(trackingId) == true) 0 else 1
+     } else {
+       0
+     }
+  })
 
   Scaffold(
       topBar = {
@@ -202,9 +263,46 @@ fun AddEditParcelView(
 
                   ExposedDropdownMenu(
                       expanded = expanded, onDismissRequest = { expanded = false }) {
+                        var currentCategory = ""
                         sortedServiceOptions.forEach { option ->
+                          val category = when (option) {
+                            Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX -> "Nemzetközi"
+                            Service.UNIUNI -> "Észak-Amerika"
+                            Service.BELPOST -> "Európa - Fehéroroszország"
+                            Service.SAMEDAY_BG -> "Európa - Bulgária"
+                            Service.PACKETA -> "Európa - Csehország"
+                            Service.DPD_UK, Service.EVRI -> "Európa - Egyesült Királyság"
+                            Service.AN_POST -> "Európa - Írország"
+                            Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "Európa - Lengyelország"
+                            Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU -> "Európa - Magyarország"
+                            Service.DPD_GER, Service.HERMES -> "Európa - Németország"
+                            Service.POSTE_ITALIANE -> "Európa - Olaszország"
+                            Service.SAMEDAY_RO -> "Európa - Románia"
+                            Service.POSTNORD -> "Európa - Skandinávia"
+                            Service.NOVA_POSHTA, Service.UKRPOSHTA -> "Európa - Ukrajna"
+                            Service.EKART -> "Ázsia - India"
+                            Service.SPX_TH -> "Ázsia - Thaiföld"
+                            else -> "Egyéb"
+                          }
+                          
+                          if (category != currentCategory) {
+                            currentCategory = category
+                            DropdownMenuItem(
+                                text = { 
+                                  Text(
+                                      text = category,
+                                      style = MaterialTheme.typography.labelMedium,
+                                      color = MaterialTheme.colorScheme.primary
+                                  ) 
+                                },
+                                onClick = { },
+                                enabled = false,
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            )
+                          }
+                          
                           DropdownMenuItem(
-                              text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
+                              text = { Text("  " + stringResource(getDeliveryServiceName(option)!!)) },
                               onClick = {
                                 service = option
                                 expanded = false
