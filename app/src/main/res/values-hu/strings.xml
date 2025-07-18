@@ -1,10 +1,38 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="about_app">App névjegye</string>
+  <string name="add">Hozzáadás</string>
   <string name="add_a_parcel">Csomag hozzáadása</string>
   <string name="add_parcel">Csomag hozzáadása</string>
   <string name="archive">Archivál</string>
   <string name="archive_prompt_question">Biztosan archiválod ezt a csomagot?</string>
   <string name="archive_prompt_text">Ha archiválod, akkor a csomag előzmény az eszközön kerül eltárolásra és frissítés sem történik.</string>
+  <string name="cancel">Mégse</string>
+  <string name="clipboard_paste">Beillesztés vágólapról</string>
+  <string name="clipboard_paste_enabled">Beillesztés gomb engedélyezése</string>
+  <string name="clipboard_paste_description">Beillesztés gomb megjelenítése a csomagszám mező mellett</string>
+  <string name="preferred_region">Előnyben részesített régió</string>
+  <string name="preferred_region_description">A régiód futárszolgálatainak előnyben részesítése</string>
+  <string name="region_international">Nemzetközi</string>
+  <string name="region_north_america">Észak-Amerika</string>
+  <string name="region_europe">Európa</string>
+  <string name="region_asia">Ázsia</string>
+  <string name="country_belarus">Fehéroroszország</string>
+  <string name="country_bulgaria">Bulgária</string>
+  <string name="country_czech">Csehország</string>
+  <string name="country_uk">Egyesült Királyság</string>
+  <string name="country_ireland">Írország</string>
+  <string name="country_poland">Lengyelország</string>
+  <string name="country_hungary">Magyarország</string>
+  <string name="country_germany">Németország</string>
+  <string name="country_italy">Olaszország</string>
+  <string name="country_romania">Románia</string>
+  <string name="country_scandinavia">Skandinávia</string>
+  <string name="country_ukraine">Ukrajna</string>
+  <string name="country_india">India</string>
+  <string name="country_thailand">Thaiföld</string>
+  <string name="select_parcel_to_view">Válassz egy csomagot a részletek megtekintéséhez</string>
+  <string name="home">Főoldal</string>
+  <string name="delete_confirmation">Biztosan törölni szeretnéd ezt a csomagot?</string>
   <string name="channel_description">Értesítés(ek) a csomag jelenlegi állapotáról</string>
   <string name="channel_name">Csomag események</string>
   <string name="current_status">Jelenlegi állapot</string>
@@ -17,7 +45,6 @@
   <string name="edit">Szerkesztés</string>
   <string name="edit_parcel">Csomag szerkesztése</string>
   <string name="go_back">Vissza</string>
-  <string name="human_name_error_text">A név nem lehet üres.</string>
   <string name="ignore">Figyelmen kívül hagy</string>
   <string name="license">Licenc</string>
   <string name="more_options">További lehetőségek</string>
@@ -67,4 +94,5 @@
   <string name="tracking_id_error_text">A csomagszám nem lehet üres.</string>
   <string name="unmetered_only_setting">Csak korlátlan hálózaton való frissítés</string>
   <string name="unmetered_only_setting_detail">A Parcel csak akkor fog frissítéseket keresni automatikusan, ha nem forgalmidíjas hálózatra van csatlakozva a készülék, pl. otthoni Wi-Fi.</string>
+  <string name="undefinied_packagename">Csomag</string>
 </resources>

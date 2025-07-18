@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -12,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,11 +38,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.itsvic.parceltracker.CLIPBOARD_PASTE_ENABLED
+import dev.itsvic.parceltracker.PREFERRED_REGION
 import dev.itsvic.parceltracker.R
+import dev.itsvic.parceltracker.dataStore
+import kotlinx.coroutines.flow.map
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.getDeliveryService
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
@@ -55,9 +65,14 @@ fun AddEditParcelView(
     onCompleted: (Parcel) -> Unit,
 ) {
   val isEdit = parcel != null
+  val context = LocalContext.current
+  val clipboardManager = LocalClipboardManager.current
+  val clipboardPasteEnabled by
+      context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
+  val preferredRegion by
+      context.dataStore.data.map { it[PREFERRED_REGION] ?: "" }.collectAsState("")
 
   var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
-  var nameError by remember { mutableStateOf(false) }
   var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
   var idError by remember { mutableStateOf(false) }
   var specifyPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
@@ -70,16 +85,11 @@ fun AddEditParcelView(
 
   fun validateInputs(): Boolean {
     // reset error states first
-    nameError = false
     idError = false
     serviceError = false
     postalCodeError = false
 
     var success = true
-    if (humanName.isBlank()) {
-      success = false
-      nameError = true
-    }
     if (trackingId.isBlank()) {
       success = false
       idError = true
@@ -101,8 +111,66 @@ fun AddEditParcelView(
   var expanded by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-  val sortedServiceOptions =
-      serviceOptions.sortedBy { getDeliveryService(it)?.acceptsFormat(trackingId)?.not() }
+  val sortedServiceOptions = serviceOptions.sortedWith(compareBy<Service> {
+    val isPreferredRegion = when (preferredRegion) {
+      "international" -> it in listOf(Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX)
+      "north_america" -> it == Service.UNIUNI
+      "europe" -> it in listOf(Service.BELPOST, Service.SAMEDAY_BG, Service.DPD_UK, Service.EVRI,
+        Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
+        Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
+        Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA, Service.PACKETA)
+      "asia" -> it in listOf(Service.EKART, Service.SPX_TH)
+      "belarus" -> it == Service.BELPOST
+      "bulgaria" -> it == Service.SAMEDAY_BG
+      "uk" -> it in listOf(Service.DPD_UK, Service.EVRI)
+      "ireland" -> it == Service.AN_POST
+      "poland" -> it in listOf(Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST)
+      "hungary" -> it in listOf(Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU)
+      "germany" -> it in listOf(Service.DPD_GER, Service.HERMES)
+      "italy" -> it == Service.POSTE_ITALIANE
+      "romania" -> it == Service.SAMEDAY_RO
+      "scandinavia" -> it == Service.POSTNORD
+      "ukraine" -> it in listOf(Service.NOVA_POSHTA, Service.UKRPOSHTA)
+      "india" -> it == Service.EKART
+      "thailand" -> it == Service.SPX_TH
+      else -> false
+    }
+    if (isPreferredRegion) 0 else 1
+  }.thenBy {
+    when (it) {
+      Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX -> 0
+      Service.UNIUNI -> 1
+      Service.BELPOST, Service.SAMEDAY_BG, Service.PACKETA, Service.DPD_UK, Service.EVRI,
+      Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
+      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
+      Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA -> 2
+      Service.EKART, Service.SPX_TH -> 3
+      else -> 4
+    }
+  }.thenBy {
+    when (it) {
+      Service.BELPOST -> "A_Belarus"
+      Service.SAMEDAY_BG -> "B_Bulgaria"
+      Service.PACKETA -> "C_Europe"
+      Service.DPD_UK, Service.EVRI -> "D_UK"
+      Service.AN_POST -> "E_Ireland"
+      Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "F_Poland"
+      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU -> "G_Hungary"
+      Service.DPD_GER, Service.HERMES -> "H_Germany"
+      Service.POSTE_ITALIANE -> "I_Italy"
+      Service.SAMEDAY_RO -> "J_Romania"
+      Service.POSTNORD -> "K_Scandinavia"
+      Service.NOVA_POSHTA, Service.UKRPOSHTA -> "L_Ukraine"
+      else -> it.name
+    }
+  }.thenBy {
+     if (trackingId.isNotBlank()) {
+       val backend = getDeliveryService(it)
+       if (backend?.acceptsFormat(trackingId) == true) 0 else 1
+     } else {
+       0
+     }
+  })
 
   Scaffold(
       topBar = {
@@ -132,15 +200,12 @@ fun AddEditParcelView(
                     value = humanName,
                     onValueChange = {
                       humanName = it
-                      nameError = false
                     },
                     singleLine = true,
                     label = { Text(stringResource(R.string.parcel_name)) },
                     modifier = Modifier.fillMaxWidth(),
-                    isError = nameError,
-                    supportingText = {
-                      if (nameError) Text(stringResource(R.string.human_name_error_text))
-                    })
+
+)
 
                 OutlinedTextField(
                     value = trackingId,
@@ -152,6 +217,24 @@ fun AddEditParcelView(
                     label = { Text(stringResource(R.string.tracking_id)) },
                     modifier = Modifier.fillMaxWidth(),
                     isError = idError,
+                    trailingIcon = {
+                      if (clipboardPasteEnabled) {
+                        IconButton(
+                            onClick = {
+                              clipboardManager.getText()?.text?.let { clipboardText ->
+                                trackingId = clipboardText
+                                idError = false
+                              }
+                            }
+                        ) {
+                          Icon(
+                                painter = painterResource(id = R.drawable.ic_contentpaste),
+                                contentDescription = stringResource(R.string.clipboard_paste),
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                      }
+                    },
                     supportingText = {
                       if (idError) Text(stringResource(R.string.tracking_id_error_text))
                     })
@@ -180,9 +263,46 @@ fun AddEditParcelView(
 
                   ExposedDropdownMenu(
                       expanded = expanded, onDismissRequest = { expanded = false }) {
+                        var currentCategory = ""
                         sortedServiceOptions.forEach { option ->
+                          val category = when (option) {
+                            Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX -> "Nemzetközi"
+                            Service.UNIUNI -> "Észak-Amerika"
+                            Service.BELPOST -> "Európa - Fehéroroszország"
+                            Service.SAMEDAY_BG -> "Európa - Bulgária"
+                            Service.PACKETA -> "Európa - Csehország"
+                            Service.DPD_UK, Service.EVRI -> "Európa - Egyesült Királyság"
+                            Service.AN_POST -> "Európa - Írország"
+                            Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "Európa - Lengyelország"
+                            Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU -> "Európa - Magyarország"
+                            Service.DPD_GER, Service.HERMES -> "Európa - Németország"
+                            Service.POSTE_ITALIANE -> "Európa - Olaszország"
+                            Service.SAMEDAY_RO -> "Európa - Románia"
+                            Service.POSTNORD -> "Európa - Skandinávia"
+                            Service.NOVA_POSHTA, Service.UKRPOSHTA -> "Európa - Ukrajna"
+                            Service.EKART -> "Ázsia - India"
+                            Service.SPX_TH -> "Ázsia - Thaiföld"
+                            else -> "Egyéb"
+                          }
+                          
+                          if (category != currentCategory) {
+                            currentCategory = category
+                            DropdownMenuItem(
+                                text = { 
+                                  Text(
+                                      text = category,
+                                      style = MaterialTheme.typography.labelMedium,
+                                      color = MaterialTheme.colorScheme.primary
+                                  ) 
+                                },
+                                onClick = { },
+                                enabled = false,
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            )
+                          }
+                          
                           DropdownMenuItem(
-                              text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
+                              text = { Text("  " + stringResource(getDeliveryServiceName(option)!!)) },
                               onClick = {
                                 service = option
                                 expanded = false
@@ -244,7 +364,7 @@ fun AddEditParcelView(
                           onCompleted(
                               Parcel(
                                   id = parcel?.id ?: 0,
-                                  humanName = humanName,
+                                  humanName = if (humanName.isBlank()) context.getString(R.string.undefinied_packagename) else humanName,
                                   parcelId = trackingId,
                                   service = service,
                                   postalCode =

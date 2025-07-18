@@ -19,7 +19,6 @@
   <string name="edit_parcel">Redigera paket</string>
   <string name="error_no_api_key_provided">Denna leveransservice kräver en API-nyckel men ingen angavs. Kontrollera appens inställningar för mer information.</string>
   <string name="go_back">Tillbaka</string>
-  <string name="human_name_error_text">Namn får inte lämnas tom.</string>
   <string name="ignore">Tysta</string>
   <string name="license">Licens</string>
   <string name="more_options">Fler alternativ</string>
@@ -72,4 +71,5 @@
   <string name="tracking_id_error_text">Spårningsnummer får inte lämnas tom.</string>
   <string name="unmetered_only_setting">Uppdatera endast på obegränsade nätverk</string>
   <string name="unmetered_only_setting_detail">Om aktiverat söker Parcel efter uppdateringar endast via obegränsade anslutningar, t.ex. ditt hem-Wi-Fi.</string>
+  <string name="undefinied_packagename">Paket</string>
 </resources>

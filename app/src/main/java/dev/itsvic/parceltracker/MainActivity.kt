@@ -22,9 +22,12 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
@@ -38,9 +41,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.itsvic.parceltracker.api.APIKeyMissingException
@@ -55,19 +61,25 @@ import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.db.deleteParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
+import dev.itsvic.parceltracker.ui.components.BottomNavBar
 import dev.itsvic.parceltracker.ui.views.AddEditParcelView
+import dev.itsvic.parceltracker.ui.views.AdaptiveParcelApp
 import dev.itsvic.parceltracker.ui.views.HomeView
 import dev.itsvic.parceltracker.ui.views.ParcelView
 import dev.itsvic.parceltracker.ui.views.SettingsView
+import dev.itsvic.parceltracker.ui.views.TabletNavigationItem
+import dev.itsvic.parceltracker.ui.views.TabletView
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okio.IOException
 
 class MainActivity : ComponentActivity() {
+  @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -78,10 +90,11 @@ class MainActivity : ComponentActivity() {
 
     setContent {
       val parcelToOpen by parcelToOpen
+      val windowSizeClass = calculateWindowSizeClass(this)
 
       ParcelTrackerTheme {
         Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-          ParcelAppNavigation(parcelToOpen)
+          ParcelAppNavigation(parcelToOpen, windowSizeClass)
         }
       }
     }
@@ -135,7 +148,7 @@ class MainActivity : ComponentActivity() {
 @Serializable data class EditParcelPage(val parcelDbId: Int)
 
 @Composable
-fun ParcelAppNavigation(parcelToOpen: Int) {
+fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.material3.windowsizeclass.WindowSizeClass) {
   val db = ParcelApplication.db
   val navController = rememberNavController()
   val scope = rememberCoroutineScope()
@@ -149,30 +162,211 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
   }
 
   val animDuration = 300
+  val navBackStackEntry by navController.currentBackStackEntryAsState()
+  val currentRoute = navBackStackEntry?.destination?.route ?: "HomePage"
+  
+  val isTablet = windowSizeClass.widthSizeClass >= androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Medium
 
-  NavHost(
-      navController = navController,
-      startDestination = HomePage,
-      enterTransition = {
-        slideIntoContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = tween(animDuration),
-            initialOffset = { it / 4 }) + fadeIn(tween(animDuration))
-      },
-      exitTransition = { fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f) },
-      popEnterTransition = { fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f) },
-      popExitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Start,
-            animationSpec = tween(animDuration),
-            targetOffset = { -it / 4 }) + fadeOut(tween(animDuration))
-      },
-  ) {
+  var selectedParcel by remember { mutableStateOf<Parcel?>(null) }
+  var apiParcel by remember { mutableStateOf<APIParcel?>(null) }
+  var isLoadingParcel by remember { mutableStateOf(false) }
+  var currentTabletNavItem by remember { mutableStateOf(TabletNavigationItem.HOME) }
+  
+  val parcels =
+      if (demoMode) derivedStateOf { demoModeParcels }
+      else db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
+
+  LaunchedEffect(selectedParcel) {
+    if (selectedParcel != null) {
+      isLoadingParcel = true
+      launch(Dispatchers.IO) {
+        try {
+          if (selectedParcel!!.isArchived) {
+             val localHistory = db.parcelHistoryDao().getAllById(selectedParcel!!.id).first()
+             if (localHistory.isNotEmpty()) {
+               apiParcel = APIParcel(
+                   selectedParcel!!.parcelId,
+                   localHistory.map { dev.itsvic.parceltracker.api.ParcelHistoryItem(it.description, it.time, it.location) },
+                   Status.Delivered // Assume delivered for archived parcels
+               )
+             } else {
+               apiParcel = context.getParcel(selectedParcel!!.parcelId, selectedParcel!!.postalCode, selectedParcel!!.service)
+             }
+          } else {
+            apiParcel = context.getParcel(selectedParcel!!.parcelId, selectedParcel!!.postalCode, selectedParcel!!.service)
+            
+            if (!demoMode) {
+              val zone = ZoneId.systemDefault()
+              val lastChange = apiParcel!!.history.first().time.atZone(zone).toInstant()
+              val status = ParcelStatus(selectedParcel!!.id, apiParcel!!.currentStatus, lastChange)
+              val existingStatus = db.parcelStatusDao().get(selectedParcel!!.id)
+              if (existingStatus == null) {
+                db.parcelStatusDao().insert(status)
+              } else {
+                db.parcelStatusDao().update(status)
+              }
+            }
+          }
+        } catch (e: Exception) {
+          Log.w("MainActivity", "Failed fetch: $e")
+          apiParcel = APIParcel(
+              selectedParcel!!.parcelId,
+              listOf(ParcelHistoryItem(context.getString(R.string.network_failure_detail), LocalDateTime.now(), "")),
+              Status.NetworkFailure
+          )
+        }
+        isLoadingParcel = false
+      }
+    } else {
+      apiParcel = null
+      isLoadingParcel = false
+    }
+  }
+  
+  if (isTablet) {
+    TabletView(
+        parcels = parcels.value,
+        selectedParcel = selectedParcel,
+        apiParcel = apiParcel,
+        isLoading = isLoadingParcel,
+        currentNavigationItem = currentTabletNavItem,
+        onNavigateToItem = { currentTabletNavItem = it },
+        onNavigateToParcel = { selectedParcel = it },
+        onNavigateToAddParcel = { currentTabletNavItem = TabletNavigationItem.ADD_PARCEL },
+        onNavigateToSettings = { currentTabletNavItem = TabletNavigationItem.SETTINGS },
+        onEditParcel = { parcel ->
+          selectedParcel = parcel
+          currentTabletNavItem = TabletNavigationItem.EDIT_PARCEL
+        },
+        onDeleteParcel = { parcel ->
+          if (demoMode) {
+            Toast.makeText(context, context.getString(R.string.demo_mode_action_block), Toast.LENGTH_SHORT).show()
+            return@TabletView
+          }
+          scope.launch(Dispatchers.IO) {
+            deleteParcel(parcel)
+            selectedParcel = null
+          }
+        },
+        onArchiveParcel = { parcel ->
+          if (parcel.isArchived || demoMode) {
+            if (demoMode) {
+              Toast.makeText(context, context.getString(R.string.demo_mode_action_block), Toast.LENGTH_SHORT).show()
+            }
+            return@TabletView
+          }
+          scope.launch(Dispatchers.IO) {
+            val updatedParcel = parcel.copy(isArchived = true)
+            db.parcelDao().update(updatedParcel)
+            if (apiParcel != null) {
+              db.parcelHistoryDao().insert(
+                  apiParcel!!.history.map {
+                    dev.itsvic.parceltracker.db.ParcelHistoryItem(
+                        description = it.description,
+                        location = it.location,
+                        time = it.time,
+                        parcelId = parcel.id
+                    )
+                  }
+              )
+            }
+            selectedParcel = updatedParcel
+          }
+        },
+        onArchivePromptDismissal = { parcel ->
+          if (demoMode) {
+            Toast.makeText(context, context.getString(R.string.demo_mode_action_block), Toast.LENGTH_SHORT).show()
+            return@TabletView
+          }
+          scope.launch(Dispatchers.IO) {
+            val updatedParcel = parcel.copy(archivePromptDismissed = true)
+            db.parcelDao().update(updatedParcel)
+            selectedParcel = updatedParcel
+          }
+        },
+        settingsContent = {
+          SettingsView(onBackPressed = { currentTabletNavItem = TabletNavigationItem.HOME })
+        },
+        addParcelContent = {
+          AddEditParcelView(
+              null,
+              onBackPressed = { currentTabletNavItem = TabletNavigationItem.HOME },
+              onCompleted = { parcel ->
+                if (demoMode) {
+                  Toast.makeText(context, context.getString(R.string.demo_mode_action_block), Toast.LENGTH_SHORT).show()
+                  return@AddEditParcelView
+                }
+                scope.launch(Dispatchers.IO) {
+                  val id = db.parcelDao().insert(parcel)
+                  currentTabletNavItem = TabletNavigationItem.HOME
+                  selectedParcel = parcel.copy(id = id.toInt())
+                }
+              }
+          )
+        },
+        editParcelContent = {
+          selectedParcel?.let { parcel ->
+            AddEditParcelView(
+                parcel,
+                onBackPressed = { currentTabletNavItem = TabletNavigationItem.HOME },
+                onCompleted = { updatedParcel ->
+                  if (demoMode) {
+                    Toast.makeText(context, context.getString(R.string.demo_mode_action_block), Toast.LENGTH_SHORT).show()
+                    return@AddEditParcelView
+                  }
+                  scope.launch(Dispatchers.IO) {
+                    db.parcelDao().update(updatedParcel)
+                    currentTabletNavItem = TabletNavigationItem.HOME
+                    selectedParcel = updatedParcel
+                  }
+                }
+            )
+          }
+        }
+    )
+    return
+  }
+
+  Scaffold(
+      bottomBar = {
+        if (currentRoute.contains("HomePage") || currentRoute.contains("SettingsPage") || currentRoute.contains("AddParcelPage")) {
+          BottomNavBar(
+              currentRoute = currentRoute,
+              onNavigateToHome = {
+                navController.navigate(route = HomePage) {
+                  popUpTo(HomePage) { inclusive = true }
+                }
+              },
+              onNavigateToAddParcel = {
+                navController.navigate(route = AddParcelPage)
+              },
+              onNavigateToSettings = {
+                navController.navigate(route = SettingsPage)
+              }
+          )
+        }
+      }
+  ) { innerPadding ->
+    NavHost(
+        navController = navController,
+        startDestination = HomePage,
+        enterTransition = {
+          slideIntoContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.Start,
+              animationSpec = tween(animDuration),
+              initialOffset = { it / 4 }) + fadeIn(tween(animDuration))
+        },
+        exitTransition = { fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f) },
+        popEnterTransition = { fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f) },
+        popExitTransition = {
+          slideOutOfContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.Start,
+              animationSpec = tween(animDuration),
+              targetOffset = { -it / 4 }) + fadeOut(tween(animDuration))
+        },
+        modifier = Modifier.padding(innerPadding)
+    ) {
     composable<HomePage> {
-      val parcels =
-          if (demoMode) derivedStateOf { demoModeParcels }
-          else db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
-
       HomeView(
           parcels = parcels.value,
           onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
@@ -393,5 +587,6 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
           },
       )
     }
+  }
   }
 }
