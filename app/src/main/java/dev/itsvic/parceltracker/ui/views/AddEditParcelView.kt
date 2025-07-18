@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -114,18 +115,17 @@ fun AddEditParcelView(
     val isPreferredRegion = when (preferredRegion) {
       "international" -> it in listOf(Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX)
       "north_america" -> it == Service.UNIUNI
-      "europe" -> it in listOf(Service.BELPOST, Service.SAMEDAY_BG, Service.PACKETA, Service.DPD_UK, Service.EVRI,
+      "europe" -> it in listOf(Service.BELPOST, Service.SAMEDAY_BG, Service.DPD_UK, Service.EVRI,
         Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
         Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
-        Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA)
+        Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA, Service.PACKETA)
       "asia" -> it in listOf(Service.EKART, Service.SPX_TH)
       "belarus" -> it == Service.BELPOST
       "bulgaria" -> it == Service.SAMEDAY_BG
-      "czech" -> it == Service.PACKETA
       "uk" -> it in listOf(Service.DPD_UK, Service.EVRI)
       "ireland" -> it == Service.AN_POST
       "poland" -> it in listOf(Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST)
-      "hungary" -> it in listOf(Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.PACKETA)
+      "hungary" -> it in listOf(Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU)
       "germany" -> it in listOf(Service.DPD_GER, Service.HERMES)
       "italy" -> it == Service.POSTE_ITALIANE
       "romania" -> it == Service.SAMEDAY_RO
@@ -151,7 +151,7 @@ fun AddEditParcelView(
     when (it) {
       Service.BELPOST -> "A_Belarus"
       Service.SAMEDAY_BG -> "B_Bulgaria"
-      Service.PACKETA -> "C_Czech"
+      Service.PACKETA -> "C_Europe"
       Service.DPD_UK, Service.EVRI -> "D_UK"
       Service.AN_POST -> "E_Ireland"
       Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "F_Poland"
@@ -228,7 +228,7 @@ fun AddEditParcelView(
                             }
                         ) {
                           Icon(
-                                Icons.Filled.Add,
+                                painter = painterResource(id = R.drawable.ic_contentpaste),
                                 contentDescription = stringResource(R.string.clipboard_paste),
                                 modifier = Modifier.size(20.dp)
                             )

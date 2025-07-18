@@ -31,6 +31,8 @@
   <string name="country_ukraine">Ukraine</string>
   <string name="country_india">India</string>
   <string name="country_thailand">Thailand</string>
+  <string name="select_parcel_to_view">Select a parcel to view its details</string>
+  <string name="home">Home</string>
   <string name="delete_confirmation">Are you sure you want to delete this parcel?</string>
   <string name="channel_description">Notifications about the current status of the parcel</string>
   <string name="channel_name">Parcel events</string>
@@ -47,7 +49,6 @@
   <string name="edit_parcel">Edit parcel</string>
   <string name="error_no_api_key_provided">This delivery service requires an API key, but none was provided. Check the app\'s settings for more information.</string>
   <string name="go_back">Go back</string>
-  <string name="home">Home</string>
   <string name="ignore">Ignore</string>
   <string name="license">License</string>
   <string name="more_options">More options</string>

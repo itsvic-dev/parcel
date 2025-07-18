@@ -30,6 +30,8 @@
   <string name="country_ukraine">Ukrajna</string>
   <string name="country_india">India</string>
   <string name="country_thailand">Thaiföld</string>
+  <string name="select_parcel_to_view">Válassz egy csomagot a részletek megtekintéséhez</string>
+  <string name="home">Főoldal</string>
   <string name="delete_confirmation">Biztosan törölni szeretnéd ezt a csomagot?</string>
   <string name="channel_description">Értesítés(ek) a csomag jelenlegi állapotáról</string>
   <string name="channel_name">Csomag események</string>
@@ -43,7 +45,6 @@
   <string name="edit">Szerkesztés</string>
   <string name="edit_parcel">Csomag szerkesztése</string>
   <string name="go_back">Vissza</string>
-  <string name="home">Főoldal</string>
   <string name="ignore">Figyelmen kívül hagy</string>
   <string name="license">Licenc</string>
   <string name="more_options">További lehetőségek</string>

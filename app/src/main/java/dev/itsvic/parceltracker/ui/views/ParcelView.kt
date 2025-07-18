@@ -58,6 +58,7 @@ fun ParcelView(
     onDelete: () -> Unit,
     onArchive: () -> Unit,
     onArchivePromptDismissal: () -> Unit,
+    showBackButton: Boolean = true,
 ) {
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -66,8 +67,10 @@ fun ParcelView(
         MediumTopAppBar(
             title = { Text(humanName) },
             navigationIcon = {
-              IconButton(onClick = onBackPressed) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
+              if (showBackButton) {
+                IconButton(onClick = onBackPressed) {
+                  Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
+                }
               }
             },
             scrollBehavior = scrollBehavior,

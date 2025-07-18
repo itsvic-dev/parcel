@@ -31,9 +31,16 @@ import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
 @Composable
-fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
+fun ParcelRow(parcel: Parcel, status: Status?, isSelected: Boolean = false, onClick: () -> Unit) {
   Row(
-      modifier = Modifier.clickable(onClick = onClick).fillMaxWidth().padding(16.dp, 12.dp),
+      modifier = Modifier
+          .clickable(onClick = onClick)
+          .fillMaxWidth()
+          .background(
+              if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+              else MaterialTheme.colorScheme.surface
+          )
+          .padding(16.dp, 12.dp),
       horizontalArrangement = Arrangement.spacedBy(16.dp),
       verticalAlignment = Alignment.CenterVertically) {
         if (status != null)
