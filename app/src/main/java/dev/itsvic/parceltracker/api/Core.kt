@@ -56,6 +56,7 @@ enum class Service {
   // Asia
   EKART,
   SPX_TH,
+  IMILE,
 }
 
 val serviceOptions =
@@ -100,6 +101,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
     Service.EKART -> EKartDeliveryService
     Service.SPX_TH -> SPXThailandDeliveryService
+    Service.IMILE -> IMileDeliveryService
 
     Service.EXAMPLE -> ExampleDeliveryService
     else -> null

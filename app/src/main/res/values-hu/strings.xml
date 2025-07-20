@@ -65,6 +65,8 @@
   <string name="service_error_text">Ki kell választani egy futárszolgálatot.</string>
   <string name="service_example">Minta Posta</string>
   <string name="service_gls_hungary">GLS Magyarország</string>
+  <string name="service_express_one">Express One Magyarország</string>
+  <string name="service_imile" translatable="false">iMile</string>
   <string name="service_hungarian_post">Magyar Posta</string>
   <string name="service_polish_post">Lengyel Posta</string>
   <string name="service_poste_italiane">Olasz Posta</string>

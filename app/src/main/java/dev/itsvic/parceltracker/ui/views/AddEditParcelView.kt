@@ -131,6 +131,7 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
                     Service.GLS_HUNGARY,
                     Service.MAGYAR_POSTA,
                     Service.SAMEDAY_HU,
+                    Service.IMILE,
                     Service.DPD_GER,
                     Service.HERMES,
                     Service.POSTE_ITALIANE,
@@ -161,6 +162,7 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
                     Service.MAGYAR_POSTA,
                     Service.SAMEDAY_HU,
                     Service.EXPRESS_ONE,
+                    Service.IMILE,
                   )
               "germany" -> it in listOf(Service.DPD_GER, Service.HERMES)
               "italy" -> it == Service.POSTE_ITALIANE
@@ -201,11 +203,12 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
             Service.SAMEDAY_RO,
             Service.POSTNORD,
             Service.NOVA_POSHTA,
-            Service.UKRPOSHTA -> 2
             Service.EKART,
-            Service.SPX_TH -> 3
+            Service.SPX_TH,
+            Service.IMILE,
+            Service.UKRPOSHTA -> 2
             else -> 4
-          }
+          } as Comparable<*>?
         }
         .thenBy {
           when (it) {
@@ -222,7 +225,8 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
             Service.GLS_HUNGARY,
             Service.MAGYAR_POSTA,
             Service.SAMEDAY_HU,
-            Service.EXPRESS_ONE -> "G_Hungary"
+            Service.EXPRESS_ONE,
+            Service.IMILE -> "G_Hungary"
             Service.DPD_GER,
             Service.HERMES -> "H_Germany"
             Service.POSTE_ITALIANE -> "I_Italy"
@@ -345,8 +349,8 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
                   Service.INPOST,
                   Service.ORLEN_PACZKA,
                   Service.POLISH_POST -> "Európa - Lengyelország"
-                  Service.GLS_HUNGARY,
-                  Service.MAGYAR_POSTA,
+                  Service.GLS_HUNGARY -> "Európa - Magyarország"
+                  Service.MAGYAR_POSTA -> "Európa - Magyarország"
                   Service.SAMEDAY_HU -> "Európa - Magyarország"
                   Service.DPD_GER,
                   Service.HERMES -> "Európa - Németország"
@@ -357,6 +361,8 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
                   Service.UKRPOSHTA -> "Európa - Ukrajna"
                   Service.EKART -> "Ázsia - India"
                   Service.SPX_TH -> "Ázsia - Thaiföld"
+                  Service.IMILE -> "Európa - Magyarország"
+                  Service.EXPRESS_ONE -> "Európa - Magyarország"
                   else -> "Egyéb"
                 }
 
@@ -437,9 +443,7 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
                 onCompleted(
                   Parcel(
                     id = parcel?.id ?: 0,
-                    humanName =
-                      if (humanName.isBlank()) context.getString(R.string.undefinied_packagename)
-                      else humanName,
+                    humanName = humanName.ifBlank { context.getString(R.string.undefinied_packagename) },
                     parcelId = trackingId,
                     service = service,
                     postalCode =
