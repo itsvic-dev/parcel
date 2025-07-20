@@ -76,6 +76,7 @@
   <string name="service_error_text">You must select a service.</string>
   <string name="service_evri" translatable="false">Evri</string>
   <string name="service_example">Example Post</string>
+  <string name="service_express_one">Express One Hungary</string>
   <string name="service_gls" translatable="false">GLS</string>
   <string name="service_gls_hungary">GLS Hungary</string>
   <string name="service_hermes" translatable="false">Hermes</string>
