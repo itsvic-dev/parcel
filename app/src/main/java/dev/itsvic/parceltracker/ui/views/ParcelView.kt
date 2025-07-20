@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -41,7 +40,6 @@ import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.ui.components.ParcelActionBar
 import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
-
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.LocalDateTime
 
@@ -93,36 +91,36 @@ fun ParcelView(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                  getDeliveryServiceName(service)?.let {
-                    Text(
-                        stringResource(it),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                  }
+              getDeliveryServiceName(service)?.let {
+                Text(
+                    stringResource(it),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+              }
 
-                  SelectionContainer {
-                    Text(
-                        parcel.id,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                  }
-                }
+              SelectionContainer {
+                Text(
+                    parcel.id,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+              }
+            }
           }
 
           items(parcel.properties.entries.toList()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                  Text(
-                      stringResource(it.key),
-                      style = MaterialTheme.typography.bodyMedium,
-                      color = MaterialTheme.colorScheme.onSurfaceVariant)
-                  Text(
-                      it.value,
-                      style = MaterialTheme.typography.bodyMedium,
-                      color = MaterialTheme.colorScheme.onSurfaceVariant,
-                      textAlign = TextAlign.End)
-                }
+              Text(
+                  stringResource(it.key),
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant)
+              Text(
+                  it.value,
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  textAlign = TextAlign.End)
+            }
           }
 
           item {
@@ -136,31 +134,31 @@ fun ParcelView(
           if (!isArchived &&
               !archivePromptDismissed &&
               (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp))
-              item {
-                Card(
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.padding(bottom = 16.dp)) {
-                      Column(
-                          Modifier.padding(24.dp),
-                          verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text(
-                                stringResource(R.string.archive_prompt_question),
-                                style = MaterialTheme.typography.titleMedium)
-                            Text(stringResource(R.string.archive_prompt_text))
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                modifier = Modifier.fillMaxWidth()) {
-                                  FilledTonalButton(
-                                      onArchivePromptDismissal, modifier = Modifier.weight(1f)) {
-                                        Text(stringResource(R.string.ignore))
-                                      }
-                                  Button(onArchive, modifier = Modifier.weight(1f)) {
-                                    Text(stringResource(R.string.archive))
-                                  }
-                                }
-                          }
+            item {
+              Card(
+                  shape = RoundedCornerShape(16.dp),
+                  modifier = Modifier.padding(bottom = 16.dp)) {
+                Column(
+                    Modifier.padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                  Text(
+                      stringResource(R.string.archive_prompt_question),
+                      style = MaterialTheme.typography.titleMedium)
+                  Text(stringResource(R.string.archive_prompt_text))
+                  Row(
+                      horizontalArrangement = Arrangement.spacedBy(16.dp),
+                      modifier = Modifier.fillMaxWidth()) {
+                    FilledTonalButton(
+                        onArchivePromptDismissal, modifier = Modifier.weight(1f)) {
+                      Text(stringResource(R.string.ignore))
                     }
+                    Button(onArchive, modifier = Modifier.weight(1f)) {
+                      Text(stringResource(R.string.archive))
+                    }
+                  }
+                }
               }
+            }
 
           items(parcel.history.size) { index ->
             if (index > 0) HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))

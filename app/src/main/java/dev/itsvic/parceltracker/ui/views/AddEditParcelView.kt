@@ -113,19 +113,53 @@ fun AddEditParcelView(
 
   val sortedServiceOptions = serviceOptions.sortedWith(compareBy<Service> {
     val isPreferredRegion = when (preferredRegion) {
-      "international" -> it in listOf(Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX)
+      "international" ->
+        it in
+          listOf(Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX)
       "north_america" -> it == Service.UNIUNI
-      "europe" -> it in listOf(Service.BELPOST, Service.SAMEDAY_BG, Service.DPD_UK, Service.EVRI,
-         Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
-         Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.DPD_GER, Service.HERMES,
-         Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA, Service.PACKETA, Service.EXPRESS_ONE)
+      "europe" ->
+        it in
+          listOf(
+            Service.BELPOST,
+            Service.SAMEDAY_BG,
+            Service.DPD_UK,
+            Service.EVRI,
+            Service.AN_POST,
+            Service.ALLEGRO_ONEBOX,
+            Service.INPOST,
+            Service.ORLEN_PACZKA,
+            Service.POLISH_POST,
+            Service.GLS_HUNGARY,
+            Service.MAGYAR_POSTA,
+            Service.SAMEDAY_HU,
+            Service.DPD_GER,
+            Service.HERMES,
+            Service.POSTE_ITALIANE,
+            Service.SAMEDAY_RO,
+            Service.POSTNORD,
+            Service.NOVA_POSHTA,
+            Service.UKRPOSHTA,
+            Service.PACKETA,
+            Service.EXPRESS_ONE)
       "asia" -> it in listOf(Service.EKART, Service.SPX_TH)
       "belarus" -> it == Service.BELPOST
       "bulgaria" -> it == Service.SAMEDAY_BG
       "uk" -> it in listOf(Service.DPD_UK, Service.EVRI)
       "ireland" -> it == Service.AN_POST
-      "poland" -> it in listOf(Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST)
-      "hungary" -> it in listOf(Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.EXPRESS_ONE)
+      "poland" ->
+        it in
+          listOf(
+            Service.ALLEGRO_ONEBOX,
+            Service.INPOST,
+            Service.ORLEN_PACZKA,
+            Service.POLISH_POST)
+      "hungary" ->
+        it in
+          listOf(
+            Service.GLS_HUNGARY,
+            Service.MAGYAR_POSTA,
+            Service.SAMEDAY_HU,
+            Service.EXPRESS_ONE)
       "germany" -> it in listOf(Service.DPD_GER, Service.HERMES)
       "italy" -> it == Service.POSTE_ITALIANE
       "romania" -> it == Service.SAMEDAY_RO
@@ -140,10 +174,27 @@ fun AddEditParcelView(
     when (it) {
       Service.CAINIAO, Service.DHL, Service.GLS, Service.UPS, Service.FPX -> 0
       Service.UNIUNI -> 1
-      Service.BELPOST, Service.SAMEDAY_BG, Service.PACKETA, Service.DPD_UK, Service.EVRI,
-      Service.AN_POST, Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST,
-      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.EXPRESS_ONE, Service.DPD_GER, Service.HERMES,
-      Service.POSTE_ITALIANE, Service.SAMEDAY_RO, Service.POSTNORD, Service.NOVA_POSHTA, Service.UKRPOSHTA -> 2
+      Service.BELPOST,
+      Service.SAMEDAY_BG,
+      Service.PACKETA,
+      Service.DPD_UK,
+      Service.EVRI,
+      Service.AN_POST,
+      Service.ALLEGRO_ONEBOX,
+      Service.INPOST,
+      Service.ORLEN_PACZKA,
+      Service.POLISH_POST,
+      Service.GLS_HUNGARY,
+      Service.MAGYAR_POSTA,
+      Service.SAMEDAY_HU,
+      Service.EXPRESS_ONE,
+      Service.DPD_GER,
+      Service.HERMES,
+      Service.POSTE_ITALIANE,
+      Service.SAMEDAY_RO,
+      Service.POSTNORD,
+      Service.NOVA_POSHTA,
+      Service.UKRPOSHTA -> 2
       Service.EKART, Service.SPX_TH -> 3
       else -> 4
     }
@@ -154,8 +205,14 @@ fun AddEditParcelView(
       Service.PACKETA -> "C_Europe"
       Service.DPD_UK, Service.EVRI -> "D_UK"
       Service.AN_POST -> "E_Ireland"
-      Service.ALLEGRO_ONEBOX, Service.INPOST, Service.ORLEN_PACZKA, Service.POLISH_POST -> "F_Poland"
-      Service.GLS_HUNGARY, Service.MAGYAR_POSTA, Service.SAMEDAY_HU, Service.EXPRESS_ONE -> "G_Hungary"
+      Service.ALLEGRO_ONEBOX,
+      Service.INPOST,
+      Service.ORLEN_PACZKA,
+      Service.POLISH_POST -> "F_Poland"
+      Service.GLS_HUNGARY,
+      Service.MAGYAR_POSTA,
+      Service.SAMEDAY_HU,
+      Service.EXPRESS_ONE -> "G_Hungary"
       Service.DPD_GER, Service.HERMES -> "H_Germany"
       Service.POSTE_ITALIANE -> "I_Italy"
       Service.SAMEDAY_RO -> "J_Romania"

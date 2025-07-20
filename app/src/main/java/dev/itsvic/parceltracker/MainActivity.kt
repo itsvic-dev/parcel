@@ -32,7 +32,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -112,20 +111,19 @@ class MainActivity : ComponentActivity() {
   @RequiresApi(Build.VERSION_CODES.TIRAMISU)
   fun handleNotificationPermissionStuff() {
     val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean
-          ->
-          if (isGranted) {
-            Log.d("MainActivity", "Notification permissions granted")
-          } else {
-            Log.d("MainActivity", "Notification permissions NOT granted")
-          }
+      registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+          Log.d("MainActivity", "Notification permissions granted")
+        } else {
+          Log.d("MainActivity", "Notification permissions NOT granted")
         }
+      }
 
     // Notification checks
     when {
       ContextCompat.checkSelfPermission(
-          applicationContext,
-          Manifest.permission.POST_NOTIFICATIONS,
+        applicationContext,
+        Manifest.permission.POST_NOTIFICATIONS,
       ) == PackageManager.PERMISSION_GRANTED -> {
         // We can post notifications
       }

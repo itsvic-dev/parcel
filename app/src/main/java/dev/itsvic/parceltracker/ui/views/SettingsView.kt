@@ -117,12 +117,12 @@ fun SettingsView(
   ) { innerPadding ->
     Column(Modifier.padding(innerPadding).verticalScroll(rememberScrollState())) {
       Row(
-          modifier =
-              Modifier.clickable { setUnmeteredOnly(unmeteredOnly.not()) }
-                  .padding(16.dp, 12.dp)
-                  .fillMaxWidth(),
-          horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically,
+        modifier =
+          Modifier.clickable { setUnmeteredOnly(unmeteredOnly.not()) }
+            .padding(16.dp, 12.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
       ) {
         Column(modifier = Modifier.fillMaxWidth(0.8f)) {
           Text(stringResource(R.string.unmetered_only_setting))
@@ -134,12 +134,12 @@ fun SettingsView(
       }
 
       Row(
-          modifier =
-              Modifier.clickable { setValue(CLIPBOARD_PASTE_ENABLED, clipboardPasteEnabled.not()) }
-                  .padding(16.dp, 12.dp)
-                  .fillMaxWidth(),
-          horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically,
+        modifier =
+          Modifier.clickable { setValue(CLIPBOARD_PASTE_ENABLED, clipboardPasteEnabled.not()) }
+            .padding(16.dp, 12.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
       ) {
         Column(modifier = Modifier.fillMaxWidth(0.8f)) {
           Text(stringResource(R.string.clipboard_paste_enabled))
@@ -147,7 +147,9 @@ fun SettingsView(
               stringResource(R.string.clipboard_paste_description),
               style = MaterialTheme.typography.bodyMedium)
         }
-        Switch(checked = clipboardPasteEnabled, onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) })
+        Switch(
+          checked = clipboardPasteEnabled,
+          onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) })
       }
 
       // Preferred Region Setting
