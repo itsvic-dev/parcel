@@ -1,13 +1,16 @@
 📦 Parcel is an app that helps you keep track of all your parcels.
 
 Some of Parcel's features:
+
 - 📱 Clean and simple interface: Focus solely on your parcels, not how to use the app.
 - 💬 Notifications: Get notified every time a parcel progresses further.
 - 🚫 No ads or other annoyances.
 - 👥 Free and open-source: https://github.com/itsvic-dev/parcel
 
 --- Supported services ---
+
 International:
+
 - 4PX
 - Cainiao
 - DHL
@@ -15,13 +18,16 @@ International:
 - UPS
 
 North America:
+
 - UniUni
 
 United Kingdom:
+
 - DPD UK
 - Evri
 
 Europe:
+
 - Allegro One Box (PL)
 - An Post (IE)
 - Belpost (BY)
@@ -41,5 +47,6 @@ Europe:
 - Ukrposhta (UA)
 
 Asia:
+
 - eKart (IN)
 - SPX Thailand
