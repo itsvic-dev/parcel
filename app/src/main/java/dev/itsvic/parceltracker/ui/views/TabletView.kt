@@ -56,70 +56,70 @@ enum class TabletNavigationItem {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TabletView(
-    parcels: List<ParcelWithStatus>,
-    selectedParcel: Parcel?,
-    apiParcel: APIParcel?,
-    isLoading: Boolean,
-    currentNavigationItem: TabletNavigationItem,
-    onNavigateToItem: (TabletNavigationItem) -> Unit,
-    onNavigateToParcel: (Parcel) -> Unit,
-    onNavigateToAddParcel: () -> Unit,
-    onNavigateToSettings: () -> Unit,
-    onEditParcel: (Parcel) -> Unit,
-    onDeleteParcel: (Parcel) -> Unit,
-    onArchiveParcel: (Parcel) -> Unit,
-    onArchivePromptDismissal: (Parcel) -> Unit,
-    settingsContent: @Composable () -> Unit = {},
-    addParcelContent: @Composable () -> Unit = {},
-    editParcelContent: @Composable () -> Unit = {}
+  parcels: List<ParcelWithStatus>,
+  selectedParcel: Parcel?,
+  apiParcel: APIParcel?,
+  isLoading: Boolean,
+  currentNavigationItem: TabletNavigationItem,
+  onNavigateToItem: (TabletNavigationItem) -> Unit,
+  onNavigateToParcel: (Parcel) -> Unit,
+  onNavigateToAddParcel: () -> Unit,
+  onNavigateToSettings: () -> Unit,
+  onEditParcel: (Parcel) -> Unit,
+  onDeleteParcel: (Parcel) -> Unit,
+  onArchiveParcel: (Parcel) -> Unit,
+  onArchivePromptDismissal: (Parcel) -> Unit,
+  settingsContent: @Composable () -> Unit = {},
+  addParcelContent: @Composable () -> Unit = {},
+  editParcelContent: @Composable () -> Unit = {}
 ) {
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-  
+
   Row(modifier = Modifier.fillMaxSize()) {
     Card(
-        modifier = Modifier
-            .width(400.dp)
-            .fillMaxHeight()
-            .padding(8.dp)
+      modifier = Modifier
+        .width(400.dp)
+        .fillMaxHeight()
+        .padding(8.dp)
     ) {
       Column {
         Text(
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 8.dp)
+          text = stringResource(R.string.app_name),
+          style = MaterialTheme.typography.headlineSmall,
+          modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 8.dp)
         )
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(horizontal = 8.dp)
+          modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+            .padding(horizontal = 8.dp)
         ) {
           if (parcels.isEmpty()) {
             item {
               Card(
-                  modifier = Modifier
-                      .fillMaxWidth()
-                      .padding(8.dp)
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(8.dp)
               ) {
                 Text(
-                    stringResource(R.string.no_parcels_flavor),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(16.dp)
+                  stringResource(R.string.no_parcels_flavor),
+                  style = MaterialTheme.typography.bodyMedium,
+                  modifier = Modifier.padding(16.dp)
                 )
               }
             }
           } else {
             items(parcels.reversed()) { parcel ->
               Card(
-                  modifier = Modifier
-                      .fillMaxWidth()
-                      .padding(horizontal = 8.dp, vertical = 4.dp)
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(horizontal = 8.dp, vertical = 4.dp)
               ) {
                 ParcelRow(
-                    parcel.parcel,
-                    parcel.status?.status,
-                    isSelected = selectedParcel?.id == parcel.parcel.id
+                  parcel.parcel,
+                  parcel.status?.status,
+                  isSelected = selectedParcel?.id == parcel.parcel.id
                 ) {
                   onNavigateToParcel(parcel.parcel)
                 }
@@ -131,25 +131,25 @@ fun TabletView(
         HorizontalDivider()
 
         NavigationBar(
-            modifier = Modifier.fillMaxWidth()
+          modifier = Modifier.fillMaxWidth()
         ) {
           NavigationBarItem(
-              icon = { Icon(Icons.Filled.Home, contentDescription = null) },
-              label = { Text(stringResource(R.string.home)) },
-              selected = currentNavigationItem == TabletNavigationItem.HOME,
-              onClick = { onNavigateToItem(TabletNavigationItem.HOME) }
+            icon = { Icon(Icons.Filled.Home, contentDescription = null) },
+            label = { Text(stringResource(R.string.home)) },
+            selected = currentNavigationItem == TabletNavigationItem.HOME,
+            onClick = { onNavigateToItem(TabletNavigationItem.HOME) }
           )
           NavigationBarItem(
-              icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-              label = { Text(stringResource(R.string.add_parcel)) },
-              selected = currentNavigationItem == TabletNavigationItem.ADD_PARCEL,
-              onClick = { onNavigateToItem(TabletNavigationItem.ADD_PARCEL) }
+            icon = { Icon(Icons.Filled.Add, contentDescription = null) },
+            label = { Text(stringResource(R.string.add_parcel)) },
+            selected = currentNavigationItem == TabletNavigationItem.ADD_PARCEL,
+            onClick = { onNavigateToItem(TabletNavigationItem.ADD_PARCEL) }
           )
           NavigationBarItem(
-              icon = { Icon(Icons.Filled.Settings, contentDescription = null) },
-              label = { Text(stringResource(R.string.settings)) },
-              selected = currentNavigationItem == TabletNavigationItem.SETTINGS,
-              onClick = { onNavigateToItem(TabletNavigationItem.SETTINGS) }
+            icon = { Icon(Icons.Filled.Settings, contentDescription = null) },
+            label = { Text(stringResource(R.string.settings)) },
+            selected = currentNavigationItem == TabletNavigationItem.SETTINGS,
+            onClick = { onNavigateToItem(TabletNavigationItem.SETTINGS) }
           )
         }
       }
@@ -157,67 +157,67 @@ fun TabletView(
     
     // Right panel: Content area
     Card(
-        modifier = Modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .padding(8.dp)
+      modifier = Modifier
+        .weight(1f)
+        .fillMaxHeight()
+        .padding(8.dp)
     ) {
       when (currentNavigationItem) {
         TabletNavigationItem.HOME -> {
           if (selectedParcel != null) {
             if (isLoading) {
               Box(
-                  modifier = Modifier.fillMaxSize(),
-                  contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
               ) {
                 CircularProgressIndicator()
               }
             } else if (apiParcel != null) {
               ParcelView(
-                  parcel = apiParcel,
-                  humanName = selectedParcel.humanName,
-                  service = selectedParcel.service,
-                  isArchived = selectedParcel.isArchived,
-                  archivePromptDismissed = selectedParcel.archivePromptDismissed,
-                  onBackPressed = { /* No back button in tablet mode */ },
-                  onEdit = { onEditParcel(selectedParcel) },
-                  onDelete = { onDeleteParcel(selectedParcel) },
-                  onArchive = { onArchiveParcel(selectedParcel) },
-                  onArchivePromptDismissal = { onArchivePromptDismissal(selectedParcel) },
-                  showBackButton = false
+                parcel = apiParcel,
+                humanName = selectedParcel.humanName,
+                service = selectedParcel.service,
+                isArchived = selectedParcel.isArchived,
+                archivePromptDismissed = selectedParcel.archivePromptDismissed,
+                onBackPressed = { /* No back button in tablet mode */ },
+                onEdit = { onEditParcel(selectedParcel) },
+                onDelete = { onDeleteParcel(selectedParcel) },
+                onArchive = { onArchiveParcel(selectedParcel) },
+                onArchivePromptDismissal = { onArchivePromptDismissal(selectedParcel) },
+                showBackButton = false
               )
             }
           } else {
             Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+              modifier = Modifier.fillMaxSize(),
+              contentAlignment = Alignment.Center
             ) {
               Column(
-                  horizontalAlignment = Alignment.CenterHorizontally,
-                  verticalArrangement = Arrangement.Center
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
               ) {
                 Text(
-                    text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                  text = stringResource(R.string.app_name),
+                  style = MaterialTheme.typography.headlineMedium,
+                  modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Text(
-                    text = stringResource(R.string.select_parcel_to_view),
-                    style = MaterialTheme.typography.bodyLarge
+                  text = stringResource(R.string.select_parcel_to_view),
+                  style = MaterialTheme.typography.bodyLarge
                 )
               }
             }
           }
         }
-        
+
         TabletNavigationItem.ADD_PARCEL -> {
           addParcelContent()
         }
-        
+
         TabletNavigationItem.EDIT_PARCEL -> {
           editParcelContent()
         }
-        
+
         TabletNavigationItem.SETTINGS -> {
           settingsContent()
         }

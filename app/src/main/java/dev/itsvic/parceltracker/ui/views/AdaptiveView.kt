@@ -31,10 +31,10 @@ fun AdaptiveParcelApp(
     homeContent: @Composable () -> Unit
 ) {
     val isTablet = windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
-    
+
     if (isTablet) {
         var currentNavigationItem by remember { mutableStateOf(TabletNavigationItem.HOME) }
-        
+
         TabletView(
             parcels = parcels,
             selectedParcel = selectedParcel,

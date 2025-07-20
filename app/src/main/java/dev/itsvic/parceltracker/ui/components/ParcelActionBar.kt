@@ -4,7 +4,6 @@ package dev.itsvic.parceltracker.ui.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,43 +15,50 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Status
 
 @Composable
 fun ParcelActionBar(
-    status: Status?,
-    onEdit: () -> Unit,
-    onArchive: () -> Unit,
-    onDelete: () -> Unit
+  status: Status?,
+  onEdit: () -> Unit,
+  onArchive: () -> Unit,
+  onDelete: () -> Unit
 ) {
-    var showDeleteDialog by remember { mutableStateOf(false) }
-    
-    NavigationBar {
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.edit)) },
-            label = { Text(stringResource(R.string.edit)) },
-            selected = false,
-            onClick = onEdit
-        )
+  var showDeleteDialog by remember { mutableStateOf(false) }
 
-        if (status == Status.Delivered) {
-            NavigationBarItem(
-                icon = { Icon(painterResource(R.drawable.archive), contentDescription = stringResource(R.string.archive)) },
-                label = { Text(stringResource(R.string.archive)) },
-                selected = false,
-                onClick = onArchive
-            )
-        }
-        
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.delete)) },
-            label = { Text(stringResource(R.string.delete)) },
-            selected = false,
-            onClick = { showDeleteDialog = true }
-        )
+  NavigationBar {
+    NavigationBarItem(
+      icon = { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.edit)) },
+      label = { Text(stringResource(R.string.edit)) },
+      selected = false,
+      onClick = onEdit
+    )
+
+    if (status == Status.Delivered) {
+      NavigationBarItem(
+        icon = {
+          Icon(
+            painterResource(R.drawable.archive),
+            contentDescription = stringResource(R.string.archive))
+        },
+        label = { Text(stringResource(R.string.archive)) },
+        selected = false,
+        onClick = onArchive
+      )
     }
+
+    NavigationBarItem(
+      icon = {
+        Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.delete))
+      },
+      label = { Text(stringResource(R.string.delete)) },
+      selected = false,
+      onClick = { showDeleteDialog = true }
+    )
+  }
 
     if (showDeleteDialog) {
         AlertDialog(

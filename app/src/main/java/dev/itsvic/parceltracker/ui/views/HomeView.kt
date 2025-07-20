@@ -10,7 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -29,34 +28,34 @@ import java.time.Instant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
-    parcels: List<ParcelWithStatus>,
-    onNavigateToAddParcel: () -> Unit,
-    onNavigateToParcel: (Parcel) -> Unit,
-    onNavigateToSettings: () -> Unit,
+  parcels: List<ParcelWithStatus>,
+  onNavigateToAddParcel: () -> Unit,
+  onNavigateToParcel: (Parcel) -> Unit,
+  onNavigateToSettings: () -> Unit,
 ) {
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
   Scaffold(
-      topBar = {
-        LargeTopAppBar(
-            title = { Text(stringResource(R.string.app_name)) },
-            scrollBehavior = scrollBehavior,
-        )
-      },
-      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding)) {
-          if (parcels.isEmpty())
-              item {
-                Text(
-                    stringResource(R.string.no_parcels_flavor),
-                    modifier = Modifier.padding(horizontal = 16.dp))
-              }
-
-          items(parcels.reversed()) { parcel ->
-            ParcelRow(parcel.parcel, parcel.status?.status) { onNavigateToParcel(parcel.parcel) }
-          }
+    topBar = {
+      LargeTopAppBar(
+        title = { Text(stringResource(R.string.app_name)) },
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
+    LazyColumn(modifier = Modifier.padding(innerPadding)) {
+      if (parcels.isEmpty())
+        item {
+          Text(
+            stringResource(R.string.no_parcels_flavor),
+            modifier = Modifier.padding(horizontal = 16.dp))
         }
+
+      items(parcels.reversed()) { parcel ->
+        ParcelRow(parcel.parcel, parcel.status?.status) { onNavigateToParcel(parcel.parcel) }
       }
+    }
+  }
 }
 
 @Composable
