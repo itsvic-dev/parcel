@@ -14,45 +14,45 @@ import dev.itsvic.parceltracker.db.ParcelWithStatus
 
 @Composable
 fun AdaptiveParcelApp(
-    windowSizeClass: WindowSizeClass,
-    parcels: List<ParcelWithStatus>,
-    selectedParcel: Parcel?,
-    apiParcel: APIParcel?,
-    isLoading: Boolean,
-    onNavigateToParcel: (Parcel) -> Unit,
-    onNavigateToAddParcel: () -> Unit,
-    onNavigateToSettings: () -> Unit,
-    onEditParcel: (Parcel) -> Unit,
-    onDeleteParcel: (Parcel) -> Unit,
-    onArchiveParcel: (Parcel) -> Unit,
-    onArchivePromptDismissal: (Parcel) -> Unit,
-    settingsContent: @Composable () -> Unit,
-    addParcelContent: @Composable () -> Unit,
-    homeContent: @Composable () -> Unit
+  windowSizeClass: WindowSizeClass,
+  parcels: List<ParcelWithStatus>,
+  selectedParcel: Parcel?,
+  apiParcel: APIParcel?,
+  isLoading: Boolean,
+  onNavigateToParcel: (Parcel) -> Unit,
+  onNavigateToAddParcel: () -> Unit,
+  onNavigateToSettings: () -> Unit,
+  onEditParcel: (Parcel) -> Unit,
+  onDeleteParcel: (Parcel) -> Unit,
+  onArchiveParcel: (Parcel) -> Unit,
+  onArchivePromptDismissal: (Parcel) -> Unit,
+  settingsContent: @Composable () -> Unit,
+  addParcelContent: @Composable () -> Unit,
+  homeContent: @Composable () -> Unit,
 ) {
-    val isTablet = windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+  val isTablet = windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 
-    if (isTablet) {
-        var currentNavigationItem by remember { mutableStateOf(TabletNavigationItem.HOME) }
+  if (isTablet) {
+    var currentNavigationItem by remember { mutableStateOf(TabletNavigationItem.HOME) }
 
-        TabletView(
-            parcels = parcels,
-            selectedParcel = selectedParcel,
-            apiParcel = apiParcel,
-            isLoading = isLoading,
-            currentNavigationItem = currentNavigationItem,
-            onNavigateToItem = { currentNavigationItem = it },
-            onNavigateToParcel = onNavigateToParcel,
-            onNavigateToAddParcel = onNavigateToAddParcel,
-            onNavigateToSettings = onNavigateToSettings,
-            onEditParcel = onEditParcel,
-            onDeleteParcel = onDeleteParcel,
-            onArchiveParcel = onArchiveParcel,
-            onArchivePromptDismissal = onArchivePromptDismissal,
-            settingsContent = settingsContent,
-            addParcelContent = addParcelContent
-        )
-    } else {
-        homeContent()
-    }
+    TabletView(
+      parcels = parcels,
+      selectedParcel = selectedParcel,
+      apiParcel = apiParcel,
+      isLoading = isLoading,
+      currentNavigationItem = currentNavigationItem,
+      onNavigateToItem = { currentNavigationItem = it },
+      onNavigateToParcel = onNavigateToParcel,
+      onNavigateToAddParcel = onNavigateToAddParcel,
+      onNavigateToSettings = onNavigateToSettings,
+      onEditParcel = onEditParcel,
+      onDeleteParcel = onDeleteParcel,
+      onArchiveParcel = onArchiveParcel,
+      onArchivePromptDismissal = onArchivePromptDismissal,
+      settingsContent = settingsContent,
+      addParcelContent = addParcelContent,
+    )
+  } else {
+    homeContent()
+  }
 }

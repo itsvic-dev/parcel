@@ -36,16 +36,16 @@ object ExpressOneDeliveryService : DeliveryService {
         currentStatus = Status.Delivered
       }
       htmlLower.contains("kiszállítás") ||
-          htmlLower.contains("out for delivery") ||
-          htmlLower.contains("kiadva futárnak") -> {
+        htmlLower.contains("out for delivery") ||
+        htmlLower.contains("kiadva futárnak") -> {
         currentStatus = Status.OutForDelivery
       }
       htmlLower.contains("depóba érkezett") || htmlLower.contains("arrived at depot") -> {
         currentStatus = Status.InWarehouse
       }
       htmlLower.contains("feldolgozás") ||
-          htmlLower.contains("processing") ||
-          htmlLower.contains("átszállítás") -> {
+        htmlLower.contains("processing") ||
+        htmlLower.contains("átszállítás") -> {
         currentStatus = Status.InTransit
       }
       htmlLower.contains("átvétel") || htmlLower.contains("pickup") -> {
@@ -60,8 +60,8 @@ object ExpressOneDeliveryService : DeliveryService {
 
     val datePattern = "<h5><span>(\\d{4}-\\d{2}-\\d{2})</span></h5>".toRegex()
     val rowPattern =
-        "<td[^>]*>(\\d{2}:\\d{2}:\\d{2})</td>\\s*<td[^>]*>([^<]*)</td>\\s*<td[^>]*>([^<]*)</td>"
-            .toRegex()
+      "<td[^>]*>(\\d{2}:\\d{2}:\\d{2})</td>\\s*<td[^>]*>([^<]*)</td>\\s*<td[^>]*>([^<]*)</td>"
+        .toRegex()
 
     val dateMatches = datePattern.findAll(html)
 
@@ -106,8 +106,12 @@ object ExpressOneDeliveryService : DeliveryService {
 
     if (history.isEmpty()) {
       history.add(
-          ParcelHistoryItem(
-              "Csomag nyomon követése elindítva", LocalDateTime.now(), "Express One Hungary"))
+        ParcelHistoryItem(
+          "Csomag nyomon követése elindítva",
+          LocalDateTime.now(),
+          "Express One Hungary",
+        )
+      )
     }
 
     return Parcel(trackingId, history, currentStatus)

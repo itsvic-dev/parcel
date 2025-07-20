@@ -25,13 +25,13 @@ fun BottomNavBar(
       icon = { Icon(Icons.Filled.Home, contentDescription = stringResource(R.string.home)) },
       label = { Text(stringResource(R.string.home)) },
       selected = currentRoute.contains("HomePage"),
-      onClick = onNavigateToHome
+      onClick = onNavigateToHome,
     )
     NavigationBarItem(
       icon = { Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add)) },
       label = { Text(stringResource(R.string.add)) },
       selected = currentRoute.contains("AddParcelPage"),
-      onClick = onNavigateToAddParcel
+      onClick = onNavigateToAddParcel,
     )
     NavigationBarItem(
       icon = {
@@ -39,7 +39,7 @@ fun BottomNavBar(
       },
       label = { Text(stringResource(R.string.settings)) },
       selected = currentRoute.contains("SettingsPage"),
-      onClick = onNavigateToSettings
+      onClick = onNavigateToSettings,
     )
   }
 }

@@ -42,13 +42,15 @@ fun HomeView(
         scrollBehavior = scrollBehavior,
       )
     },
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+  ) { innerPadding ->
     LazyColumn(modifier = Modifier.padding(innerPadding)) {
       if (parcels.isEmpty())
         item {
           Text(
             stringResource(R.string.no_parcels_flavor),
-            modifier = Modifier.padding(horizontal = 16.dp))
+            modifier = Modifier.padding(horizontal = 16.dp),
+          )
         }
 
       items(parcels.reversed()) { parcel ->
@@ -63,14 +65,16 @@ fun HomeView(
 fun HomeViewPreview() {
   ParcelTrackerTheme {
     HomeView(
-        parcels =
-            listOf(
-                ParcelWithStatus(
-                    Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
-                    ParcelStatus(0, Status.InTransit, Instant.now()))),
-        onNavigateToAddParcel = {},
-        onNavigateToParcel = {},
-        onNavigateToSettings = {},
+      parcels =
+        listOf(
+          ParcelWithStatus(
+            Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
+            ParcelStatus(0, Status.InTransit, Instant.now()),
+          )
+        ),
+      onNavigateToAddParcel = {},
+      onNavigateToParcel = {},
+      onNavigateToSettings = {},
     )
   }
 }

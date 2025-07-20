@@ -38,17 +38,20 @@ fun ParcelRow(parcel: Parcel, status: Status?, isSelected: Boolean = false, onCl
         .fillMaxWidth()
         .background(
           if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-          else MaterialTheme.colorScheme.surface)
+          else MaterialTheme.colorScheme.surface
+        )
         .padding(16.dp, 12.dp),
     horizontalArrangement = Arrangement.spacedBy(16.dp),
-    verticalAlignment = Alignment.CenterVertically) {
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
     if (status != null)
       Box(
         modifier =
           Modifier.size(40.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.primaryContainer),
-        contentAlignment = Alignment.Center) {
+        contentAlignment = Alignment.Center,
+      ) {
         Icon(
           painterResource(
             when (status) {
@@ -73,9 +76,11 @@ fun ParcelRow(parcel: Parcel, status: Status?, isSelected: Boolean = false, onCl
               Status.Damaged -> R.drawable.outline_deployed_code_alert_24
               Status.Destroyed -> R.drawable.outline_destruction_24
               else -> R.drawable.outline_question_mark_24
-            }),
+            }
+          ),
           stringResource(status.nameResource),
-          tint = MaterialTheme.colorScheme.primary)
+          tint = MaterialTheme.colorScheme.primary,
+        )
       }
 
     Column {
@@ -84,7 +89,8 @@ fun ParcelRow(parcel: Parcel, status: Status?, isSelected: Boolean = false, onCl
       Text(
         "${stringResource(getDeliveryServiceName(parcel.service)!!)}: ${parcel.parcelId}",
         fontSize = 12.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant)
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
     }
   }
 }
@@ -95,9 +101,9 @@ fun ParcelRowPreview() {
   ParcelTrackerTheme {
     Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
       ParcelRow(
-          Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
-          status = Status.InTransit,
-          onClick = {},
+        Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
+        status = Status.InTransit,
+        onClick = {},
       )
     }
   }

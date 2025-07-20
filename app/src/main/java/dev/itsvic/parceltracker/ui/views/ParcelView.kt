@@ -46,163 +46,166 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParcelView(
-    parcel: Parcel,
-    humanName: String,
-    service: Service,
-    isArchived: Boolean,
-    archivePromptDismissed: Boolean,
-    onBackPressed: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-    onArchive: () -> Unit,
-    onArchivePromptDismissal: () -> Unit,
-    showBackButton: Boolean = true,
+  parcel: Parcel,
+  humanName: String,
+  service: Service,
+  isArchived: Boolean,
+  archivePromptDismissed: Boolean,
+  onBackPressed: () -> Unit,
+  onEdit: () -> Unit,
+  onDelete: () -> Unit,
+  onArchive: () -> Unit,
+  onArchivePromptDismissal: () -> Unit,
+  showBackButton: Boolean = true,
 ) {
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
   Scaffold(
-      topBar = {
-        MediumTopAppBar(
-            title = { Text(humanName) },
-            navigationIcon = {
-              if (showBackButton) {
-                IconButton(onClick = onBackPressed) {
-                  Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
-                }
-              }
-            },
-            scrollBehavior = scrollBehavior,
-        )
-      },
-      bottomBar = {
-        ParcelActionBar(
-            status = parcel.currentStatus,
-            onEdit = onEdit,
-            onArchive = onArchive,
-            onDelete = onDelete
-        )
-      },
-      modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding).padding(16.dp, 0.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-          item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween) {
-              getDeliveryServiceName(service)?.let {
-                Text(
-                    stringResource(it),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-              }
-
-              SelectionContainer {
-                Text(
-                    parcel.id,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-              }
+    topBar = {
+      MediumTopAppBar(
+        title = { Text(humanName) },
+        navigationIcon = {
+          if (showBackButton) {
+            IconButton(onClick = onBackPressed) {
+              Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
             }
           }
-
-          items(parcel.properties.entries.toList()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween) {
-              Text(
-                  stringResource(it.key),
-                  style = MaterialTheme.typography.bodyMedium,
-                  color = MaterialTheme.colorScheme.onSurfaceVariant)
-              Text(
-                  it.value,
-                  style = MaterialTheme.typography.bodyMedium,
-                  color = MaterialTheme.colorScheme.onSurfaceVariant,
-                  textAlign = TextAlign.End)
-            }
-          }
-
-          item {
+        },
+        scrollBehavior = scrollBehavior,
+      )
+    },
+    bottomBar = {
+      ParcelActionBar(
+        status = parcel.currentStatus,
+        onEdit = onEdit,
+        onArchive = onArchive,
+        onDelete = onDelete,
+      )
+    },
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+  ) { innerPadding ->
+    LazyColumn(
+      modifier = Modifier.padding(innerPadding).padding(16.dp, 0.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      item {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+          getDeliveryServiceName(service)?.let {
             Text(
-                LocalContext.current.getString(parcel.currentStatus.nameResource),
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.padding(vertical = 16.dp),
+              stringResource(it),
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
 
-          if (!isArchived &&
-              !archivePromptDismissed &&
-              (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp))
-            item {
-              Card(
-                  shape = RoundedCornerShape(16.dp),
-                  modifier = Modifier.padding(bottom = 16.dp)) {
-                Column(
-                    Modifier.padding(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                  Text(
-                      stringResource(R.string.archive_prompt_question),
-                      style = MaterialTheme.typography.titleMedium)
-                  Text(stringResource(R.string.archive_prompt_text))
-                  Row(
-                      horizontalArrangement = Arrangement.spacedBy(16.dp),
-                      modifier = Modifier.fillMaxWidth()) {
-                    FilledTonalButton(
-                        onArchivePromptDismissal, modifier = Modifier.weight(1f)) {
-                      Text(stringResource(R.string.ignore))
-                    }
-                    Button(onArchive, modifier = Modifier.weight(1f)) {
-                      Text(stringResource(R.string.archive))
-                    }
-                  }
-                }
-              }
-            }
-
-          items(parcel.history.size) { index ->
-            if (index > 0) HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
-            ParcelHistoryItemRow(parcel.history[index])
+          SelectionContainer {
+            Text(
+              parcel.id,
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
           }
         }
       }
+
+      items(parcel.properties.entries.toList()) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+          Text(
+            stringResource(it.key),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+          Text(
+            it.value,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.End,
+          )
+        }
+      }
+
+      item {
+        Text(
+          LocalContext.current.getString(parcel.currentStatus.nameResource),
+          style = MaterialTheme.typography.headlineLarge,
+          modifier = Modifier.padding(vertical = 16.dp),
+        )
+      }
+
+      if (
+        !isArchived &&
+          !archivePromptDismissed &&
+          (parcel.currentStatus == Status.Delivered || parcel.currentStatus == Status.PickedUp)
+      )
+        item {
+          Card(shape = RoundedCornerShape(16.dp), modifier = Modifier.padding(bottom = 16.dp)) {
+            Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+              Text(
+                stringResource(R.string.archive_prompt_question),
+                style = MaterialTheme.typography.titleMedium,
+              )
+              Text(stringResource(R.string.archive_prompt_text))
+              Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth(),
+              ) {
+                FilledTonalButton(onArchivePromptDismissal, modifier = Modifier.weight(1f)) {
+                  Text(stringResource(R.string.ignore))
+                }
+                Button(onArchive, modifier = Modifier.weight(1f)) {
+                  Text(stringResource(R.string.archive))
+                }
+              }
+            }
+          }
+        }
+
+      items(parcel.history.size) { index ->
+        if (index > 0) HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
+        ParcelHistoryItemRow(parcel.history[index])
+      }
+    }
+  }
 }
 
 @Composable
 @PreviewLightDark
 private fun ParcelViewPreview() {
   val parcel =
-      Parcel(
-          "EXMPL0001",
-          listOf(
-              ParcelHistoryItem(
-                  "The package got lost. Whoops!",
-                  LocalDateTime.of(2025, 1, 1, 12, 0, 0),
-                  "Warsaw, Poland"),
-              ParcelHistoryItem(
-                  "Arrived at local warehouse",
-                  LocalDateTime.of(2025, 1, 1, 10, 0, 0),
-                  "Warsaw, Poland"),
-              ParcelHistoryItem(
-                  "En route to local warehouse",
-                  LocalDateTime.of(2024, 12, 1, 12, 0, 0),
-                  "Netherlands"),
-              ParcelHistoryItem(
-                  "Label created", LocalDateTime.of(2024, 12, 1, 12, 0, 0), "Netherlands"),
-          ),
-          Status.DeliveryFailure)
+    Parcel(
+      "EXMPL0001",
+      listOf(
+        ParcelHistoryItem(
+          "The package got lost. Whoops!",
+          LocalDateTime.of(2025, 1, 1, 12, 0, 0),
+          "Warsaw, Poland",
+        ),
+        ParcelHistoryItem(
+          "Arrived at local warehouse",
+          LocalDateTime.of(2025, 1, 1, 10, 0, 0),
+          "Warsaw, Poland",
+        ),
+        ParcelHistoryItem(
+          "En route to local warehouse",
+          LocalDateTime.of(2024, 12, 1, 12, 0, 0),
+          "Netherlands",
+        ),
+        ParcelHistoryItem("Label created", LocalDateTime.of(2024, 12, 1, 12, 0, 0), "Netherlands"),
+      ),
+      Status.DeliveryFailure,
+    )
   ParcelTrackerTheme {
     ParcelView(
-        parcel,
-        "My precious package",
-        Service.EXAMPLE,
-        isArchived = false,
-        archivePromptDismissed = false,
-        onBackPressed = {},
-        onEdit = {},
-        onDelete = {},
-        onArchive = {},
-        onArchivePromptDismissal = {},
+      parcel,
+      "My precious package",
+      Service.EXAMPLE,
+      isArchived = false,
+      archivePromptDismissed = false,
+      onBackPressed = {},
+      onEdit = {},
+      onDelete = {},
+      onArchive = {},
+      onArchivePromptDismissal = {},
     )
   }
 }

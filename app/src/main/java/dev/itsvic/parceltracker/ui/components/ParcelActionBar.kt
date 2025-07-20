@@ -25,7 +25,7 @@ fun ParcelActionBar(
   status: Status?,
   onEdit: () -> Unit,
   onArchive: () -> Unit,
-  onDelete: () -> Unit
+  onDelete: () -> Unit,
 ) {
   var showDeleteDialog by remember { mutableStateOf(false) }
 
@@ -34,7 +34,7 @@ fun ParcelActionBar(
       icon = { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.edit)) },
       label = { Text(stringResource(R.string.edit)) },
       selected = false,
-      onClick = onEdit
+      onClick = onEdit,
     )
 
     if (status == Status.Delivered) {
@@ -42,46 +42,41 @@ fun ParcelActionBar(
         icon = {
           Icon(
             painterResource(R.drawable.archive),
-            contentDescription = stringResource(R.string.archive))
+            contentDescription = stringResource(R.string.archive),
+          )
         },
         label = { Text(stringResource(R.string.archive)) },
         selected = false,
-        onClick = onArchive
+        onClick = onArchive,
       )
     }
 
     NavigationBarItem(
-      icon = {
-        Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.delete))
-      },
+      icon = { Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.delete)) },
       label = { Text(stringResource(R.string.delete)) },
       selected = false,
-      onClick = { showDeleteDialog = true }
+      onClick = { showDeleteDialog = true },
     )
   }
 
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            title = { Text(stringResource(R.string.delete)) },
-            text = { Text(stringResource(R.string.delete_confirmation)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showDeleteDialog = false
-                        onDelete()
-                    }
-                ) {
-                    Text(stringResource(R.string.delete))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { showDeleteDialog = false }
-                ) {
-                     Text(stringResource(R.string.cancel))
-                 }
-            }
-        )
-    }
+  if (showDeleteDialog) {
+    AlertDialog(
+      onDismissRequest = { showDeleteDialog = false },
+      title = { Text(stringResource(R.string.delete)) },
+      text = { Text(stringResource(R.string.delete_confirmation)) },
+      confirmButton = {
+        TextButton(
+          onClick = {
+            showDeleteDialog = false
+            onDelete()
+          }
+        ) {
+          Text(stringResource(R.string.delete))
+        }
+      },
+      dismissButton = {
+        TextButton(onClick = { showDeleteDialog = false }) { Text(stringResource(R.string.cancel)) }
+      },
+    )
+  }
 }
