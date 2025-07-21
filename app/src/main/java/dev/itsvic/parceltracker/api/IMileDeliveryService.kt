@@ -47,19 +47,24 @@ object IMileDeliveryService : DeliveryService {
       )
     }
 
-    val currentStatus = when (trackInfos.firstOrNull()?.trackStage) {
-      1001 -> Status.Preadvice
-      2004 -> Status.InWarehouse
-      1002 -> Status.InTransit
-      1003 -> Status.OutForDelivery
-      else -> Status.Unknown
-    }
+    val currentStatus = mapTrackStageToStatus(trackInfos.firstOrNull()?.trackStage ?: 0)
 
     return Parcel(
       id = trackingId,
       history = history,
       currentStatus = currentStatus
     )
+  }
+
+  private fun mapTrackStageToStatus(trackStage: Int): Status {
+    return when (trackStage) {
+      1001 -> Status.Preadvice
+      2004 -> Status.InWarehouse
+      1002 -> Status.InTransit
+      1003 -> Status.OutForDelivery
+      2060 -> Status.Delivered
+      else -> logUnknownStatus("iMile", trackStage.toString())
+    }
   }
 
   private interface API {
