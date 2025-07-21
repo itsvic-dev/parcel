@@ -61,6 +61,7 @@ import dev.itsvic.parceltracker.db.deleteParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.components.BottomNavBar
+import dev.itsvic.parceltracker.ui.components.EditParcelDialog
 import dev.itsvic.parceltracker.ui.views.AddEditParcelView
 import dev.itsvic.parceltracker.ui.views.AdaptiveParcelApp
 import dev.itsvic.parceltracker.ui.views.HomeView
@@ -119,7 +120,6 @@ class MainActivity : ComponentActivity() {
         }
       }
 
-    // Notification checks
     when {
       ContextCompat.checkSelfPermission(
         applicationContext,
@@ -185,7 +185,7 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
                apiParcel = APIParcel(
                    selectedParcel!!.parcelId,
                    localHistory.map { dev.itsvic.parceltracker.api.ParcelHistoryItem(it.description, it.time, it.location) },
-                   Status.Delivered // Assume delivered for archived parcels
+                   Status.Delivered
                )
              } else {
                apiParcel = context.getParcel(selectedParcel!!.parcelId, selectedParcel!!.postalCode, selectedParcel!!.service)
@@ -229,7 +229,10 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
         isLoading = isLoadingParcel,
         currentNavigationItem = currentTabletNavItem,
         onNavigateToItem = { currentTabletNavItem = it },
-        onNavigateToParcel = { selectedParcel = it },
+        onNavigateToParcel = { 
+          selectedParcel = it
+          currentTabletNavItem = TabletNavigationItem.HOME
+        },
         onNavigateToAddParcel = { currentTabletNavItem = TabletNavigationItem.ADD_PARCEL },
         onNavigateToSettings = { currentTabletNavItem = TabletNavigationItem.SETTINGS },
         onEditParcel = { parcel ->
@@ -394,7 +397,6 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
                   context.getParcel(dbParcel.parcelId, dbParcel.postalCode, dbParcel.service)
 
               if (!demoMode) {
-                // update parcel status
                 val zone = ZoneId.systemDefault()
                 val lastChange = apiParcel!!.history.first().time.atZone(zone).toInstant()
                 val status =
@@ -565,9 +567,9 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
                 CircularProgressIndicator()
               }
 
-      AddEditParcelView(
-          parcel,
-          onBackPressed = { navController.popBackStack() },
+      EditParcelDialog(
+          parcel = parcel!!,
+          onDismissRequest = { navController.popBackStack() },
           onCompleted = {
             if (demoMode) {
               Toast.makeText(
@@ -575,7 +577,7 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
                       context.getString(R.string.demo_mode_action_block),
                       Toast.LENGTH_SHORT)
                   .show()
-              return@AddEditParcelView
+              return@EditParcelDialog
             }
 
             scope.launch(Dispatchers.IO) {

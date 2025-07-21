@@ -5,13 +5,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -22,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -29,6 +35,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,10 +44,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
@@ -80,12 +89,15 @@ fun SettingsView(onBackPressed: () -> Unit) {
     context.dataStore.data.map { it[CLIPBOARD_PASTE_ENABLED] == true }.collectAsState(false)
   val preferredRegion by
     context.dataStore.data.map { it[PREFERRED_REGION] ?: "" }.collectAsState("")
+  val dhlApiKey by context.dataStore.data.map { it[DHL_API_KEY] ?: "" }.collectAsState("")
+  
   val coroutineScope = rememberCoroutineScope()
   var regionDropdownExpanded by remember { mutableStateOf(false) }
   val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
   var aboutDialogOpen by remember { mutableStateOf(false) }
 
-  val dhlApiKey by context.dataStore.data.map { it[DHL_API_KEY] ?: "" }.collectAsState("")
+  val testPackageName = stringResource(R.string.settings_test_package_name)
+  val testPackageStatus = stringResource(R.string.settings_test_package_status)
 
   fun <T> setValue(key: Preferences.Key<T>, value: T) {
     coroutineScope.launch { context.dataStore.edit { it[key] = value } }
@@ -102,71 +114,152 @@ fun SettingsView(onBackPressed: () -> Unit) {
     topBar = {
       LargeTopAppBar(
         title = { Text(stringResource(R.string.settings)) },
-        navigationIcon = {
-          IconButton(onClick = onBackPressed) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
-          }
-        },
         scrollBehavior = scrollBehavior,
       )
     },
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
   ) { innerPadding ->
-    Column(Modifier.padding(innerPadding).verticalScroll(rememberScrollState())) {
-      Row(
-        modifier =
-          Modifier.clickable { setUnmeteredOnly(unmeteredOnly.not()) }
-            .padding(16.dp, 12.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+      modifier = Modifier
+        .padding(innerPadding)
+        .padding(horizontal = 16.dp)
+        .verticalScroll(rememberScrollState())
+    ) {
+      Spacer(modifier = Modifier.height(8.dp))
+
+      Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
       ) {
-        Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-          Text(stringResource(R.string.unmetered_only_setting))
-          Text(
-            stringResource(R.string.unmetered_only_setting_detail),
-            style = MaterialTheme.typography.bodyMedium,
-          )
-        }
-        Switch(checked = unmeteredOnly, onCheckedChange = { setUnmeteredOnly(it) })
-      }
-
-      Row(
-        modifier =
-          Modifier.clickable { setValue(CLIPBOARD_PASTE_ENABLED, clipboardPasteEnabled.not()) }
-            .padding(16.dp, 12.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-          Text(stringResource(R.string.clipboard_paste_enabled))
-          Text(
-            stringResource(R.string.clipboard_paste_description),
-            style = MaterialTheme.typography.bodyMedium,
-          )
-        }
-        Switch(
-          checked = clipboardPasteEnabled,
-          onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) },
-        )
-      }
-
-      Column(modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth()) {
-        Text(stringResource(R.string.preferred_region))
-        Text(
-          stringResource(R.string.preferred_region_description),
-          style = MaterialTheme.typography.bodyMedium,
-          modifier = Modifier.padding(bottom = 8.dp),
-        )
-
-        ExposedDropdownMenuBox(
-          expanded = regionDropdownExpanded,
-          onExpandedChange = { regionDropdownExpanded = !regionDropdownExpanded },
+        Column(
+          modifier = Modifier.padding(16.dp),
+          horizontalAlignment = Alignment.CenterHorizontally
         ) {
-          OutlinedTextField(
-            value =
-              when (preferredRegion) {
+          Spacer(modifier = Modifier.height(8.dp))
+          Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+          )
+          Text(
+            text = stringResource(R.string.settings_version_label, BuildConfig.VERSION_NAME),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+          )
+          Spacer(modifier = Modifier.height(12.dp))
+          FilledTonalButton(
+            onClick = { aboutDialogOpen = true },
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Text(stringResource(R.string.about_app))
+          }
+        }
+      }
+      
+      Spacer(modifier = Modifier.height(16.dp))
+
+      Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+      ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 12.dp)
+          ) {
+            Icon(
+              painterResource(R.drawable.ic_networkwifi),
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.primary
+            )
+            Text(
+              text = stringResource(R.string.settings_network),
+              style = MaterialTheme.typography.titleMedium,
+              fontWeight = FontWeight.SemiBold,
+              modifier = Modifier.padding(start = 8.dp)
+            )
+          }
+          
+          Row(
+            modifier = Modifier
+              .clickable { setUnmeteredOnly(unmeteredOnly.not()) }
+              .padding(vertical = 8.dp)
+              .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+              Text(stringResource(R.string.unmetered_only_setting))
+              Text(
+                stringResource(R.string.unmetered_only_setting_detail),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+              )
+            }
+            Switch(checked = unmeteredOnly, onCheckedChange = { setUnmeteredOnly(it) })
+          }
+          
+          Row(
+            modifier = Modifier
+              .clickable { setValue(CLIPBOARD_PASTE_ENABLED, clipboardPasteEnabled.not()) }
+              .padding(vertical = 8.dp)
+              .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+              Text(stringResource(R.string.clipboard_paste_enabled))
+              Text(
+                stringResource(R.string.clipboard_paste_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+              )
+            }
+            Switch(
+              checked = clipboardPasteEnabled,
+              onCheckedChange = { setValue(CLIPBOARD_PASTE_ENABLED, it) },
+            )
+          }
+        }
+      }
+      
+      Spacer(modifier = Modifier.height(16.dp))
+
+      Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+      ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 12.dp)
+          ) {
+            Icon(
+              painterResource(R.drawable.ic_language),
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.primary
+            )
+            Text(
+              text = stringResource(R.string.settings_region),
+              style = MaterialTheme.typography.titleMedium,
+              fontWeight = FontWeight.SemiBold,
+              modifier = Modifier.padding(start = 8.dp)
+            )
+          }
+          
+          Text(
+            stringResource(R.string.preferred_region_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp),
+          )
+
+          ExposedDropdownMenuBox(
+            expanded = regionDropdownExpanded,
+            onExpandedChange = { regionDropdownExpanded = !regionDropdownExpanded },
+          ) {
+            OutlinedTextField(
+              value = when (preferredRegion) {
                 "international" -> stringResource(R.string.region_international)
                 "north_america" -> stringResource(R.string.region_north_america)
                 "europe" -> stringResource(R.string.region_europe)
@@ -187,238 +280,161 @@ fun SettingsView(onBackPressed: () -> Unit) {
                 "thailand" -> stringResource(R.string.country_thailand)
                 else -> stringResource(R.string.region_international)
               },
-            onValueChange = {},
-            readOnly = true,
-            trailingIcon = {
-              ExposedDropdownMenuDefaults.TrailingIcon(expanded = regionDropdownExpanded)
-            },
-            modifier = Modifier.menuAnchor().fillMaxWidth(),
-          )
+              onValueChange = {},
+              readOnly = true,
+              label = { Text(stringResource(R.string.settings_region)) },
+              leadingIcon = {
+                Icon(
+                  painterResource(R.drawable.ic_language),
+                  contentDescription = null,
+                  tint = MaterialTheme.colorScheme.primary
+                )
+              },
+              trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = regionDropdownExpanded)
+              },
+              colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
+              ),
+              shape = RoundedCornerShape(12.dp),
+              modifier = Modifier.menuAnchor().fillMaxWidth(),
+            )
 
-          ExposedDropdownMenu(
-            expanded = regionDropdownExpanded,
-            onDismissRequest = { regionDropdownExpanded = false },
-          ) {
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.region_international)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "international")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.region_north_america)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "north_america")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.region_europe)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "europe")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.region_asia)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "asia")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_belarus)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "belarus")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_bulgaria)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "bulgaria")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_czech)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "czech")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_uk)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "uk")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_ireland)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "ireland")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_poland)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "poland")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_hungary)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "hungary")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_germany)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "germany")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_italy)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "italy")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_romania)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "romania")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_scandinavia)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "scandinavia")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_ukraine)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "ukraine")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_india)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "india")
-                regionDropdownExpanded = false
-              },
-            )
-            DropdownMenuItem(
-              text = { Text(stringResource(R.string.country_thailand)) },
-              onClick = {
-                setValue(PREFERRED_REGION, "thailand")
-                regionDropdownExpanded = false
-              },
-            )
+            ExposedDropdownMenu(
+              expanded = regionDropdownExpanded,
+              onDismissRequest = { regionDropdownExpanded = false },
+            ) {
+              listOf(
+                "international" to R.string.region_international,
+                "north_america" to R.string.region_north_america,
+                "europe" to R.string.region_europe,
+                "asia" to R.string.region_asia,
+                "belarus" to R.string.country_belarus,
+                "bulgaria" to R.string.country_bulgaria,
+                "czech" to R.string.country_czech,
+                "uk" to R.string.country_uk,
+                "ireland" to R.string.country_ireland,
+                "poland" to R.string.country_poland,
+                "hungary" to R.string.country_hungary,
+                "germany" to R.string.country_germany,
+                "italy" to R.string.country_italy,
+                "romania" to R.string.country_romania,
+                "scandinavia" to R.string.country_scandinavia,
+                "ukraine" to R.string.country_ukraine,
+                "india" to R.string.country_india,
+                "thailand" to R.string.country_thailand
+              ).forEach { (key, stringRes) ->
+                DropdownMenuItem(
+                  text = { Text(stringResource(stringRes)) },
+                  onClick = {
+                    setValue(PREFERRED_REGION, key)
+                    regionDropdownExpanded = false
+                  },
+                )
+              }
+            }
           }
         }
       }
+      
+      Spacer(modifier = Modifier.height(16.dp))
 
-      Text(
-        stringResource(R.string.settings_api_keys),
-        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 2.dp),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-
-      OutlinedTextField(
-        dhlApiKey,
-        { setValue(DHL_API_KEY, it) },
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
-        label = { Text(stringResource(R.string.service_dhl)) },
-        singleLine = true,
-        visualTransformation = PasswordVisualTransformation(),
-      )
-
-      Text(
-        AnnotatedString.fromHtml(
-          stringResource(R.string.dhl_api_key_flavor_text),
-          linkStyles =
-            TextLinkStyles(
-              style =
-                SpanStyle(
+      Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+      ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 12.dp)
+          ) {
+            Icon(
+              painterResource(R.drawable.ic_vpnkey),
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.primary
+            )
+            Text(
+              text = stringResource(R.string.settings_api_keys),
+              style = MaterialTheme.typography.titleMedium,
+              fontWeight = FontWeight.SemiBold,
+              modifier = Modifier.padding(start = 8.dp)
+            )
+          }
+          
+          OutlinedTextField(
+            value = dhlApiKey,
+            onValueChange = { setValue(DHL_API_KEY, it) },
+            label = { Text(stringResource(R.string.settings_dhl_api_key_label)) },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+          )
+          
+          Text(
+            AnnotatedString.fromHtml(
+              stringResource(R.string.dhl_api_key_flavor_text),
+              linkStyles = TextLinkStyles(
+                style = SpanStyle(
                   textDecoration = TextDecoration.Underline,
                   color = MaterialTheme.colorScheme.primary,
                 )
+              ),
             ),
-        ),
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-      )
-
-      Text(
-        stringResource(R.string.settings_experimental),
-        modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 2.dp),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
-
-      Row(
-        modifier =
-          Modifier.clickable { setValue(DEMO_MODE, demoMode.not()) }
-            .padding(16.dp, 12.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-          Text(stringResource(R.string.demo_mode))
-          Text(
-            stringResource(R.string.demo_mode_detail),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp),
           )
         }
-        Switch(checked = demoMode, onCheckedChange = { setValue(DEMO_MODE, it) })
       }
+      
+      Spacer(modifier = Modifier.height(16.dp))
 
-      if (BuildConfig.DEBUG)
-        FilledTonalButton(
-          onClick = {
-            context.sendNotification(
-              Parcel(0xf100f, "Cool stuff", "", null, Service.EXAMPLE),
-              Status.OutForDelivery,
-              ParcelHistoryItem("The courier has picked up the package", LocalDateTime.now(), ""),
-            )
-          },
-          modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth(),
-        ) {
-          Text("Send test notification")
-        }
-
-      LogcatButton(modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth())
-
-      FilledTonalButton(
-        onClick = { aboutDialogOpen = true },
-        modifier = Modifier.padding(16.dp, 12.dp).fillMaxWidth(),
+      Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
       ) {
-        Icon(Icons.Filled.Info, contentDescription = stringResource(R.string.about_app))
-        Text(
-          text = " ${stringResource(R.string.about_app)}",
-          modifier = Modifier.padding(start = 8.dp),
-        )
+        Column(modifier = Modifier.padding(16.dp)) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 12.dp)
+          ) {
+            Icon(
+              painterResource(R.drawable.ic_science),
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.primary
+            )
+            Text(
+              text = stringResource(R.string.settings_experimental),
+              style = MaterialTheme.typography.titleMedium,
+              fontWeight = FontWeight.SemiBold,
+              modifier = Modifier.padding(start = 8.dp)
+            )
+          }
+          
+          Row(
+            modifier = Modifier
+              .clickable { setValue(DEMO_MODE, demoMode.not()) }
+              .padding(vertical = 8.dp)
+              .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+              Text(stringResource(R.string.demo_mode))
+              Text(
+                stringResource(R.string.demo_mode_detail),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+              )
+            }
+            Switch(checked = demoMode, onCheckedChange = { setValue(DEMO_MODE, it) })
+          }
+        }
       }
-
-      Text(
-        "Parcel ${BuildConfig.VERSION_NAME}",
-        modifier = Modifier.padding(16.dp, 8.dp),
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-      )
+      Spacer(modifier = Modifier.height(24.dp))
     }
 
     if (aboutDialogOpen) {

@@ -2,6 +2,7 @@
 package dev.itsvic.parceltracker.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -19,8 +20,18 @@ fun BottomNavBar(
   onNavigateToHome: () -> Unit,
   onNavigateToAddParcel: () -> Unit,
   onNavigateToSettings: () -> Unit,
+  onBackPressed: (() -> Unit)? = null,
+  showBackButton: Boolean = false,
 ) {
   NavigationBar {
+    if (showBackButton && onBackPressed != null) {
+      NavigationBarItem(
+        icon = { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.go_back)) },
+        label = { Text(stringResource(R.string.go_back)) },
+        selected = false,
+        onClick = onBackPressed,
+      )
+    }
     NavigationBarItem(
       icon = { Icon(Icons.Filled.Home, contentDescription = stringResource(R.string.home)) },
       label = { Text(stringResource(R.string.home)) },

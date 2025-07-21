@@ -2,6 +2,7 @@
 package dev.itsvic.parceltracker.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -26,10 +27,20 @@ fun ParcelActionBar(
   onEdit: () -> Unit,
   onArchive: () -> Unit,
   onDelete: () -> Unit,
+  onBackPressed: (() -> Unit)? = null,
 ) {
   var showDeleteDialog by remember { mutableStateOf(false) }
 
   NavigationBar {
+    if (onBackPressed != null) {
+      NavigationBarItem(
+        icon = { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.go_back)) },
+        label = { Text(stringResource(R.string.go_back)) },
+        selected = false,
+        onClick = onBackPressed,
+      )
+    }
+    
     NavigationBarItem(
       icon = { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.edit)) },
       label = { Text(stringResource(R.string.edit)) },
