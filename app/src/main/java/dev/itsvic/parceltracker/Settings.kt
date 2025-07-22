@@ -11,6 +11,8 @@ import androidx.datastore.preferences.preferencesDataStore
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 val DEMO_MODE = booleanPreferencesKey("demoMode")
 val UNMETERED_ONLY = booleanPreferencesKey("unmeteredOnly")
+val CLIPBOARD_PASTE_ENABLED = booleanPreferencesKey("clipboardPasteEnabled")
+val PREFERRED_REGION = stringPreferencesKey("preferredRegion")
 
 // API key settings
 val DHL_API_KEY = stringPreferencesKey("dhlApiKey")
