@@ -17,15 +17,20 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +50,7 @@ import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParcelView(
   parcel: Parcel,
@@ -61,86 +67,36 @@ fun ParcelView(
 ) {
   Box {
     Scaffold(
-      bottomBar = {},
-    ) { innerPadding ->
-    LazyColumn(
-      modifier = Modifier.padding(innerPadding).padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-      item {
-        Card(
-          modifier = Modifier.fillMaxWidth(),
-          elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-          shape = RoundedCornerShape(16.dp)
-        ) {
-          Column(modifier = Modifier.padding(20.dp)) {
-            Row(
-              verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-              modifier = Modifier.padding(bottom = 16.dp)
-            ) {
-              Box(
-                modifier = Modifier
-                  .size(40.dp)
-                  .background(
-                    MaterialTheme.colorScheme.primaryContainer,
-                    CircleShape
-                  ),
-                contentAlignment = androidx.compose.ui.Alignment.Center
-              ) {
+      topBar = {
+        TopAppBar(
+          title = {
+            Text(
+              text = humanName,
+              style = MaterialTheme.typography.titleLarge
+            )
+          },
+          navigationIcon = {
+            if (showBackButton) {
+              IconButton(onClick = onBackPressed) {
                 Icon(
-                  painter = painterResource(R.drawable.outline_local_shipping_24),
-                  contentDescription = null,
-                  tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                  modifier = Modifier.size(20.dp)
-                )
-              }
-              Spacer(modifier = Modifier.size(12.dp))
-              Text(
-                text = stringResource(R.string.parcel_details_title, humanName),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface
-              )
-            }
-            getDeliveryServiceName(service)?.let {
-              Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-              ) {
-                Text(
-                  text = stringResource(R.string.delivery_service),
-                  style = MaterialTheme.typography.bodyLarge,
-                  color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                  text = stringResource(it),
-                  style = MaterialTheme.typography.bodyLarge,
-                  color = MaterialTheme.colorScheme.onSurface
-                )
-              }
-              HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-            }
-            Row(
-              modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-              horizontalArrangement = Arrangement.SpaceBetween,
-              verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-            ) {
-              Text(
-                text = stringResource(R.string.tracking_number),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-              )
-              SelectionContainer {
-                Text(
-                  text = parcel.id,
-                  style = MaterialTheme.typography.bodyLarge,
-                  color = MaterialTheme.colorScheme.onSurface
+                  imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                  contentDescription = stringResource(R.string.go_back)
                 )
               }
             }
           }
-        }
-      }
+        )
+      },
+      bottomBar = {},
+    ) { innerPadding ->
+    LazyColumn(
+      modifier = Modifier
+        .padding(innerPadding)
+        .padding(16.dp)
+        .padding(bottom = 45.dp),
+      verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+
       if (parcel.properties.isNotEmpty()) {
         item {
           Card(
@@ -347,7 +303,6 @@ fun ParcelView(
       onEdit = onEdit,
       onArchive = onArchive,
       onDelete = onDelete,
-      onBackPressed = onBackPressed,
       modifier = Modifier.align(Alignment.BottomCenter)
     )
   }

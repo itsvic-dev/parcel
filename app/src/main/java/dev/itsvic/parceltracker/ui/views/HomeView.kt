@@ -21,7 +21,7 @@ import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.db.ParcelStatus
 import dev.itsvic.parceltracker.db.ParcelWithStatus
-import dev.itsvic.parceltracker.ui.components.ParcelRow
+import dev.itsvic.parceltracker.ui.components.ParcelCard
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.Instant
 
@@ -49,12 +49,12 @@ fun HomeView(
         item {
           Text(
             stringResource(R.string.no_parcels_flavor),
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
           )
         }
 
       items(parcels.reversed()) { parcel ->
-        ParcelRow(parcel.parcel, parcel.status?.status) { onNavigateToParcel(parcel.parcel) }
+        ParcelCard(parcel.parcel, parcel.status?.status) { onNavigateToParcel(parcel.parcel) }
       }
     }
   }

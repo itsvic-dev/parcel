@@ -125,6 +125,7 @@
   <string name="settings_version_label">Verzió %s</string>
   <string name="settings_test_notification">Teszt értesítés küldése</string>
   <string name="settings_dhl_api_key_label">DHL API kulcs</string>
+  <string name="dhl_api_key_flavor_text">A DHL megköveteli, hogy a felhasználóktól API-kulcsot kérjünk. Ezt ingyenesen megszerezheted a &lt;a href=\"https://developer.dhl.com\"&gt;DHL\'s API Developer Portal&lt;/a&gt; és regisztrálhatsz a \"Shipment Tracking - Unified\" API-ra.</string>
   <string name="settings_test_package_name">Teszt csomag</string>
   <string name="settings_test_package_status">A futár felvette a csomagot</string>
   <string name="actions">Műveletek</string>

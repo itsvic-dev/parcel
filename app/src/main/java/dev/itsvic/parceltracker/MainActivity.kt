@@ -63,7 +63,6 @@ import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.components.BottomNavBar
 import dev.itsvic.parceltracker.ui.components.EditParcelDialog
 import dev.itsvic.parceltracker.ui.views.AddEditParcelView
-import dev.itsvic.parceltracker.ui.views.AdaptiveParcelApp
 import dev.itsvic.parceltracker.ui.views.HomeView
 import dev.itsvic.parceltracker.ui.views.ParcelView
 import dev.itsvic.parceltracker.ui.views.SettingsView
@@ -159,7 +158,7 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
     }
   }
 
-  val animDuration = 300
+  val animDuration = 400
   val navBackStackEntry by navController.currentBackStackEntryAsState()
   val currentRoute = navBackStackEntry?.destination?.route ?: "HomePage"
   
@@ -286,7 +285,7 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
           }
         },
         settingsContent = {
-          SettingsView(onBackPressed = { currentTabletNavItem = TabletNavigationItem.HOME })
+          SettingsView()
         },
         addParcelContent = {
           AddEditParcelView(
@@ -354,16 +353,30 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
         enterTransition = {
           slideIntoContainer(
               towards = AnimatedContentTransitionScope.SlideDirection.Start,
-              animationSpec = tween(animDuration),
-              initialOffset = { it / 4 }) + fadeIn(tween(animDuration))
+              animationSpec = tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+              initialOffset = { it / 3 }) + fadeIn(tween(animDuration / 2, delayMillis = animDuration / 4))
         },
-        exitTransition = { fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f) },
-        popEnterTransition = { fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f) },
-        popExitTransition = {
+        exitTransition = { 
+          fadeOut(tween(animDuration / 2)) + 
+          scaleOut(tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing), 0.95f) +
           slideOutOfContainer(
               towards = AnimatedContentTransitionScope.SlideDirection.Start,
-              animationSpec = tween(animDuration),
-              targetOffset = { -it / 4 }) + fadeOut(tween(animDuration))
+              animationSpec = tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+              targetOffset = { -it / 6 })
+        },
+        popEnterTransition = { 
+          fadeIn(tween(animDuration / 2, delayMillis = animDuration / 4)) + 
+          scaleIn(tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing), 0.95f) +
+          slideIntoContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.End,
+              animationSpec = tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+              initialOffset = { -it / 6 })
+        },
+        popExitTransition = {
+          slideOutOfContainer(
+              towards = AnimatedContentTransitionScope.SlideDirection.End,
+              animationSpec = tween(animDuration, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+              targetOffset = { it / 3 }) + fadeOut(tween(animDuration / 2))
         },
         modifier = Modifier.padding(innerPadding)
     ) {
@@ -376,7 +389,7 @@ fun ParcelAppNavigation(parcelToOpen: Int, windowSizeClass: androidx.compose.mat
       )
     }
 
-    composable<SettingsPage> { SettingsView(onBackPressed = { navController.popBackStack() }) }
+    composable<SettingsPage> { SettingsView() }
 
     composable<ParcelPage> { backStackEntry ->
       val route: ParcelPage = backStackEntry.toRoute()

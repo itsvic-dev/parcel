@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -58,7 +57,6 @@ fun FloatingCollapsibleActionBar(
   onEdit: () -> Unit,
   onArchive: () -> Unit,
   onDelete: () -> Unit,
-  onBackPressed: (() -> Unit)? = null,
   modifier: Modifier = Modifier,
 ) {
   var isExpanded by remember { mutableStateOf(false) }
@@ -77,19 +75,16 @@ fun FloatingCollapsibleActionBar(
     contentAlignment = Alignment.BottomCenter
   ) {
     Card(
-      modifier = Modifier
-        .fillMaxWidth()
-        .shadow(
-          elevation = 8.dp,
-          shape = RoundedCornerShape(16.dp)
-        ),
+      modifier = Modifier.fillMaxWidth(),
       shape = RoundedCornerShape(16.dp),
+      elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
       colors = CardDefaults.cardColors(
-        containerColor = MaterialTheme.colorScheme.surface,
-      ),
-      elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        containerColor = MaterialTheme.colorScheme.surface
+      )
     ) {
-      Column {
+      Column(
+        modifier = Modifier.fillMaxWidth()
+      ) {
         Row(
           modifier = Modifier
             .fillMaxWidth()
@@ -122,14 +117,7 @@ fun FloatingCollapsibleActionBar(
           Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
           ) {
-            if (onBackPressed != null) {
-              ActionButton(
-                icon = { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.go_back)) },
-                text = stringResource(R.string.go_back),
-                onClick = onBackPressed
-              )
-              Spacer(modifier = Modifier.height(8.dp))
-            }
+
             ActionButton(
               icon = { Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.edit)) },
               text = stringResource(R.string.edit),

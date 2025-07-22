@@ -10,20 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -35,13 +32,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -64,23 +61,16 @@ import dev.itsvic.parceltracker.DHL_API_KEY
 import dev.itsvic.parceltracker.PREFERRED_REGION
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.UNMETERED_ONLY
-import dev.itsvic.parceltracker.api.ParcelHistoryItem
-import dev.itsvic.parceltracker.api.Service
-import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.dataStore
-import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.enqueueNotificationWorker
-import dev.itsvic.parceltracker.sendNotification
 import dev.itsvic.parceltracker.ui.components.AboutDialog
-import dev.itsvic.parceltracker.ui.components.LogcatButton
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
-import java.time.LocalDateTime
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsView(onBackPressed: () -> Unit) {
+fun SettingsView() {
   val context = LocalContext.current
   val demoMode by context.dataStore.data.map { it[DEMO_MODE] == true }.collectAsState(false)
   val unmeteredOnly by
@@ -128,7 +118,9 @@ fun SettingsView(onBackPressed: () -> Unit) {
       Spacer(modifier = Modifier.height(8.dp))
 
       Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+          .fillMaxWidth()
+          .clickable { aboutDialogOpen = true },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
       ) {
         Column(
@@ -136,23 +128,34 @@ fun SettingsView(onBackPressed: () -> Unit) {
           horizontalAlignment = Alignment.CenterHorizontally
         ) {
           Spacer(modifier = Modifier.height(8.dp))
-          Text(
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-          )
-          Text(
-            text = stringResource(R.string.settings_version_label, BuildConfig.VERSION_NAME),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-          )
-          Spacer(modifier = Modifier.height(12.dp))
-          FilledTonalButton(
-            onClick = { aboutDialogOpen = true },
-            modifier = Modifier.fillMaxWidth()
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
           ) {
-            Text(stringResource(R.string.about_app))
+            Icon(
+                painter = painterResource(R.drawable.icon_foreground),
+                contentDescription = null,
+                modifier = Modifier.size(100.dp),
+                tint = Color.Unspecified
+              )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+              horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+              Text(
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+              )
+              Text(
+                text = stringResource(R.string.settings_version_label, BuildConfig.VERSION_NAME),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+              )
+            }
           }
+          Spacer(modifier = Modifier.height(8.dp))
         }
       }
       
@@ -446,5 +449,5 @@ fun SettingsView(onBackPressed: () -> Unit) {
 @Composable
 @PreviewLightDark
 private fun SettingsViewPreview() {
-  ParcelTrackerTheme { SettingsView(onBackPressed = {}) }
+  ParcelTrackerTheme { SettingsView() }
 }

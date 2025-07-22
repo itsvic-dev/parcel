@@ -36,7 +36,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -76,7 +76,7 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
 
   Scaffold(
     topBar = {
-      TopAppBar(
+      LargeTopAppBar(
         title = {
           Text(stringResource(if (isEdit) R.string.edit_parcel else R.string.add_a_parcel))
         },
@@ -85,24 +85,18 @@ fun AddEditParcelView(parcel: Parcel?, onBackPressed: () -> Unit, onCompleted: (
     },
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
   ) { innerPadding ->
-    Box(
+    Column(
       modifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+        .padding(innerPadding)
+        .padding(horizontal = 16.dp)
+        .verticalScroll(rememberScrollState()),
     ) {
-      Column(
-        modifier = Modifier
-          .padding(innerPadding)
-          .fillMaxWidth()
-          .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        AddEditParcelContent(
-          parcel = parcel,
-          onCompleted = onCompleted,
-          isDialog = false
-        )
-      }
+      AddEditParcelContent(
+        parcel = parcel,
+        onCompleted = onCompleted,
+        isDialog = false
+      )
     }
   }
 }
