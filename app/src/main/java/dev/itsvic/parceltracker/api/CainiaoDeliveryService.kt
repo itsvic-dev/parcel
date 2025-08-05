@@ -69,6 +69,15 @@ object CainiaoDeliveryService : DeliveryService {
           "GTMS_STATION_OUT" -> Status.InTransit
           "GTMS_SIGNED" -> Status.Delivered
           "GTMS_DEL_FAILURE" -> Status.DeliveryFailure
+          "GTMS_STA_SIGNED" -> Status.AwaitingPickup
+          "TD_TRANS_ARRIVE_DCP" -> Status.InTransit
+          "TD_TRANS_DEPART_C" -> Status.InTransit
+          "TD_TRANS_ARRIVE_C" -> Status.InTransit
+          "PU_PRE_PICKUP_SUCCESS" -> Status.PickedUpByCourier
+          "PRE_READY_TO_SHIP" -> Status.Preadvice
+          "GSTA_INBOUND" -> Status.AwaitingPickup
+          "LH_BIGBAG_SHELVE" -> Status.InWarehouse
+          "COMMON_INTRANSIT" -> Status.InTransit
           else -> logUnknownStatus("Cainiao", parcel.detailList.first().actionCode)
         }
 
