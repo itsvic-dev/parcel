@@ -1,0 +1,106 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+  <string name="about_app">حول التطبيق</string>
+  <string name="add_a_parcel">إضافة طرد</string>
+  <string name="add_parcel">إضافة الطرد</string>
+  <string name="app_name" translatable="false">Parcel</string>
+  <string name="archive">الأرشيف</string>
+  <string name="archive_prompt_question">هل تريد أرشفة هذه الطرد؟</string>
+  <string name="archive_prompt_text">إذا قمت بأرشفة هذه الطرد، فسيتم الاحتفاظ بسجله على الجهاز. ولن يتم التحقق منه بشكل دوري بحثًا عن تحديثات.</string>
+  <string name="channel_description">إشعارات حول حالة الطرد</string>
+  <string name="channel_name"> أحداث الطرد</string>
+  <string name="current_status">الحالة الآن</string>
+  <string name="delete">حذف</string>
+  <string name="delivery_service">خدمة التوصيل</string>
+  <string name="demo_mode">الوضع التجريبي</string>
+  <string name="demo_mode_action_block">لا يسمح بالقيام بأي إجراء في الوضع التجريبي</string>
+  <string name="demo_mode_detail">يتم عرض نماذج طرود لأغراض توضيحية. لن تؤثر على بيانات المستخدم.</string>
+  <string name="dhl_api_key_flavor_text">تلزمنا خدمة DHL بأن نطلب من المستخدمين توفير مفتاح API. يمكنك الحصول على مفتاح مجاني من &lt;a href=\"https://developer.dhl.com\"&gt;DHL\'s API Developer Portal&lt;/a&gt;  والتسجيل في واجهة برمجة التطبيقات API لـ \"تتبع الشحنات - الموحد\".</string>
+  <string name="donate">التبرع</string>
+  <string name="dump_logs_button">تفريغ السجلات إلى ملف</string>
+  <string name="edit">تعديل</string>
+  <string name="edit_parcel">تعديل الطرد</string>
+  <string name="error_no_api_key_provided">تتطلب خدمة التوصيل هذه مفتاح API، ولكن لم يتم توفير أي مفتاح. للمزيد من المعلومات، يرجى التحقق من إعدادات التطبيق.</string>
+  <string name="go_back">العودة للخلف</string>
+  <string name="human_name_error_text">الاسم يجب ألا يكون فارغًا.</string>
+  <string name="ignore">تجاهل</string>
+  <string name="license">الترخيص</string>
+  <string name="more_options">المزيد من الخيارات</string>
+  <string name="network_failure_detail">قد يكون جهازك غير متصل بالإنترنت، أو أن خوادم الخدمة غير متصلة بالإنترنت، أو أن التفاصيل التي أدخلتها غير صحيحة.</string>
+  <string name="no_parcels_flavor">ليس لديك أي طرود حاليًا.</string>
+  <string name="parcel_doesnt_exist_detail">هذه الطرد غير موجود على خوادم خدمة التوصيل حتى الآن. تأكد من صحة تفاصيل الطرد.</string>
+  <string name="parcel_history">سجل الطرد</string>
+  <string name="parcel_name">الاسم</string>
+  <string name="postal_code">الرمز البريدي</string>
+  <string name="postal_code_error_text">الرمز البريدي يجب ألا يكون فارغًا.</string>
+  <string name="property_delivery_time">تم التوصيل عند</string>
+  <string name="property_eta">الوقت المتوقع للوصول</string>
+  <string name="property_weight">الوزن</string>
+  <string name="repository">المستودع</string>
+  <string name="save">حفظ</string>
+  <string name="service_4px" translatable="false">4PX</string>
+  <string name="service_allegro_onebox">Allegro OneBox</string>
+  <string name="service_an_post" translatable="false">An Post</string>
+  <string name="service_belpost">البريد البيلاروسي</string>
+  <string name="service_cainiao" translatable="false">Cainiao</string>
+  <string name="service_dhl" translatable="false">DHL</string>
+  <string name="service_dpd_ger">بريد DPD ألمانيا</string>
+  <string name="service_dpd_uk">بريد DPD المملكة المتحدة</string>
+  <string name="service_ekart" translatable="false">eKart</string>
+  <string name="service_error_text">يجب أن تختار خدمة.</string>
+  <string name="service_evri" translatable="false">Evri</string>
+  <string name="service_example">بريد تجريبي</string>
+  <string name="service_gls" translatable="false">GLS</string>
+  <string name="service_gls_hungary">بريد GLS المجر</string>
+  <string name="service_hermes" translatable="false">Hermes</string>
+  <string name="service_hungarian_post">البريد المجري</string>
+  <string name="service_inpost">بريد InPost</string>
+  <string name="service_nova_poshta">بريد Nova</string>
+  <string name="service_orlen_paczka">بريد Orlen Paczka (بولندا)</string>
+  <string name="service_packeta" translatable="false">Packeta</string>
+  <string name="service_polish_post">البريد البولندي</string>
+  <string name="service_poste_italiane">البريد الإيطالي</string>
+  <string name="service_postnord" translatable="false">PostNord</string>
+  <string name="service_sameday_bg">بريد Sameday بلغاريا</string>
+  <string name="service_sameday_hu">بريد Sameday المجر</string>
+  <string name="service_sameday_ro">بريد Sameday رومانيا</string>
+  <string name="service_spx_th">بريد SPX تايلاند</string>
+  <string name="service_ukrposhta">البريد الأوكراني</string>
+  <string name="service_undefined">غير معرف</string>
+  <string name="service_uniuni" translatable="false">UniUni</string>
+  <string name="service_ups" translatable="false">UPS</string>
+  <string name="settings">الإعدادات</string>
+  <string name="settings_api_keys">مفاتيح API</string>
+  <string name="settings_experimental">تجريبي</string>
+  <string name="specify_a_postal_code">حدد الرمز البريدي</string>
+  <string name="specify_postal_code_flavor_text">اختياري. قد تتمكن من الوصول إلى معلومات إضافية، مثل الموقع، باستخدام الرمز البريدي.</string>
+  <string name="status_awaiting_pickup">في انتظار الاستلام</string>
+  <string name="status_customs">وصل إلى الجمارك</string>
+  <string name="status_customs_cleared">تم التخليص الجمركي</string>
+  <string name="status_customs_held">محتجز لدى الجمارك</string>
+  <string name="status_damaged">متضرر</string>
+  <string name="status_delayed">مؤجل</string>
+  <string name="status_delivered">تم الاستلام</string>
+  <string name="status_delivered_to_a_safe_place">تم التوصيل إلى مكان آمن</string>
+  <string name="status_delivered_to_neighbor">تم التوصيل إلى مكان مجاور</string>
+  <string name="status_delivery_failure">فشل الاستلام</string>
+  <string name="status_destroyed">تالف</string>
+  <string name="status_dropped_at_cs">تم إستلامه من قبل خدمة العملاء</string>
+  <string name="status_in_transit">قيد الشحن</string>
+  <string name="status_in_warehouse">وصل إلى المستودع</string>
+  <string name="status_lockerbox_accepted_parcel">تم وضعه في صندوق الطرود</string>
+  <string name="status_network_failure">خلل في الشبكة</string>
+  <string name="status_no_data">لا توجد بيانات</string>
+  <string name="status_out_for_delivery">خارج للتوصيل</string>
+  <string name="status_picked_up">تم الاستلام</string>
+  <string name="status_picked_up_by_courier">تم استلامه بواسطة شركة الشحن</string>
+  <string name="status_pickup_time_ending_soon">موعد الاستلام سينتهي قريبًا!</string>
+  <string name="status_preadvice">لم يتم إرساله بعد</string>
+  <string name="status_readdressed">أعيد توجيهه إلى موقع آخر</string>
+  <string name="status_returned_to_sender">تم إعادته إلى المرسل</string>
+  <string name="status_returning_to_sender">في طريقه إلى المرسل</string>
+  <string name="status_unknown">رمز الحالة غير معروف</string>
+  <string name="tracking_id">رقم التتبع</string>
+  <string name="tracking_id_error_text">رقم التتبع يجب ألا يكون فارغًا.</string>
+  <string name="unmetered_only_setting">التحديث فقط على الشبكات غير المحدودة</string>
+  <string name="unmetered_only_setting_detail">إذا تم تفعيل هذا الخيار، سيبحث التطبيق عن تحديثات الطرود فقط على الاتصالات غير المحدودة، مثل شبكة Wi-Fi المنزلية.</string>
+</resources>
