@@ -67,7 +67,7 @@
   <string name="status_no_data">データなし</string>
   <string name="status_out_for_delivery">配達中</string>
   <string name="status_picked_up">ピックアップ済み</string>
-  <string name="status_preadvice">送信されていません</string>
+  <string name="status_preadvice">配送されていません</string>
   <string name="status_unknown">不明なステータスコード</string>
   <string name="tracking_id">追跡 ID</string>
   <string name="tracking_id_error_text">追跡 ID は空白にできません。</string>
