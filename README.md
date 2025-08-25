@@ -30,6 +30,8 @@ Similarly, we have `./scripts/sort-strings.sh` to sort translation files by key.
 ## Supported services
 
 International:
+- 4PX
+- Cainiao
 - DHL
 - GLS
 - UPS
@@ -42,12 +44,15 @@ United Kingdom:
 - Evri
 
 Europe:
+- Allegro One Box (PL)
 - An Post (IE)
 - Belpost (BY)
 - GLS Hungary
 - Hermes (DE)
+- InPost (PL)
 - Magyar Posta (HU)
 - Nova Post (UA)
+- Orlen Paczka (PL)
 - Packeta
 - Poczta Polska (PL)
 - Poste Italiane (IT)

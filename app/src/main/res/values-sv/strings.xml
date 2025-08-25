@@ -57,6 +57,7 @@
   <string name="specify_postal_code_flavor_text">Valfritt. Du kan kanske få tillgång till extra information, såsom läge, med ett postnummer.</string>
   <string name="status_awaiting_pickup">Väntar på upphämtning</string>
   <string name="status_customs">Anlänt till tullen</string>
+  <string name="status_customs_cleared">Tullklarering slutförd</string>
   <string name="status_delivered">Levererat</string>
   <string name="status_delivery_failure">Leveransen misslyckades</string>
   <string name="status_in_transit">I transitering</string>

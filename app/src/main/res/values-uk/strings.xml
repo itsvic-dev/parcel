@@ -56,6 +56,7 @@
   <string name="specify_postal_code_flavor_text">Додатково. Ми мложете отримати більше інформації, таку як розташування, за допомогою поштового індексу.</string>
   <string name="status_awaiting_pickup">Очікує одержання</string>
   <string name="status_customs">Прибула на митницю</string>
+  <string name="status_customs_cleared">Митне оформлення завершено</string>
   <string name="status_delivered">Доставлена</string>
   <string name="status_delivery_failure">Невдала доставка</string>
   <string name="status_in_transit">В дорозі</string>

@@ -52,6 +52,7 @@
   <string name="specify_postal_code_flavor_text">Opcionális. További információ jelenhet meg az irányítószám megadásával, például a címzett címe.</string>
   <string name="status_awaiting_pickup">Átvételre vár</string>
   <string name="status_customs">Vámkezelés alatt</string>
+  <string name="status_customs_cleared">Vámkezelés befejezve</string>
   <string name="status_delivered">Kiszállítva</string>
   <string name="status_delivery_failure">Sikertelen kiszállítás</string>
   <string name="status_in_transit">Úton</string>

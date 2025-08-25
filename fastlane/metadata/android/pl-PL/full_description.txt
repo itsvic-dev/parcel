@@ -1,31 +1,42 @@
 📦 Parcel to aplikacja, która pomaga śledzić wszystkie Twoje paczki.
 
 Niektóre funkcje Parcel:
+
 - 📱 Prosty i przejrzysty interfejs: Skup się wyłącznie na paczkach, a nie na tym, jak korzystać z aplikacji.
 - 💬 Powiadomienia: Otrzymuj powiadomienia za każdym razem, gdy paczka dotrze dalej.
 - 🚫 Żadnych reklam i innych irytacji.
 - 👥 Darmowe i otwarte oprogramowanie: https://github.com/itsvic-dev/parcel
 
 --- Obsługiwane usługi ---
+
 Międzynarodowe:
+
+- 4PX
+- Cainiao
 - DHL
 - GLS
 - UPS
 
 Ameryka Północna:
+
 - UniUni
 
 Wielka Brytania:
+
 - DPD Wielka Brytania
 - Evri
 
 Europa:
+
+- Allegro One Box (PL)
 - An Post (IE)
 - Belpost (BY)
 - GLS Węgry
 - Hermes (DE)
+- InPost (PL)
 - Poczta Węgierska (HU)
 - Nova Post (UA)
+- Orlen Paczka (PL)
 - Packeta
 - Poczta Polska (PL)
 - Poczta Włoska (IT)
@@ -36,5 +47,6 @@ Europa:
 - Ukrposzta (UA)
 
 Azja:
+
 - eKart (IN)
 - SPX Tajlandia

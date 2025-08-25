@@ -35,19 +35,24 @@ object HermesDeliveryService : DeliveryService {
 
     val status =
         when (resp.status.parcelStatus) {
-          "ZUGESTELLT" -> Status.Delivered
+          "ZUGESTELLT",
+          "RETOURE_AUSGELIEFERT_BEIM_ATG",
+          "VOM_PAKETSHOP_ABGEHOLT" -> Status.Delivered
           "ZUSTELLTOUR" -> Status.OutForDelivery
           "AVISE" -> Status.Preadvice
-          "SENDUNG_VON_HERMES_UEBERNOMMEN" -> Status.InWarehouse
+          "SENDUNG_VON_HERMES_UEBERNOMMEN",
+          "AM_PKS_ABGEGEBEN" -> Status.InWarehouse
           "UMSCHLAG_INLAND",
           "SENDUNG_IN_ZIELREGION_ANGEKOMMEN" -> Status.InTransit
           else -> logUnknownStatus("Hermes", resp.status.parcelStatus)
         }
 
+    val statusReached = resp.parcelHistory.filter { it.timestamp != null }
+
     val history =
-        resp.parcelHistory.map {
+        statusReached.map {
           ParcelHistoryItem(
-              it.statusHistoryText,
+              it.statusHistoryText!!,
               LocalDateTime.parse(it.timestamp, DateTimeFormatter.ISO_DATE_TIME),
               "")
         }
@@ -72,8 +77,8 @@ object HermesDeliveryService : DeliveryService {
   @JsonClass(generateAdapter = true)
   internal data class HermesParcelData(
       val barcode: String,
-      val receipt: String,
-      val order: String,
+      val receipt: String?,
+      val order: String?,
       val status: HermesParcelStatus,
       val parcelHistory: List<HermesParcelHistory>
   )
@@ -83,8 +88,8 @@ object HermesDeliveryService : DeliveryService {
 
   @JsonClass(generateAdapter = true)
   internal data class HermesParcelHistory(
-      val timestamp: String,
+      val timestamp: String?,
       val status: String,
-      val statusHistoryText: String
+      val statusHistoryText: String?
   )
 }

@@ -37,9 +37,13 @@
   <string name="property_weight">Weight</string>
   <string name="repository">Repository</string>
   <string name="save">Save</string>
+  <string name="service_4px" translatable="false">4PX</string>
+  <string name="service_allegro_onebox">Allegro OneBox</string>
   <string name="service_an_post" translatable="false">An Post</string>
   <string name="service_belpost">Belpost</string>
+  <string name="service_cainiao" translatable="false">Cainiao</string>
   <string name="service_dhl" translatable="false">DHL</string>
+  <string name="service_dpd_ger">DPD Germany</string>
   <string name="service_dpd_uk">DPD UK</string>
   <string name="service_ekart" translatable="false">eKart</string>
   <string name="service_error_text">You must select a service.</string>
@@ -49,7 +53,9 @@
   <string name="service_gls_hungary">GLS Hungary</string>
   <string name="service_hermes" translatable="false">Hermes</string>
   <string name="service_hungarian_post">Hungarian Post</string>
+  <string name="service_inpost">InPost</string>
   <string name="service_nova_poshta">Nova Post</string>
+  <string name="service_orlen_paczka">Orlen Paczka (Poland)</string>
   <string name="service_packeta" translatable="false">Packeta</string>
   <string name="service_polish_post">Polish Post</string>
   <string name="service_poste_italiane">Italian Post</string>
@@ -69,15 +75,29 @@
   <string name="specify_postal_code_flavor_text">Optional. You may be able to access extra information, such as location, with a postal code.</string>
   <string name="status_awaiting_pickup">Awaiting pickup</string>
   <string name="status_customs">Arrived at customs</string>
+  <string name="status_customs_cleared">Cleared customs</string>
+  <string name="status_customs_held">Held at customs</string>
+  <string name="status_damaged">Damaged</string>
+  <string name="status_delayed">Delayed</string>
   <string name="status_delivered">Delivered</string>
+  <string name="status_delivered_to_a_safe_place">Delivered to a safe place</string>
+  <string name="status_delivered_to_neighbor">Delivered to neighbor</string>
   <string name="status_delivery_failure">Failed to deliver</string>
+  <string name="status_destroyed">Destroyed</string>
+  <string name="status_dropped_at_cs">Dropped at a Customer Service</string>
   <string name="status_in_transit">In transit</string>
   <string name="status_in_warehouse">Arrived at warehouse</string>
+  <string name="status_lockerbox_accepted_parcel">Posted in a lockerbox</string>
   <string name="status_network_failure">Network failure</string>
   <string name="status_no_data">No data</string>
   <string name="status_out_for_delivery">Out for delivery</string>
   <string name="status_picked_up">Picked up</string>
+  <string name="status_picked_up_by_courier">Picked up by courier</string>
+  <string name="status_pickup_time_ending_soon">Pickup time ending soon!</string>
   <string name="status_preadvice">Not sent yet</string>
+  <string name="status_readdressed">Redirected to another location</string>
+  <string name="status_returned_to_sender">Returned to sender</string>
+  <string name="status_returning_to_sender">Returning to sender</string>
   <string name="status_unknown">Unknown status code</string>
   <string name="tracking_id">Tracking ID</string>
   <string name="tracking_id_error_text">Tracking ID must not be blank.</string>

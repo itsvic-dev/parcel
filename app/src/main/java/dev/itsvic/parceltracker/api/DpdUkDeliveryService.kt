@@ -44,6 +44,7 @@ object DpdUkDeliveryService : DeliveryService {
           "004" -> Status.InWarehouse
           "015" -> Status.OutForDelivery
           "001" -> Status.Delivered
+          null -> Status.Unknown
           else -> logUnknownStatus("DPD UK", statusCode)
         }
 
@@ -79,7 +80,7 @@ object DpdUkDeliveryService : DeliveryService {
 
   @JsonClass(generateAdapter = true)
   internal data class Event(
-      val eventCode: String,
+      val eventCode: String?,
       val eventDate: String,
       val eventText: String,
       val eventLocation: String,

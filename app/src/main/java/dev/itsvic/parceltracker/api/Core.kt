@@ -19,9 +19,11 @@ enum class Service {
   EXAMPLE,
 
   // International
+  CAINIAO,
   DHL,
   GLS,
   UPS,
+  FPX,
 
   // North America
   UNIUNI,
@@ -33,6 +35,7 @@ enum class Service {
   // Europe
   AN_POST,
   BELPOST,
+  DPD_GER,
   GLS_HUNGARY,
   HERMES,
   MAGYAR_POSTA,
@@ -45,6 +48,9 @@ enum class Service {
   SAMEDAY_RO,
   UKRPOSHTA,
   POSTNORD,
+  ALLEGRO_ONEBOX,
+  INPOST,
+  ORLEN_PACZKA,
 
   // Asia
   EKART,
@@ -60,9 +66,11 @@ val serviceOptions =
 
 fun getDeliveryService(service: Service): DeliveryService? {
   return when (service) {
+    Service.CAINIAO -> CainiaoDeliveryService
     Service.DHL -> DhlDeliveryService
     Service.GLS -> GLSGlobalDeliveryService
     Service.UPS -> UPSDeliveryService
+    Service.FPX -> FPXDeliveryService
 
     Service.UNIUNI -> UniUniDeliveryService
 
@@ -71,6 +79,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
     Service.AN_POST -> AnPostDeliveryService
     Service.BELPOST -> BelpostDeliveryService
+    Service.DPD_GER -> DpdGerDeliveryService
     Service.GLS_HUNGARY -> GLSHungaryDeliveryService
     Service.HERMES -> HermesDeliveryService
     Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
@@ -83,6 +92,9 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
     Service.UKRPOSHTA -> UkrposhtaDeliveryService
     Service.POSTNORD -> PostNordDeliveryService
+    Service.ALLEGRO_ONEBOX -> AllegroOneBoxDeliveryService
+    Service.INPOST -> InPostDeliveryService
+    Service.ORLEN_PACZKA -> OrlenPaczkaDeliveryService
 
     Service.EKART -> EKartDeliveryService
     Service.SPX_TH -> SPXThailandDeliveryService
@@ -120,14 +132,28 @@ data class ParcelHistoryItem(
 
 enum class Status(val nameResource: Int) {
   Preadvice(R.string.status_preadvice),
+  LockerboxAcceptedParcel(R.string.status_lockerbox_accepted_parcel),
+  PickedUpByCourier(R.string.status_picked_up_by_courier),
   InTransit(R.string.status_in_transit),
+  Readdressed(R.string.status_readdressed),
   InWarehouse(R.string.status_in_warehouse),
   Customs(R.string.status_customs),
+  CustomsSuccess(R.string.status_customs_cleared),
+  CustomsHeld(R.string.status_customs_held),
   OutForDelivery(R.string.status_out_for_delivery),
   DeliveryFailure(R.string.status_delivery_failure),
   Delivered(R.string.status_delivered),
+  DeliveredToNeighbor(R.string.status_delivered_to_neighbor),
+  DeliveredToASafePlace(R.string.status_delivered_to_a_safe_place),
+  DroppedAtCustomerService(R.string.status_dropped_at_cs),
+  ReturningToSender(R.string.status_returning_to_sender),
+  ReturnedToSender(R.string.status_returned_to_sender),
   AwaitingPickup(R.string.status_awaiting_pickup),
+  PickupTimeEndingSoon(R.string.status_pickup_time_ending_soon),
   PickedUp(R.string.status_picked_up),
+  Delayed(R.string.status_delayed),
+  Damaged(R.string.status_damaged),
+  Destroyed(R.string.status_destroyed),
   Unknown(R.string.status_unknown),
   NetworkFailure(R.string.status_network_failure),
   NoData(R.string.status_no_data),

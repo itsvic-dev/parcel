@@ -58,6 +58,7 @@
   <string name="specify_postal_code_flavor_text">任意の設定です。郵便番号を入力すると、場所などの追加情報にアクセスできる場合があります。</string>
   <string name="status_awaiting_pickup">ピックアップ待ち</string>
   <string name="status_customs">税関に到着</string>
+  <string name="status_customs_cleared">通関済み</string>
   <string name="status_delivered">配達済み</string>
   <string name="status_delivery_failure">配達に失敗</string>
   <string name="status_in_transit">輸送中</string>

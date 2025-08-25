@@ -47,6 +47,7 @@
   <string name="specify_postal_code_flavor_text">เลือกที่จะไม่ใส่ได้ แต่คุณอาจจะเห็นข้อมูลเพิ่มเติม เช่น ตำแหน่ง เมื่อคุณระบุรหัสไปรษณีย์</string>
   <string name="status_awaiting_pickup">กำลังรอบริษัทขนส่งรับพัสดุ</string>
   <string name="status_customs">พัสดุถึงศุลกากร</string>
+  <string name="status_customs_cleared">ผ่านพิธีการศุลกากรแล้ว</string>
   <string name="status_delivered">การนำส่งพัสดุสำเร็จ</string>
   <string name="status_delivery_failure">การนำส่งพัสดุล้มเหลว</string>
   <string name="status_in_transit">พัสดุอยู่ระหว่างการขนส่ง</string>

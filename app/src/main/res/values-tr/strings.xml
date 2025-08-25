@@ -56,6 +56,7 @@
   <string name="specify_postal_code_flavor_text">İsteğe bağlı. Posta kodu ile konum gibi ek bilgilere erişebilirsiniz.</string>
   <string name="status_awaiting_pickup">Teslim alınmayı bekliyor</string>
   <string name="status_customs">Gümrüğe ulaştı</string>
+  <string name="status_customs_cleared">Gümrükten geçti</string>
   <string name="status_delivered">Teslim edildi</string>
   <string name="status_delivery_failure">Teslim edilemedi</string>
   <string name="status_in_transit">Yolda</string>

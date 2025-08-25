@@ -79,11 +79,11 @@ open class SamedayDeliveryService(region: String, override val nameResource: Int
 
   @JsonClass(generateAdapter = true)
   internal data class Event(
-      val country: String,
-      val county: String,
-      val status: String,
+      val country: String = "",
+      val county: String = "",
+      val status: String = "",
       val statusDate: String,
       val statusStateId: Int,
-      val transitLocation: String,
+      val transitLocation: String = "",
   )
 }

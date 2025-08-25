@@ -1,31 +1,42 @@
 📦 Parcel je aplikace, která vám pomáhá sledovat všechny vaše zásilky.
 
 Některé funkce aplikace:
+
 - 📱 Čisté a jednoduché rozhraní: soustřeďte se na své zásilky, ne na to, jak používat aplikaci.
 - 💬 Oznámení: získejte oznámení vždy, když se změní stav zásilky.
 - 🚫 Bez reklam a jiných nepříjemností.
 - 👥 Bezplatná a s otevřeným kódem: https://github.com/itsvic-dev/parcel
 
 --- Podporované služby ---
+
 Mezinárodní:
+
+- 4PX
+- Cainiao
 - DHL
 - GLS
 - UPS
 
 Severní Amerika:
+
 - UniUni
 
 Velká Británie:
+
 - DPD UK
 - Evri
 
 Evropa:
+
+- Allegro One Box (PL)
 - An Post (IE)
 - Belpost (BY)
 - GLS Hungary
 - Hermes (DE)
+- InPost (PL)
 - Magyar Posta (HU)
 - Nova Post (UA)
+- Orlen Paczka (PL)
 - Packeta (Zásilkovna)
 - Poczta Polska (PL)
 - Poste Italiane (IT)
@@ -36,5 +47,6 @@ Evropa:
 - Ukrposhta (UA)
 
 Asie:
+
 - eKart (IN)
 - SPX Thailand

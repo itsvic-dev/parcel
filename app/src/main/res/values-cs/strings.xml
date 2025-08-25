@@ -51,6 +51,7 @@
   <string name="specify_postal_code_flavor_text">Volitelné. S poštovním směrovacím číslem můžete získat přístup k více informacím, jako je poloha.</string>
   <string name="status_awaiting_pickup">Čeká na vyzvednutí</string>
   <string name="status_customs">Dorazilo na celnici</string>
+  <string name="status_customs_cleared">Celní odbavení</string>
   <string name="status_delivered">Doručeno</string>
   <string name="status_delivery_failure">Nepodařilo se doručit</string>
   <string name="status_in_transit">Na cestě</string>

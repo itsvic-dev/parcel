@@ -3,6 +3,7 @@ package dev.itsvic.parceltracker.api
 import android.os.LocaleList
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import java.io.IOException
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import retrofit2.HttpException
@@ -23,51 +24,54 @@ object PostNordDeliveryService : DeliveryService {
   private const val DEFAULT_LOCALE = "en"
   private val supportedLocales = setOf("en", "sv", "no", "da", "fi")
 
-  override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
+  private fun getApiLocale(): String {
     val locale = LocaleList.getDefault().get(0).language
-    val apiLocale =
-        if (supportedLocales.contains(locale)) {
-          locale
-        } else {
-          DEFAULT_LOCALE
-        }
+    return if (supportedLocales.contains(locale)) locale else DEFAULT_LOCALE
+  }
 
+  private val statusMapping =
+      mapOf(
+          "CREATED" to Status.Preadvice,
+          "EN_ROUTE" to Status.InTransit,
+          "DELAYED" to Status.InTransit,
+          "EXPECTED_DELAY" to Status.InTransit,
+          "AVAILABLE_FOR_DELIVERY" to Status.InWarehouse,
+          "AVAILABLE_FOR_DELIVERY_PAR_LOC" to Status.InWarehouse,
+          "DELIVERED" to Status.Delivered,
+          "DELIVERY_IMPOSSIBLE" to Status.DeliveryFailure,
+          "DELIVERY_REFUSED" to Status.DeliveryFailure,
+          "STOPPED" to Status.DeliveryFailure,
+          "RETURNED" to Status.DeliveryFailure,
+          "OTHER" to Status.Unknown,
+          "INFORMED" to Status.Unknown)
+
+  override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
     val resp =
         try {
-          service.getShipments(trackingId, apiLocale)
-        } catch (_: HttpException) {
-          throw ParcelNonExistentException()
+          service.getShipments(trackingId, getApiLocale())
+        } catch (e: HttpException) {
+          when (e.code()) {
+            404 -> throw ParcelNonExistentException()
+            else -> throw IOException("Failed to fetch parcel information: ${e.message()}")
+          }
         }
 
-    val item = resp.items.first()
+    val item = resp.items.firstOrNull() ?: throw ParcelNonExistentException()
 
-    val status =
-        when (item.status.code) {
-          "CREATED" -> Status.Preadvice
-          "EN_ROUTE",
-          "DELAYED",
-          "EXPECTED_DELAY" -> Status.InTransit
-          "AVAILABLE_FOR_DELIVERY",
-          "AVAILABLE_FOR_DELIVERY_PAR_LOC" -> Status.InWarehouse
-          "DELIVERED" -> Status.Delivered
-          "DELIVERY_IMPOSSIBLE",
-          "DELIVERY_REFUSED",
-          "STOPPED",
-          "RETURNED" -> Status.DeliveryFailure
-          "OTHER",
-          "INFORMED" -> Status.Unknown
-          else -> logUnknownStatus("PostNord", item.status.code)
-        }
+    val status = statusMapping[item.status.code] ?: logUnknownStatus("PostNord", item.status.code)
 
     val history =
-        item.events.map {
+        item.events.map { event ->
+          val location = event.location
+          val locationName = location.name
+          val locationCountryCode = location.countryCode
+
           ParcelHistoryItem(
-              it.eventDescription,
-              ZonedDateTime.parse(it.eventTime)
+              event.eventDescription,
+              ZonedDateTime.parse(event.eventTime)
                   .withZoneSameInstant(ZoneId.systemDefault())
                   .toLocalDateTime(),
-              if (it.location.name != null) "${it.location.name}, ${it.location.countryCode}"
-              else it.location.countryCode)
+              listOfNotNull(locationName, locationCountryCode).joinToString(", "))
         }
 
     return Parcel(resp.shipmentId, history, status)
@@ -118,8 +122,8 @@ object PostNordDeliveryService : DeliveryService {
 
   @JsonClass(generateAdapter = true)
   internal data class Location(
-      val countryCode: String,
-      val locationType: String,
+      val countryCode: String? = null,
+      val locationType: String?,
       val name: String?
   )
 

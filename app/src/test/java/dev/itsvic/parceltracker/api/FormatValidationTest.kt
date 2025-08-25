@@ -1,4 +1,7 @@
+import dev.itsvic.parceltracker.api.AllegroOneBoxDeliveryService
 import dev.itsvic.parceltracker.api.AnPostDeliveryService
+import dev.itsvic.parceltracker.api.FPXDeliveryService
+import dev.itsvic.parceltracker.api.InPostDeliveryService
 import dev.itsvic.parceltracker.api.MagyarPostaDeliveryService
 import dev.itsvic.parceltracker.api.PacketaDeliveryService
 import dev.itsvic.parceltracker.api.PolishPostDeliveryService
@@ -65,5 +68,41 @@ class FormatValidationTest {
   @Test
   fun anPostFormatReturnsFalse() {
     assertFalse(AnPostDeliveryService.acceptsFormat("AY12345678HA"))
+  }
+
+  @Test
+  fun allegroOneBox_ReturnsTrue() {
+    assertTrue(AllegroOneBoxDeliveryService.acceptsFormat("A0100AA0A0"))
+  }
+
+  @Test
+  fun allegroOneBox_ReturnsFalse() {
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("aaa"))
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("A02AAAAAA"))
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("A0000AA0Aa"))
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("A 0000AA0A"))
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("AAAAAAAAAAA"))
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("B000000000"))
+  }
+
+  @Test
+  fun inpost_NumberFormatReturnsTrue() {
+    assertTrue(InPostDeliveryService.acceptsFormat("000000000000000000000000"))
+  }
+
+  @Test
+  fun inpost_NumberFormatReturnsFalse() {
+    assertFalse(InPostDeliveryService.acceptsFormat("A00000000000000000000000"))
+  }
+
+  @Test
+  fun fpx_ReturnsTrue() {
+    assertTrue(FPXDeliveryService.acceptsFormat("4PX00000000000000CN"))
+  }
+
+  @Test
+  fun fpx_ReturnsFalse() {
+    assertFalse(FPXDeliveryService.acceptsFormat("eawifjsadmf"))
+    assertFalse(FPXDeliveryService.acceptsFormat("4PX00a00000000000CN"))
   }
 }
