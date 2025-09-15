@@ -35,9 +35,14 @@
   <string name="property_weight">Вага</string>
   <string name="repository">Репозитарій</string>
   <string name="save">Зберегти</string>
+  <string name="service_allegro_onebox">Allegro OneBox</string>
   <string name="service_belpost">Білпошта</string>
   <string name="service_dpd_uk">DPD Сполучене Королівство</string>
   <string name="service_error_text">Ви маєте вибрати службу.</string>
+  <string name="service_dpd_de">DPD Німеччина</string>
+  
+  <string name="service_orlen_paczka">Orlen Paczka (Польща)</string>
+  <string name="service_gls_hu">GLS Угорщина</string>
   <string name="service_example">Прикладна пошта</string>
   <string name="service_hungarian_post">Угорська Пошта</string>
   <string name="service_nova_poshta">Нова Пошта</string>
@@ -57,15 +62,28 @@
   <string name="status_awaiting_pickup">Очікує одержання</string>
   <string name="status_customs">Прибула на митницю</string>
   <string name="status_customs_cleared">Митне оформлення завершено</string>
+  <string name="status_customs_held">Затримана на митниці</string>
+  <string name="status_damaged">Пошкоджена</string>
   <string name="status_delivered">Доставлена</string>
+  <string name="status_delayed">Відтермінована</string>
   <string name="status_delivery_failure">Невдала доставка</string>
   <string name="status_in_transit">В дорозі</string>
+  <string name="status_delivered_to_a_safe_place">Доставлена у безпечне місце</string>
+  <string name="status_delivered_to_neighbor">Доставлена сусіду</string>
+  <string name="status_destroyed">Знищена</string>
   <string name="status_in_warehouse">Прибула на склад</string>
+  <string name="status_lockerbox_accepted_parcel">Отримана в комірку</string>
   <string name="status_network_failure">Мережеві неполадки</string>
   <string name="status_no_data">Немає даних</string>
-  <string name="status_out_for_delivery">Out for delivery</string>
+  <string name="status_out_for_delivery">Готовий для доставки</string>
   <string name="status_picked_up">Одержана</string>
+
+  <string name="status_picked_up_by_courier">Одержана кур'єром</string>
+  <string name="status_pickup_time_ending_soon">Час очікування посилки закінчується!</string>
   <string name="status_preadvice">Ще не надіслано</string>
+  <string name="status_readressed">Переадресована</string>
+  <string name="status_returned_to_sender">Повернена відправнику</string>
+  <string name="status_returning_to_sender">Повертається відправнику</string>
   <string name="status_unknown">Невідомий код статусу</string>
   <string name="tracking_id">Трекінг-ID</string>
   <string name="tracking_id_error_text">Трекінг-ID не може бути пустим.</string>
