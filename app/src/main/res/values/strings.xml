@@ -59,6 +59,7 @@
   <string name="service_packeta" translatable="false">Packeta</string>
   <string name="service_polish_post">Polish Post</string>
   <string name="service_poste_italiane">Italian Post</string>
+  <string name="service_postnl" translatable="false">PostNL</string>
   <string name="service_postnord" translatable="false">PostNord</string>
   <string name="service_sameday_bg">Sameday Bulgaria</string>
   <string name="service_sameday_hu">Sameday Hungary</string>
