@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.squareup.moshi.Moshi
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.R
+import dev.itsvic.parceltracker.api.PostNLDeliveryService
 import java.time.Instant
 import java.time.LocalDateTime
 import java.util.TimeZone
@@ -43,6 +44,7 @@ enum class Service {
   PACKETA,
   POLISH_POST,
   POSTE_ITALIANE,
+  POST_NL,
   SAMEDAY_BG,
   SAMEDAY_HU,
   SAMEDAY_RO,
@@ -87,6 +89,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.PACKETA -> PacketaDeliveryService
     Service.POLISH_POST -> PolishPostDeliveryService
     Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
+    Service.POST_NL -> PostNLDeliveryService
     Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
     Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
     Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
