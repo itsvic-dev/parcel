@@ -4,11 +4,14 @@ package dev.itsvic.parceltracker.ui.components
 import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -16,6 +19,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,19 +43,32 @@ fun AboutDialog(onDismissRequest: () -> Unit) {
   Dialog(onDismissRequest = onDismissRequest) {
     Card(modifier = Modifier.fillMaxWidth().padding(16.dp), shape = RoundedCornerShape(16.dp)) {
       Column(modifier = Modifier.padding(24.dp)) {
-        Text(
-            text = "Parcel",
-            style = MaterialTheme.typography.titleLarge,
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = BuildConfig.VERSION_NAME,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+          Icon(
+              painter = painterResource(R.drawable.icon_foreground),
+              contentDescription = null,
+              modifier = Modifier.size(80.dp),
+              tint = Color.Unspecified
+          )
+          Spacer(Modifier.width(16.dp))
+          Column(
+              horizontalAlignment = Alignment.CenterHorizontally
+          ) {
+            Text(
+                text = "Parcel",
+                style = MaterialTheme.typography.titleLarge,
+            )
+            Text(
+                text = BuildConfig.VERSION_NAME,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
+        }
 
         Spacer(Modifier.height(24.dp))
 
