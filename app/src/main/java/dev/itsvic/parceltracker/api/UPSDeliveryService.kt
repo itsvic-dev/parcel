@@ -92,11 +92,11 @@ object UPSDeliveryService : DeliveryService {
           else -> logUnknownStatus("UPS", details.progressBarType!!)
         }
 
-    val metadata =
-        mutableMapOf(
-            R.string.property_weight to
-                "${details.additionalInformation!!.weight} ${details.additionalInformation.weightUnit}",
-        )
+    val metadata = mutableMapOf<Int, String>()
+    if (details.additionalInformation?.weightUnit != null) {
+      metadata[R.string.property_weight] =
+          "${details.additionalInformation.weight} ${details.additionalInformation.weightUnit}"
+    }
 
     // ETA
     if (details.scheduledDeliveryDateDetail != null && details.packageStatusTime != null) {
@@ -188,7 +188,7 @@ object UPSDeliveryService : DeliveryService {
   @JsonClass(generateAdapter = true)
   internal data class PkgMoreInfo(
       val weight: String,
-      val weightUnit: String,
+      val weightUnit: String?,
   )
 
   @JsonClass(generateAdapter = true)
