@@ -2,7 +2,6 @@
   <string name="about_app">حول التطبيق</string>
   <string name="add_a_parcel">إضافة طرد</string>
   <string name="add_parcel">إضافة الطرد</string>
-  <string name="app_name" translatable="false">Parcel</string>
   <string name="archive">الأرشيف</string>
   <string name="archive_prompt_question">هل تريد أرشفة هذه الطرد؟</string>
   <string name="archive_prompt_text">إذا قمت بأرشفة هذه الطرد، فسيتم الاحتفاظ بسجله على الجهاز. ولن يتم التحقق منه بشكل دوري بحثًا عن تحديثات.</string>
@@ -37,37 +36,25 @@
   <string name="property_weight">الوزن</string>
   <string name="repository">المستودع</string>
   <string name="save">حفظ</string>
-  <string name="service_4px" translatable="false">4PX</string>
   <string name="service_allegro_onebox">Allegro OneBox</string>
-  <string name="service_an_post" translatable="false">An Post</string>
   <string name="service_belpost">البريد البيلاروسي</string>
-  <string name="service_cainiao" translatable="false">Cainiao</string>
-  <string name="service_dhl" translatable="false">DHL</string>
   <string name="service_dpd_ger">بريد DPD ألمانيا</string>
   <string name="service_dpd_uk">بريد DPD المملكة المتحدة</string>
-  <string name="service_ekart" translatable="false">eKart</string>
   <string name="service_error_text">يجب أن تختار خدمة.</string>
-  <string name="service_evri" translatable="false">Evri</string>
   <string name="service_example">بريد تجريبي</string>
-  <string name="service_gls" translatable="false">GLS</string>
   <string name="service_gls_hungary">بريد GLS المجر</string>
-  <string name="service_hermes" translatable="false">Hermes</string>
   <string name="service_hungarian_post">البريد المجري</string>
   <string name="service_inpost">بريد InPost</string>
   <string name="service_nova_poshta">بريد Nova</string>
   <string name="service_orlen_paczka">بريد Orlen Paczka (بولندا)</string>
-  <string name="service_packeta" translatable="false">Packeta</string>
   <string name="service_polish_post">البريد البولندي</string>
   <string name="service_poste_italiane">البريد الإيطالي</string>
-  <string name="service_postnord" translatable="false">PostNord</string>
   <string name="service_sameday_bg">بريد Sameday بلغاريا</string>
   <string name="service_sameday_hu">بريد Sameday المجر</string>
   <string name="service_sameday_ro">بريد Sameday رومانيا</string>
   <string name="service_spx_th">بريد SPX تايلاند</string>
   <string name="service_ukrposhta">البريد الأوكراني</string>
   <string name="service_undefined">غير معرف</string>
-  <string name="service_uniuni" translatable="false">UniUni</string>
-  <string name="service_ups" translatable="false">UPS</string>
   <string name="settings">الإعدادات</string>
   <string name="settings_api_keys">مفاتيح API</string>
   <string name="settings_experimental">تجريبي</string>
