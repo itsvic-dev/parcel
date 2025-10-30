@@ -32,9 +32,7 @@ object UPSDeliveryService : DeliveryService {
     val tokens = getCsrfTokens(trackingId)
 
     val language = LocaleList.getDefault().get(0)
-    val country =
-        if (language.country.isEmpty()) defaultRegionsForLanguageCode[language.language]
-        else language.country
+    val country = language.country.ifEmpty { defaultRegionsForLanguageCode[language.language] }
     val locale = "${language.language}_$country"
 
     val resp =

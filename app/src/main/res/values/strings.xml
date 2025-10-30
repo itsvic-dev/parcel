@@ -19,7 +19,9 @@
   <string name="dump_logs_button">Dump logs to file</string>
   <string name="edit">Edit</string>
   <string name="edit_parcel">Edit parcel</string>
+  <string name="error_json_conversion">There was an error parsing the response, possibly because the API changed.\n\nJSON conversion error message:\n%1$s</string>
   <string name="error_no_api_key_provided">This delivery service requires an API key, but none was provided. Check the app\'s settings for more information.</string>
+  <string name="error_unexpected_detail">An unexpected error was encountered with the message:\n%1$s.</string>
   <string name="go_back">Go back</string>
   <string name="human_name_error_text">Name must not be blank.</string>
   <string name="ignore">Ignore</string>

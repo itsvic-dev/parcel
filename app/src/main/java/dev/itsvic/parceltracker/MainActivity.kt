@@ -43,6 +43,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.squareup.moshi.JsonDataException
 import dev.itsvic.parceltracker.api.APIKeyMissingException
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
@@ -196,6 +197,13 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
 
       LaunchedEffect(parcelWithStatus) {
         if (dbParcel != null && !dbParcel.isArchived) {
+          fun apiParcelError(description: String, status: Status): APIParcel {
+            return APIParcel(
+                dbParcel.parcelId,
+                listOf(ParcelHistoryItem(description, LocalDateTime.now(), "")),
+                status)
+          }
+
           launch(Dispatchers.IO) {
             try {
               apiParcel =
@@ -220,33 +228,30 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
             } catch (e: IOException) {
               Log.w("MainActivity", "Failed fetch: $e")
               apiParcel =
-                  APIParcel(
-                      dbParcel.parcelId,
-                      listOf(
-                          ParcelHistoryItem(
-                              context.getString(R.string.network_failure_detail),
-                              LocalDateTime.now(),
-                              "")),
-                      Status.NetworkFailure)
+                  apiParcelError(
+                      context.getString(R.string.network_failure_detail), Status.NetworkFailure)
             } catch (_: ParcelNonExistentException) {
               apiParcel =
-                  APIParcel(
-                      dbParcel.parcelId,
-                      listOf(
-                          ParcelHistoryItem(
-                              context.getString(R.string.parcel_doesnt_exist_detail),
-                              LocalDateTime.now(),
-                              "")),
-                      Status.NoData)
+                  apiParcelError(
+                      context.getString(R.string.parcel_doesnt_exist_detail), Status.NoData)
             } catch (_: APIKeyMissingException) {
               apiParcel =
-                  APIParcel(
-                      dbParcel.parcelId,
-                      listOf(
-                          ParcelHistoryItem(
-                              context.getString(R.string.error_no_api_key_provided),
-                              LocalDateTime.now(),
-                              "")),
+                  apiParcelError(
+                      context.getString(R.string.error_no_api_key_provided), Status.NetworkFailure)
+            } catch (e: JsonDataException) {
+              Log.w(
+                  "MainActivity",
+                  "Unexpected JSON response that could not be converted: ${e.message}")
+              apiParcel =
+                  apiParcelError(
+                      context.getString(R.string.error_json_conversion).format(e.message),
+                      Status.NetworkFailure)
+            } catch (e: Exception) {
+              // catchall to avoid crashes
+              Log.e("MainActivity", "Unexpected error", e)
+              apiParcel =
+                  apiParcelError(
+                      context.getString(R.string.error_unexpected_detail).format(e.message),
                       Status.NetworkFailure)
             }
           }
