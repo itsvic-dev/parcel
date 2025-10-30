@@ -59,7 +59,11 @@
   <string name="status_awaiting_pickup">Abholung ausstehend</string>
   <string name="status_customs">Beim Zoll eingetroffen</string>
   <string name="status_customs_cleared">Vom Zoll abgefertigt</string>
+  <string name="status_customs_held">Vom Zoll einbehalten</string>
+  <string name="status_damaged">Beschädigt</string>
+  <string name="status_delayed">Verspätet</string>
   <string name="status_delivered">Zugestellt</string>
+  <string name="status_delivered_to_neighbor">Bei Nachbar zugestellt</string>
   <string name="status_delivery_failure">Zustellung fehlgeschlagen</string>
   <string name="status_in_transit">Unterwegs</string>
   <string name="status_in_warehouse">Im Paketzentrum eingetroffen</string>
