@@ -18,7 +18,9 @@
   <string name="dump_logs_button">Protokolle in Datei exportieren</string>
   <string name="edit">Bearbeiten</string>
   <string name="edit_parcel">Paket bearbeiten</string>
+  <string name="error_json_conversion">Beim Parsen der Serverantwort ist ein Fehler aufgetreten, möglicherweise aufgrund einer Änderung der API.\n\nFehlermeldung der JSON Konvertierung:\n%1$s</string>
   <string name="error_no_api_key_provided">Dieser Zustelldienst erfordert einen API-Schlüssel, aber es wurde keiner angegeben. Weitere Informationen finden Sie in den App-Einstellungen.</string>
+  <string name="error_unexpected_detail">Ein unbekannter Fehler ist aufgetreten mit der Nachricht:\n%1$s.</string>
   <string name="go_back">Zurück</string>
   <string name="human_name_error_text">Name darf nicht leer sein.</string>
   <string name="ignore">Ignorieren</string>
