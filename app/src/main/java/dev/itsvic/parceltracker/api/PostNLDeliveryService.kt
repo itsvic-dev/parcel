@@ -125,9 +125,9 @@ object PostNLDeliveryService : DeliveryService {
       "X80",
       "X81" -> Status.Preadvice // "01, Zending voorgemeld"
       "B01",
-      "X40" -> Status.LockerboxAcceptedParcel // "02, Zending in ontvangst genomen"
-      "B04",
-      "Z80" -> Status.PickedUpByCourier // "03, Zending afgehaald"
+      "X40" -> Status.InTransit // "02, Zending in ontvangst genomen"
+      "B04" -> Status.PickedUpByCourier // "03, Zending afgehaald"
+      "Z80" -> Status.PickedUp
       "D02",
       "D03",
       "D04",
@@ -361,7 +361,7 @@ object PostNLDeliveryService : DeliveryService {
       "V23",
       "V31",
       "V50" -> Status.InWarehouse // "21, Zending in voorraad"
-      "I02" -> Status.PickedUpByCourier // "22, Zending afgehaald van Postkantoor"
+      "I02" -> Status.PickedUp // "22, Zending afgehaald van Postkantoor"
       "C01" -> Status.Preadvice // "23, Afhaalopdracht gecollecteerd"
       "H16",
       "H25" -> Status.ReturningToSender // "27, Retour Onbestelbaar"
