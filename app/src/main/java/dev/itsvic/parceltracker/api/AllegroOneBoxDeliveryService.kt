@@ -3,8 +3,9 @@ package dev.itsvic.parceltracker.api
 import android.os.LocaleList
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import java.time.Instant
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.util.TimeZone
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -109,7 +110,8 @@ object AllegroOneBoxDeliveryService : DeliveryService {
     return events.map { item ->
       ParcelHistoryItem(
           item.description,
-          LocalDateTime.parse(item.eventTimestamp, DateTimeFormatter.ISO_DATE_TIME),
+          LocalDateTime.ofInstant(
+              Instant.parse(item.eventTimestamp), TimeZone.getDefault().toZoneId()),
           "" // the API doesn't provide us any locations :(
           )
     }
