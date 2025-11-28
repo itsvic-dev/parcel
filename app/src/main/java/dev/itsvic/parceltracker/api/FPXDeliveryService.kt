@@ -243,7 +243,7 @@ object FPXDeliveryService : DeliveryService {
       val tkCode: String,
       val tkDesc: String,
       val tkLocation: String,
-      val tkTimezone: String,
+      val tkTimezone: String?,
       val tkDate: String,
       val tkDateStr: String,
       val tkCategoryCode: String?,
