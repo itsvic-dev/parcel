@@ -15,7 +15,7 @@ default_platform(:android)
 platform :android do
   desc "Deploy a version to the production track"
   lane :release do
-    gradle(task: "clean bundleRelease")
+    gradle(task: "bundleRelease")
     upload_to_play_store(
       track: "production",
       sync_image_upload: true,
