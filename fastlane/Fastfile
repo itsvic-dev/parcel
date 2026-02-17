@@ -19,6 +19,7 @@ platform :android do
     upload_to_play_store(
       track: "production",
       sync_image_upload: true,
+      skip_upload_apk: true,
     )
   end
 
@@ -28,6 +29,7 @@ platform :android do
     upload_to_play_store(
       track: "alpha",
       sync_image_upload: true,
+      skip_upload_apk: true,
     )
   end
 
