@@ -41,6 +41,7 @@ Europa:
 - Poczta Polska (PL)
 - Poczta Włoska (IT)
 - PostNord
+- PostNL (NL)
 - Sameday Bułgaria
 - Sameday Węgry
 - Sameday Rumunia

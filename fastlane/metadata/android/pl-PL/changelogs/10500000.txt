@@ -1,0 +1,7 @@
+Nowe serwisy:
+- PostNL
+
+Problemy:
+- Cainiao: dodano więcej statusów
+- Allegro OneBox: naprawiono nieprawidłowy czas
+- 4PX: naprawiono crash kiedy tkTimezone był null

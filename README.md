@@ -60,6 +60,7 @@ Europe:
 - Poczta Polska (PL)
 - Poste Italiane (IT)
 - PostNord
+- PostNL (NL)
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania

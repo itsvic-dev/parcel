@@ -1,0 +1,7 @@
+New services:
+- PostNL
+
+Bugs:
+- Cainiao: added more status codes
+- Allegro OneBox: fixed incorrect time
+- 4PX: fixed crash when tkTimezone is null

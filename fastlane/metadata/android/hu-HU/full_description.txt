@@ -41,6 +41,7 @@ Európa:
 - Lengyel posta (PL)
 - Olasz posta (IT)
 - PostNord
+- PostNL (NL)
 - Sameday Bulgária
 - Sameday Magyarország
 - Sameday Románia
