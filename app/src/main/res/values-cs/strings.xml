@@ -17,7 +17,6 @@
   <string name="edit">Upravit</string>
   <string name="edit_parcel">Upravit zásilku</string>
   <string name="go_back">Přejít zpět</string>
-  <string name="human_name_error_text">Název nesmí být prázdný.</string>
   <string name="ignore">Ignorovat</string>
   <string name="license">Licence</string>
   <string name="more_options">Další možnosti</string>
@@ -66,4 +65,5 @@
   <string name="tracking_id_error_text">Sledovací ID nesmí být prázdné.</string>
   <string name="unmetered_only_setting">Aktualizovat pouze na neměřených sítích</string>
   <string name="unmetered_only_setting_detail">Pokud je povoleno, bude aplikace Parcel zjišťovat aktualizace pouze na neměřených připojeních, jako je vaše domácí Wi-Fi.</string>
+  <string name="undefinied_packagename">Balíček</string>
 </resources>

@@ -36,6 +36,7 @@ enum class Service {
   AN_POST,
   BELPOST,
   DPD_GER,
+  EXPRESS_ONE,
   GLS_HUNGARY,
   HERMES,
   MAGYAR_POSTA,
@@ -56,6 +57,7 @@ enum class Service {
   // Asia
   EKART,
   SPX_TH,
+  IMILE,
 }
 
 val serviceOptions =
@@ -81,6 +83,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.AN_POST -> AnPostDeliveryService
     Service.BELPOST -> BelpostDeliveryService
     Service.DPD_GER -> DpdGerDeliveryService
+    Service.EXPRESS_ONE -> ExpressOneDeliveryService
     Service.GLS_HUNGARY -> GLSHungaryDeliveryService
     Service.HERMES -> HermesDeliveryService
     Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
@@ -100,6 +103,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
     Service.EKART -> EKartDeliveryService
     Service.SPX_TH -> SPXThailandDeliveryService
+    Service.IMILE -> IMileDeliveryService
 
     Service.EXAMPLE -> ExampleDeliveryService
     else -> null

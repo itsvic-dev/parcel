@@ -14,7 +14,6 @@
   <string name="edit">แก้ไข</string>
   <string name="edit_parcel">แก้ไขพัสดุ</string>
   <string name="go_back">กลับ</string>
-  <string name="human_name_error_text">ชื่อพัสดุไม่สามารถเว้นว่างได้</string>
   <string name="license">ลิขสิทธิ์</string>
   <string name="more_options">ตัวเลือกเพิ่มเติม</string>
   <string name="network_failure_detail">อาจจะเป็นไปได้ว่า อุปกรณ์ของคุณไม่มีสัญญาณในขณะนี้ หรือเกิดปัญหาที่เซิฟเวอร์ฝั่งผู้ให้บริการขนส่ง หรือคุณใส่รายละเอียดของพัสดุไม่ถูกต้อง</string>
@@ -62,4 +61,5 @@
   <string name="tracking_id_error_text">รหัสพัสดุไม่สามารถเว้นว่างได้</string>
   <string name="unmetered_only_setting">อัปเดตเมื่อเชื่อมต่อเครือข่ายที่ไม่จำกัดการใช้งานเท่านั้น</string>
   <string name="unmetered_only_setting_detail">เมื่อเปิด Parcel จะตรวจสอบสถานะของพัสดุเมื่อเชื่อมต่อเครือข่ายที่ไม่จำกัดการใช้งานเท่านั้น เช่น Wi-Fi บ้าน</string>
+  <string name="undefinied_packagename">พัสดุ</string>
 </resources>

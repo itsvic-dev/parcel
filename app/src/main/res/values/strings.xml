@@ -1,17 +1,70 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
   <string name="about_app">About app</string>
+  <string name="add">Add</string>
   <string name="add_a_parcel">Add a parcel</string>
+  <string name="actions">Actions</string>
   <string name="add_parcel">Add parcel</string>
   <string name="app_name" translatable="false">Parcel</string>
   <string name="archive">Archive</string>
+  <string name="collapse">Collapse</string>
   <string name="archive_prompt_question">Do you want to archive this parcel?</string>
   <string name="archive_prompt_text">If you archive this parcel, its history will be preserved on device. It will not be periodically checked for updates.</string>
+  <string name="cancel">Cancel</string>
+  <string name="clipboard_paste">Paste from clipboard</string>
+  <string name="clipboard_paste_enabled">Enable clipboard paste button</string>
+  <string name="clipboard_paste_description">Show a paste button next to the tracking number field</string>
+  <string name="preferred_region">Preferred region</string>
+  <string name="preferred_region_description">Prioritize delivery services from your region</string>
+  <string name="region_international">International</string>
+  <string name="region_north_america">North America</string>
+  <string name="region_europe">Europe</string>
+  <string name="region_asia">Asia</string>
+  <string name="country_belarus">Belarus</string>
+  <string name="country_bulgaria">Bulgaria</string>
+  <string name="country_czech">Czech Republic</string>
+  <string name="country_uk">United Kingdom</string>
+  <string name="country_ireland">Ireland</string>
+  <string name="country_poland">Poland</string>
+  <string name="country_hungary">Hungary</string>
+  <string name="country_germany">Germany</string>
+  <string name="country_italy">Italy</string>
+  <string name="country_romania">Romania</string>
+  <string name="country_scandinavia">Scandinavia</string>
+  <string name="country_ukraine">Ukraine</string>
+  <string name="country_india">India</string>
+  <string name="country_thailand">Thailand</string>
+  <string name="category_international">International</string>
+  <string name="category_north_america">North America</string>
+  <string name="category_europe_belarus">Europe - Belarus</string>
+  <string name="category_europe_bulgaria">Europe - Bulgaria</string>
+  <string name="category_europe_czech">Europe - Czech Republic</string>
+  <string name="category_europe_uk">Europe - United Kingdom</string>
+  <string name="category_europe_ireland">Europe - Ireland</string>
+  <string name="category_europe_poland">Europe - Poland</string>
+  <string name="category_europe_hungary">Europe - Hungary</string>
+  <string name="category_europe_germany">Europe - Germany</string>
+  <string name="category_europe_italy">Europe - Italy</string>
+  <string name="category_europe_romania">Europe - Romania</string>
+  <string name="category_europe_scandinavia">Europe - Scandinavia</string>
+  <string name="category_europe_ukraine">Europe - Ukraine</string>
+  <string name="category_asia_india">Asia - India</string>
+  <string name="category_asia_thailand">Asia - Thailand</string>
+  <string name="category_other">Other</string>
+  <string name="select_parcel_to_view">Select a parcel to view its details</string>
+  <string name="home">Home</string>
+  <string name="delete_confirmation">Are you sure you want to delete this parcel?</string>
   <string name="channel_description">Notifications about the current status of the parcel</string>
+  <string name="expand">Expand</string>
   <string name="channel_name">Parcel events</string>
   <string name="current_status">Current status</string>
   <string name="delete">Delete</string>
   <string name="delivery_service">Delivery service</string>
   <string name="demo_mode">Demo mode</string>
+  <string name="parcel_details">Parcel Details</string>
+  <string name="parcel_details_title">%s details</string>
+  <string name="tracking_number">Tracking Number</string>
+  <string name="additional_info">Additional Information</string>
+  <string name="tracking_history">Tracking History</string>
   <string name="demo_mode_action_block">Action not allowed in demo mode</string>
   <string name="demo_mode_detail">Shows example parcels for demo purposes. Does not affect user data.</string>
   <string name="dhl_api_key_flavor_text">DHL requires us to ask users to provide an API key. You can get one for free from &lt;a href=\"https://developer.dhl.com\"&gt;DHL\'s API Developer Portal&lt;/a&gt; and signing up for the \"Shipment Tracking - Unified\" API.</string>
@@ -23,7 +76,6 @@
   <string name="error_no_api_key_provided">This delivery service requires an API key, but none was provided. Check the app\'s settings for more information.</string>
   <string name="error_unexpected_detail">An unexpected error was encountered with the message:\n%1$s.</string>
   <string name="go_back">Go back</string>
-  <string name="human_name_error_text">Name must not be blank.</string>
   <string name="ignore">Ignore</string>
   <string name="license">License</string>
   <string name="more_options">More options</string>
@@ -51,10 +103,12 @@
   <string name="service_error_text">You must select a service.</string>
   <string name="service_evri" translatable="false">Evri</string>
   <string name="service_example">Example Post</string>
+  <string name="service_express_one">Express One Hungary</string>
   <string name="service_gls" translatable="false">GLS</string>
   <string name="service_gls_hungary">GLS Hungary</string>
   <string name="service_hermes" translatable="false">Hermes</string>
   <string name="service_hungarian_post">Hungarian Post</string>
+  <string name="service_imile" translatable="false">iMile</string>
   <string name="service_inpost">InPost</string>
   <string name="service_nova_poshta">Nova Post</string>
   <string name="service_orlen_paczka">Orlen Paczka (Poland)</string>
@@ -106,4 +160,13 @@
   <string name="tracking_id_error_text">Tracking ID must not be blank.</string>
   <string name="unmetered_only_setting">Update only on unmetered networks</string>
   <string name="unmetered_only_setting_detail">If enabled, Parcel will look for parcel updates only on unmetered connections, such as your home Wi-Fi.</string>
+  <string name="undefinied_packagename">Package</string>
+  <string name="settings_network">Network</string>
+  <string name="settings_region">Region</string>
+  <string name="settings_developer_tools">Developer tools</string>
+  <string name="settings_version_label">Version %s</string>
+  <string name="settings_test_notification">Send test notification</string>
+  <string name="settings_dhl_api_key_label">DHL API key</string>
+  <string name="settings_test_package_name">Test package</string>
+  <string name="settings_test_package_status">Courier picked up the package</string>
 </resources>

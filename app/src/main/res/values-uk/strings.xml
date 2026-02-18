@@ -19,7 +19,6 @@
   <string name="edit_parcel">Редагувати посилку</string>
   <string name="error_no_api_key_provided">Ця доставка потребує ключ API, але він не наданий. Перевірте налаштування застосунку для більшої інформації.</string>
   <string name="go_back">Повернутись</string>
-  <string name="human_name_error_text">Ім\'я не може бути пустим.</string>
   <string name="ignore">Ігнорувати</string>
   <string name="license">Ліцензія</string>
   <string name="more_options">More options</string>
@@ -71,4 +70,5 @@
   <string name="tracking_id_error_text">Трекінг-ID не може бути пустим.</string>
   <string name="unmetered_only_setting">Оновлюватись тільки на необмежених мережах</string>
   <string name="unmetered_only_setting_detail">Якщо ввімкнено, то Parcel буде сповіщувати про дані посилки тільки на необмежених з\'єднаннях, такі як ваш домашній Wi-Fi.</string>
+  <string name="undefinied_packagename">Посилка</string>
 </resources>

@@ -89,6 +89,7 @@ dependencies {
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
   implementation(libs.androidx.material3)
+  implementation(libs.androidx.material3.window.size)
   implementation(libs.androidx.material.icons)
   implementation(libs.okhttp)
   implementation(libs.okhttp.coroutines)
@@ -107,6 +108,7 @@ dependencies {
   implementation(libs.work.runtime.ktx)
   implementation(libs.kotlinx.coroutines.guava)
   implementation(libs.androidx.browser)
+  implementation(libs.jsoup)
 
   ksp(libs.room.compiler)
   ksp(libs.moshi.kotlin.codegen)

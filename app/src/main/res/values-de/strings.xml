@@ -22,7 +22,6 @@
   <string name="error_no_api_key_provided">Dieser Zustelldienst erfordert einen API-Schlüssel, aber es wurde keiner angegeben. Weitere Informationen finden Sie in den App-Einstellungen.</string>
   <string name="error_unexpected_detail">Ein unbekannter Fehler ist aufgetreten mit der Nachricht:\n%1$s.</string>
   <string name="go_back">Zurück</string>
-  <string name="human_name_error_text">Name darf nicht leer sein.</string>
   <string name="ignore">Ignorieren</string>
   <string name="license">Lizenz</string>
   <string name="more_options">Weitere Optionen</string>
@@ -79,4 +78,5 @@
   <string name="tracking_id_error_text">Sendungsnummer darf nicht leer sein.</string>
   <string name="unmetered_only_setting">Nur bei unbegrenzten Netzwerken aktualisieren</string>
   <string name="unmetered_only_setting_detail">Wenn aktiviert, sucht die App nur über unbegrenzte Verbindungen wie WLAN nach Paketupdates.</string>
+  <string name="undefinied_packagename">Paket</string>
 </resources>
